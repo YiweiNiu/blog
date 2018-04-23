@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://yiweiniu.github.io/blog/2018/04/Genome-Assembly-Pipeline-SMARTdenovo/</loc>
+    
+    <lastmod>2018-04-23T12:04:03.850Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yiweiniu.github.io/blog/2018/03/Genome-assembly-pipeline-OPERA-LG/</loc>
+    
+    <lastmod>2018-04-23T12:01:24.675Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://yiweiniu.github.io/blog/2018/03/Upstream-analysis-of-TCR-BCR-repertoires-in-RNA-seq-data/</loc>
     
     <lastmod>2018-04-23T10:27:55.758Z</lastmod>
@@ -26,13 +40,6 @@
     <loc>https://yiweiniu.github.io/blog/2018/04/How-to-install-perl-modules/</loc>
     
     <lastmod>2018-04-23T09:06:48.968Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yiweiniu.github.io/blog/2018/03/Genome-assembly-pipeline-OPERA-LG/</loc>
-    
-    <lastmod>2018-04-23T09:06:33.837Z</lastmod>
     
   </url>
   
