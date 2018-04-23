@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="_en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="3dnqtuxhGQK5nK7aqRtU2c3DzZlaVtBMN6M39UoGcgY" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/blog/css/main.css?v=6.1.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png?v=6.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png?v=6.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png?v=6.1.0">
+
+
+  <link rel="mask-icon" href="/blog/images/logo.svg?v=6.1.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '6.1.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Hugo 是由 Go 语言实现的静态网站生成器。简单、易用、高效、易扩展、快速部署。 根据官网的一些文档及网上的教程，尝试用 Hugo 搭建一个静态的博客站点。下面的操作在 win10 64 位家庭版中完成。bash 命令在 git bash 中操作。  安装 在 Hugo Releases 页面下载了最新的 v0.36 win64 位压缩包，解压后将其添加到环境变量中。  生成站点 使用 Hug">
+<meta name="keywords" content="Hugo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hugo 建站记录">
+<meta property="og:url" content="https://yiweiniu.github.io/blog/2018/02/Hugo-建站记录/index.html">
+<meta property="og:site_name" content="Yiwei Niu&#39;s Note">
+<meta property="og:description" content="Hugo 是由 Go 语言实现的静态网站生成器。简单、易用、高效、易扩展、快速部署。 根据官网的一些文档及网上的教程，尝试用 Hugo 搭建一个静态的博客站点。下面的操作在 win10 64 位家庭版中完成。bash 命令在 git bash 中操作。  安装 在 Hugo Releases 页面下载了最新的 v0.36 win64 位压缩包，解压后将其添加到环境变量中。  生成站点 使用 Hug">
+<meta property="og:locale" content="_en">
+<meta property="og:updated_time" content="2018-02-17T12:36:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hugo 建站记录">
+<meta name="twitter:description" content="Hugo 是由 Go 语言实现的静态网站生成器。简单、易用、高效、易扩展、快速部署。 根据官网的一些文档及网上的教程，尝试用 Hugo 搭建一个静态的博客站点。下面的操作在 win10 64 位家庭版中完成。bash 命令在 git bash 中操作。  安装 在 Hugo Releases 页面下载了最新的 v0.36 win64 位压缩包，解压后将其添加到环境变量中。  生成站点 使用 Hug">
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="Yiwei Niu's Note" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="https://yiweiniu.github.io/blog/2018/02/Hugo-建站记录/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Hugo 建站记录 | Yiwei Niu's Note</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="_en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> 
+
+<div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Yiwei Niu's Note</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">to share, to learn</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-home menu-item-active">
+    <a href="/blog/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-categories menu-item-active">
+    <a href="/blog/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-tags">
+    <a href="/blog/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />Tags</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-archives">
+    <a href="/blog/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-about">
+    <a href="https:/yiweiniu.github.io/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />About</a>
+</li>
+
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+  
+
+
+
+ </div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yiweiniu.github.io/blog/blog/2018/02/Hugo-建站记录/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yiwei Niu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/blog/images/portrait.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yiwei Niu's Note">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Hugo 建站记录</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-17T13:37:25+08:00">2018-02-17</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/blog/categories/mixture/" itemprop="url" rel="index"><span itemprop="name">mixture</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2018/02/Hugo-建站记录/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/02/Hugo-建站记录/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views: 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-symbolscount">
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                <span title="Symbols count in article">12k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                <span title="Reading time">0:12</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 是由 Go 语言实现的静态网站生成器。简单、易用、高效、易扩展、快速部署。</p>
+<p>根据官网的一些文档及网上的教程，尝试用 Hugo 搭建一个静态的博客站点。下面的操作在 win10 64 位家庭版中完成。bash 命令在 git bash 中操作。</p>
+<h3 id="安装"><a class="markdownIt-Anchor" href="#安装"></a> 安装</h3>
+<p>在 <a href="https://github.com/gohugoio/hugo/releases" target="_blank" rel="noopener">Hugo Releases</a> 页面下载了最新的 v0.36 win64 位压缩包，解压后将其添加到环境变量中。</p>
+<h3 id="生成站点"><a class="markdownIt-Anchor" href="#生成站点"></a> 生成站点</h3>
+<p>使用 Hugo 快速生成站点：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> hugo new site <span class="built_in">test</span></span></span><br><span class="line">Congratulations! Your new Hugo site is created in D:\hugo.</span><br><span class="line"></span><br><span class="line">Just a few more steps and you're ready to go:</span><br><span class="line"></span><br><span class="line">1. Download a theme into the same-named folder.</span><br><span class="line">   Choose a theme from https://themes.gohugo.io/, or</span><br><span class="line">   create your own with the "hugo new theme &lt;THEMENAME&gt;" command.</span><br><span class="line">2. Perhaps you want to add some content. You can add single files</span><br><span class="line">   with "hugo new &lt;SECTIONNAME&gt;\&lt;FILENAME&gt;.&lt;FORMAT&gt;".</span><br><span class="line">3. Start the built-in live server via "hugo server".</span><br><span class="line"></span><br><span class="line">Visit https://gohugo.io/ for quickstart guide and full documentation.</span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> $ <span class="built_in">cd</span> <span class="built_in">test</span>/</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> ls</span></span><br><span class="line">archetypes/  config.toml  content/  data/  layouts/  static/  themes/</span><br></pre></td></tr></table></figure>
+<p><code>config.toml</code>是网站的配置文件，包括 <code>baseurl</code>, <code>title</code>, <code>copyright</code> 等等网站参数。</p>
+<p>这几个文件夹的作用分别是：</p>
+<ul>
+<li>archetypes：包括内容类型，在创建新内容时自动生成内容的配置</li>
+<li>content：包括网站内容，全部使用markdown格式</li>
+<li>data：存放 Hugo 生成网站时的配置文件</li>
+<li>layouts：包括了网站的模版，决定内容如何呈现</li>
+<li>static：包括了css, js, fonts, media等，决定网站的外观</li>
+<li>themes：主题</li>
+</ul>
+<h3 id="添加主题"><a class="markdownIt-Anchor" href="#添加主题"></a> 添加主题</h3>
+<p>按照一般方法这一步应该添加主题，然后添加文章，然后就可以预览站点了。</p>
+<p>这里选用了 <a href="https://github.com/gcushen/hugo-academic" target="_blank" rel="noopener">Academic</a> 这一主题。这是一个适合做个人简历的主题（学院风格）。按照它的方式进行安装，跳过了初始化网站的过程，直接从 git 上克隆一个版本过来。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git <span class="built_in">clone</span> https://github.com/sourcethemes/academic-kickstart.git hugo</span></span><br><span class="line">Cloning into 'hugo'...</span><br><span class="line">remote: Counting objects: 77, done.</span><br><span class="line">remote: Total 77 (delta 0), reused 0 (delta 0), pack-reused 77</span><br><span class="line">Unpacking objects: 100% (77/77), done.</span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> hugo/</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 初始化主题</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git submodule update --init --recursive</span></span><br><span class="line">Submodule 'themes/academic' (https://github.com/gcushen/hugo-academic.git) registered for path 'themes/academic'</span><br><span class="line">Cloning into 'D:/知识库/hugo/themes/academic'...</span><br><span class="line">Submodule path 'themes/academic': checked out 'b02f5ecedabe4494dabee522db3ab843472afa41'</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 可选，更新主题</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git submodule update --remote --merge</span></span><br></pre></td></tr></table></figure>
+<h3 id="配置"><a class="markdownIt-Anchor" href="#配置"></a> 配置</h3>
+<p>修改一下网站的顶层配置文件，进行相应的配置。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Configuration of Academic</span></span><br><span class="line"><span class="comment"># Documentation: https://sourcethemes.com/academic/</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The URL of your website.</span></span><br><span class="line"><span class="comment"># End your URL with a `/` trailing slash, e.g. `https://example.com/`.</span></span><br><span class="line"><span class="attr">baseurl</span> = <span class="string">"https://yiweiniu.github.io/"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Title of your site</span></span><br><span class="line"><span class="attr">title</span> = <span class="string">"Yiwei Niu"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Your copyright notice - appears in site footer.</span></span><br><span class="line"><span class="comment"># To display a copyright symbol, type `&amp;copy;`.</span></span><br><span class="line"><span class="attr">copyright</span> = <span class="string">"&amp;copy; 2018 Yiwei Niu"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">theme</span> = <span class="string">"academic"</span></span><br><span class="line"><span class="attr">enableEmoji</span> = <span class="literal">true</span></span><br><span class="line"><span class="attr">footnotereturnlinkcontents</span> = <span class="string">"&lt;sup&gt;^&lt;/sup&gt;"</span></span><br><span class="line"><span class="attr">ignoreFiles</span> = [<span class="string">"\\.Rmd$"</span>, <span class="string">"\\.Rmarkdown$"</span>, <span class="string">"_files$"</span>, <span class="string">"_cache$"</span>]</span><br><span class="line"><span class="attr">preserveTaxonomyNames</span> = <span class="literal">true</span></span><br><span class="line"><span class="attr">paginate</span> = <span class="number">10</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Enable comments by entering your Disqus shortname</span></span><br><span class="line"><span class="attr">disqusShortname</span> = <span class="string">""</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Enable analytics by entering your Google Analytics tracking ID</span></span><br><span class="line"><span class="attr">googleAnalytics</span> = <span class="string">""</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Default language to use (if you setup multilingual support)</span></span><br><span class="line"><span class="attr">defaultContentLanguage</span> = <span class="string">"en"</span></span><br><span class="line"><span class="attr">defaultContentLanguageInSubdir</span> = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="section">[outputs]</span></span><br><span class="line">  home = [ "HTML", "CSS", "RSS" ]</span><br><span class="line">  section = [ "HTML", "RSS" ]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Configure BlackFriday Markdown rendering.</span></span><br><span class="line"><span class="comment">#   See: https://gohugo.io/readfiles/bfconfig/</span></span><br><span class="line"><span class="section">[blackfriday]</span></span><br><span class="line">  hrefTargetBlank = true  # `true` opens external links in a new tab.</span><br><span class="line">  fractions = true  # `false` disables smart fractions (e.g. 5/12 formatted as a fraction).</span><br><span class="line">  smartypants = true  # `false` disables all smart punctuation substitutions (e.g. smart quotes, dashes, fractions).</span><br><span class="line"></span><br><span class="line"><span class="section">[params]</span></span><br><span class="line">  <span class="comment"># Color theme.</span></span><br><span class="line">  <span class="comment">#   Choose from `default`, `ocean`, `forest`, `coffee`, `dark`, or `1950s`.</span></span><br><span class="line">  color_theme = "default"</span><br><span class="line"></span><br><span class="line">  <span class="comment"># Font style.</span></span><br><span class="line">  <span class="comment">#   Choose from `default`, `classic`, or `playfair`.</span></span><br><span class="line">  font = "default"</span><br><span class="line"></span><br><span class="line">  <span class="comment"># Your details.</span></span><br><span class="line">  name = "Yiwei Niu"</span><br><span class="line">  role = "PhD candidate"</span><br><span class="line"></span><br><span class="line">  <span class="comment"># Organizations/Affiliations.</span></span><br><span class="line">  <span class="comment">#   Separate multiple entries with a comma, using the form: `[ &#123;name="Org1", url=""&#125;, &#123;name="Org2", url=""&#125; ]`.</span></span><br><span class="line">  organizations = [ &#123; name = "Institute of Biophysics, Chinese Academy of Sciences", url = "http://www.ibp.cas.cn/" &#125; ]</span><br><span class="line"></span><br><span class="line">  gravatar = false  # Get your avatar from Gravatar.com? (true/false)</span><br><span class="line">  avatar = "portrait.jpg"  # Specify an avatar image (in `static/img/` folder) or delete value to disable avatar.</span><br><span class="line">  email = "xiaohuwangwang@qq.com"</span><br><span class="line">  address = "15 Datun Road, Chaoyang District, Beijing, 100101, China"</span><br><span class="line">  office_hours = ""</span><br><span class="line">  phone = ""</span><br><span class="line">  skype = ""</span><br><span class="line">  telegram = ""</span><br><span class="line"></span><br><span class="line">  <span class="comment"># Enable Keybase in Contact widget by entering your keybase.io username.</span></span><br><span class="line">  keybase = ""</span><br><span class="line"></span><br><span class="line">  <span class="comment"># Discussion link (e.g. link to a forum, mailing list, or chat).</span></span><br><span class="line">  <span class="comment">#   Uncomment line below to use.</span></span><br><span class="line">  <span class="comment">#   discussion = &#123; name = "Discuss", url = "https://discourse.gohugo.io" &#125;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Diplay a logo in navigation bar rather than title (optional).</span></span><br><span class="line">  <span class="comment">#   To enable, place an image in `static/img/` and reference its filename below. To disable, set the value to "".</span></span><br><span class="line">  logo = ""</span><br><span class="line"></span><br><span class="line">  <span class="comment"># Enable/disable map in Contact widget.</span></span><br><span class="line">  <span class="comment"># To show your address on a map in the contact widget, you need to enter your latitude, longitude and choose</span></span><br><span class="line">  <span class="comment"># a map provider below.</span></span><br><span class="line">  <span class="comment"># To use Google Maps, set `map = 1` and enter your API key that can be obtained here:</span></span><br><span class="line">  <span class="comment">#   https://developers.google.com/maps/documentation/javascript/get-api-key</span></span><br><span class="line">  <span class="comment"># To use OpenStreetMap tiles, set `map = 2`.</span></span><br><span class="line">  <span class="comment"># To use OpenStreetMap on a high traffic site, set `map = 3` and enter your API key that can be obtained here:</span></span><br><span class="line">  <span class="comment">#   https://www.mapbox.com/studio/account/tokens</span></span><br><span class="line">  <span class="comment"># To get your coordinates, right-click on Google Maps and choose "What's here?". The coords will show up at the bottom.</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  <span class="comment"># Map provider:</span></span><br><span class="line">  <span class="comment">#   0: No map</span></span><br><span class="line">  <span class="comment">#   1: Google Maps</span></span><br><span class="line">  <span class="comment">#   2: OpenStreetMap (Mapnik)</span></span><br><span class="line">  <span class="comment">#   3: OpenStreetMap (Mapbox)</span></span><br><span class="line">  map = 0</span><br><span class="line">  map_api_key = ""</span><br><span class="line">  latitude = "37.4275"</span><br><span class="line">  longitude = "-122.1697"</span><br><span class="line">  zoom = 15</span><br><span class="line"></span><br><span class="line">  <span class="comment"># Date and time format (refer to Go's date format: http://fuckinggodateformat.com )</span></span><br><span class="line">  <span class="comment">#   Examples: "Mon, Jan 2, 2006" or "2006-01-02"</span></span><br><span class="line">  date_format = "Jan 2, 2006"</span><br><span class="line">  <span class="comment">#   Examples: "3:04 pm" or "15:04"</span></span><br><span class="line">  time_format = "3:04 PM"</span><br><span class="line"></span><br><span class="line">  <span class="comment"># Show estimated reading time for posts?</span></span><br><span class="line">  reading_time = false</span><br><span class="line"></span><br><span class="line">  <span class="comment"># Display comment count? Requires commenting to be enabled.</span></span><br><span class="line">  comment_count = true</span><br><span class="line"></span><br><span class="line">  <span class="comment"># Display next/previous section pager?</span></span><br><span class="line">  section_pager = false</span><br><span class="line"></span><br><span class="line">  <span class="comment"># Enable global LaTeX math rendering?</span></span><br><span class="line">  <span class="comment">#   If false, you can enable it locally on a per page basis.</span></span><br><span class="line">  math = false</span><br><span class="line"></span><br><span class="line">  <span class="comment"># Highlight.js options</span></span><br><span class="line">  <span class="comment">#   highlight</span></span><br><span class="line">  <span class="comment">#     Enable global source code highlighting?  If false, you can</span></span><br><span class="line">  <span class="comment">#     override it for a particular page in that page's preamble.</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  <span class="comment">#     Example: highlight = true</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  <span class="comment">#   highlight_languages</span></span><br><span class="line">  <span class="comment">#     Add support for highlighting additional languages. Support for</span></span><br><span class="line">  <span class="comment">#     languages mentioned here will be included in all pages. You</span></span><br><span class="line">  <span class="comment">#     can also set this variable for a particular page in that</span></span><br><span class="line">  <span class="comment">#     page's preamble.</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  <span class="comment">#     Example: highlight_languages = ["go", "lisp", "ocaml"]</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  <span class="comment">#   highlight_style</span></span><br><span class="line">  <span class="comment">#     Choose a different CSS style for highlighting source</span></span><br><span class="line">  <span class="comment">#     code. Setting this option in a page's preamble has no</span></span><br><span class="line">  <span class="comment">#     effect.</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  <span class="comment">#     Example: highlight_style = "github-gist"</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  <span class="comment">#   For the list of supported languages and styles, see:</span></span><br><span class="line">  <span class="comment">#   https://cdnjs.com/libraries/highlight.js/</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  <span class="comment">#   For more info on the highlighting options, see:</span></span><br><span class="line">  <span class="comment">#   https://sourcethemes.com/academic/post/writing-markdown-latex/#highlighting-options</span></span><br><span class="line">  highlight = true</span><br><span class="line">  highlight_languages = []</span><br><span class="line">  <span class="comment"># highlight_style = "github"</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Enable native social sharing buttons?</span></span><br><span class="line">  sharing = true</span><br><span class="line"></span><br><span class="line">  <span class="comment"># Link custom CSS and JS assets</span></span><br><span class="line">  <span class="comment">#   (relative to /static/css and /static/js respectively)</span></span><br><span class="line">  custom_css = []</span><br><span class="line">  custom_js  = []</span><br><span class="line"></span><br><span class="line">  <span class="comment"># Publication types.</span></span><br><span class="line">  <span class="comment">#   Used to categorize publications.</span></span><br><span class="line">  <span class="comment">#   The index of the publication type in the list is used as its unique numerical identifier.</span></span><br><span class="line">  <span class="comment">#   The numeric ID is used in a publication's frontmatter to categorize it.</span></span><br><span class="line">  <span class="comment">#   The language can be edited below.</span></span><br><span class="line">  <span class="comment">#   For multilingual sites, `publication_types` can be copied to each language section at the end of this file and</span></span><br><span class="line">  <span class="comment">#   translated.</span></span><br><span class="line">  publication_types = [</span><br><span class="line">    'Uncategorized',  # 0</span><br><span class="line">    'Conference paper',  # 1</span><br><span class="line">    'Journal article',  # 2</span><br><span class="line">    'Manuscript',  # 3</span><br><span class="line">    'Report',  # 4</span><br><span class="line">    'Book',  # 5</span><br><span class="line">    'Book section'  # 6</span><br><span class="line">  ]</span><br><span class="line"></span><br><span class="line">  <span class="comment"># Configuration of talk pages.</span></span><br><span class="line"><span class="section">  [params.talks]</span></span><br><span class="line">    <span class="comment"># Show talk time?</span></span><br><span class="line">    time = true</span><br><span class="line"></span><br><span class="line">  <span class="comment"># Configuration of publication pages.</span></span><br><span class="line"><span class="section">  [params.publications]</span></span><br><span class="line">    <span class="comment"># Date format (refer to Go's date format: http://fuckinggodateformat.com )</span></span><br><span class="line">    <span class="comment">#   Examples: "Mon, Jan 2, 2006" or "2006-01-02"</span></span><br><span class="line">    date_format = "January, 2006"</span><br><span class="line"></span><br><span class="line">  <span class="comment"># Configuration of project pages.</span></span><br><span class="line"><span class="section">  [params.projects]</span></span><br><span class="line">    <span class="comment"># List publications and talks related to the project?</span></span><br><span class="line">    list_children = true</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Publication list format.</span></span><br><span class="line">    <span class="comment">#   0 = Simple</span></span><br><span class="line">    <span class="comment">#   1 = Detailed</span></span><br><span class="line">    <span class="comment">#   2 = APA</span></span><br><span class="line">    <span class="comment">#   3 = MLA</span></span><br><span class="line">    publication_format = 2</span><br><span class="line"></span><br><span class="line">  <span class="comment"># Social/Academic Networking</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  <span class="comment"># Icon pack "fa" includes the following social network icons:</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  <span class="comment">#   twitter, weibo, linkedin, github, facebook, pinterest, google-plus,</span></span><br><span class="line">  <span class="comment">#   youtube, instagram, soundcloud</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  <span class="comment">#   For email icon, use "fa" icon pack, "envelope" icon, and</span></span><br><span class="line">  <span class="comment">#   "mailto:your@email.com" as the link.</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  <span class="comment">#   Full list: https://fortawesome.github.io/Font-Awesome/icons/</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  <span class="comment"># Icon pack "ai" includes the following academic network icons:</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  <span class="comment">#   google-scholar, arxiv, orcid, researchgate, mendeley</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  <span class="comment">#   Full list: https://jpswalsh.github.io/academicons/</span></span><br><span class="line"></span><br><span class="line"><span class="section">  [[params.social]]</span></span><br><span class="line">    icon = "envelope"</span><br><span class="line">    icon_pack = "fa"</span><br><span class="line">    link = "mailto:xiaohuwangwang@qq.com"</span><br><span class="line"></span><br><span class="line"><span class="section">  [[params.social]]</span></span><br><span class="line">    icon = "twitter"</span><br><span class="line">    icon_pack = "fa"</span><br><span class="line">    link = "https://twitter.com/ywniu"</span><br><span class="line"></span><br><span class="line"><span class="section">  [[params.social]]</span></span><br><span class="line">    icon = "weibo"</span><br><span class="line">    icon_pack = "fa"</span><br><span class="line">    link = "//weibo.com/u/3049858680"</span><br><span class="line"></span><br><span class="line"><span class="section">  [[params.social]]</span></span><br><span class="line">    icon = "google-scholar"</span><br><span class="line">    icon_pack = "ai"</span><br><span class="line">    link = "https://scholar.google.com.hk/citations?user=JMK-4AEAAAAJ&amp;hl=en"</span><br><span class="line"></span><br><span class="line"><span class="section">  [[params.social]]</span></span><br><span class="line">    icon = "github"</span><br><span class="line">    icon_pack = "fa"</span><br><span class="line">    link = "//github.com/YiweiNiu"</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Navigation Links</span></span><br><span class="line"><span class="comment">#   To link a homepage widget, specify the URL as a hash `#` followed by the filename of the</span></span><br><span class="line"><span class="comment">#     desired widget in your `content/home/` folder.</span></span><br><span class="line"><span class="comment">#   The weight parameter defines the order that the links will appear in.</span></span><br><span class="line"><span class="section">[params.menus]</span></span><br><span class="line">  <span class="comment"># Align the main menu to the right of the page? (true/false)</span></span><br><span class="line">  align_right = true</span><br><span class="line"></span><br><span class="line"><span class="section">[[menu.main]]</span></span><br><span class="line">  name = "Home"</span><br><span class="line">  url = "#about"</span><br><span class="line">  weight = 1</span><br><span class="line"></span><br><span class="line"><span class="section">[[menu.main]]</span></span><br><span class="line">  name = "Publications"</span><br><span class="line">  url = "#publications_selected"</span><br><span class="line">  weight = 2</span><br><span class="line"></span><br><span class="line"><span class="section">[[menu.main]]</span></span><br><span class="line">  name = "Projects"</span><br><span class="line">  url = "#projects"</span><br><span class="line">  weight = 3</span><br><span class="line"></span><br><span class="line"><span class="section">[[menu.main]]</span></span><br><span class="line">  name = "Contact"</span><br><span class="line">  url = "#contact"</span><br><span class="line">  weight = 4</span><br><span class="line"></span><br><span class="line"><span class="section">[[menu.main]]</span></span><br><span class="line">  name = "Blog"</span><br><span class="line">  url = "https://YiweiNiu.github.io/blog/"</span><br><span class="line">  weight = 5</span><br><span class="line"></span><br><span class="line"><span class="comment"># Taxonomies.</span></span><br><span class="line"><span class="section">[taxonomies]</span></span><br><span class="line">  tag = "tags"</span><br><span class="line">  category = "categories"</span><br><span class="line">  publication_type = "publication_types"</span><br><span class="line"></span><br><span class="line"><span class="comment"># Languages</span></span><br><span class="line"><span class="comment">#   Create a [languages.X] block for each language you want, where X is the language ID.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Configure the English version of the website.</span></span><br><span class="line"><span class="section">[Languages.en]</span></span><br><span class="line">  languageCode = "en-us"</span><br></pre></td></tr></table></figure>
+<h3 id="本地预览"><a class="markdownIt-Anchor" href="#本地预览"></a> 本地预览</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> hugo server</span></span><br></pre></td></tr></table></figure>
+<h3 id="部署"><a class="markdownIt-Anchor" href="#部署"></a> 部署</h3>
+<p>先在 git 上建立了一个空的 repo，名字为 <code>YiweiNiu.github.io</code>。</p>
+<p>在站点根目录执行 Hugo 命令生成最终页面：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> hugo --theme=academic --baseUrl=<span class="string">"https://yiweiniu.github.io/"</span></span></span><br></pre></td></tr></table></figure>
+<p>（注意，以上命令并不会生成草稿页面，如果未生成任何文章，请去掉文章头部的 <code>draft=true</code> 再重新生成。）</p>
+<p>所有静态页面都会生成到 <code>public</code> 目录，将 pubilc 目录里所有文件 <code>push</code> 到刚创建的 Repository 的 <code>master</code> 分支。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> public</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git init</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git remote add origin https://github.com/yiweiniu/yiweiniu.github.io.git</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git add -A</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git commit -m <span class="string">"first commit"</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git push -u origin master</span></span><br></pre></td></tr></table></figure>
+<p>浏览器里访问：<code>https://yiweiniu.github.io/</code> 即可查看。</p>
+<h3 id="参考"><a class="markdownIt-Anchor" href="#参考"></a> 参考</h3>
+<p><a href="https://gohugo.io/documentation/" target="_blank" rel="noopener">Hugo Documentation</a><br>
+<a href="http://www.gohugo.org/" target="_blank" rel="noopener">Hugo中文文档</a><br>
+<a href="http://www.worldhello.net/gotgithub/03-project-hosting/050-homepage.html" target="_blank" rel="noopener">GotGitHub - 建立主页</a><br>
+<a href="https://sourcethemes.com/academic/docs/" target="_blank" rel="noopener">Academic theme</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author: </strong>Yiwei Niu</li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="https://yiweiniu.github.io/blog/2018/02/Hugo-建站记录/" title="Hugo 建站记录">https://yiweiniu.github.io/blog/2018/02/Hugo-建站记录/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/Hugo/" rel="tag"># Hugo</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/02/Hexo-建站记录/" rel="next" title="Hexo 建站记录">
+                <i class="fa fa-chevron-left"></i> Hexo 建站记录
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/02/构建自己的笔记管理系统/" rel="prev" title="构建自己的笔记管理系统">
+                构建自己的笔记管理系统 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type = "text/javascript" src = "//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a7ad07b7823d03b" async = "async" ></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/blog/images/portrait.jpg"
+                alt="Yiwei Niu" />
+            
+              <p class="site-author-name" itemprop="name">Yiwei Niu</p>
+              <p class="site-description motion-element" itemprop="description">a beginner, a learner</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/blog/archives/">
+                
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/blog/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/blog/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">19</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/blog/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:xiaohuwangwang@qq.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/YiweiNiu" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://weibo.com/u/3049858680" target="_blank" title="Weibo"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/ywniu" target="_blank" title="Twitter"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kaigedong.github.io/" title="Kaige Dong" target="_blank">Kaige Dong</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://homolog.us/blogs/" title="Homolog.us" target="_blank">Homolog.us</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://cgatoxford.wordpress.com/" title="CGAT" target="_blank">CGAT</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.gettinggeneticsdone.com/" title="Getting Genetics Done" target="_blank">Getting Genetics Done</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.acgt.me/" title="ACGT" target="_blank">ACGT</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text"> 安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成站点"><span class="nav-number">2.</span> <span class="nav-text"> 生成站点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加主题"><span class="nav-number">3.</span> <span class="nav-text"> 添加主题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置"><span class="nav-number">4.</span> <span class="nav-text"> 配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#本地预览"><span class="nav-number">5.</span> <span class="nav-text"> 本地预览</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部署"><span class="nav-number">6.</span> <span class="nav-text"> 部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">7.</span> <span class="nav-text"> 参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-mars"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yiwei Niu</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=6.1.0"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=6.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=6.1.0"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=6.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=6.1.0"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=6.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=6.1.0"></script>
+
+
+
+  
+
+  
+    <script id="dsq-count-scr" src="https://yiwei-nius-note.disqus.com/count.js" async></script>
+  
+
+  
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'https://yiweiniu.github.io/blog/2018/02/Hugo-建站记录/';
+        this.page.identifier = '2018/02/Hugo-建站记录/';
+        this.page.title = 'Hugo 建站记录';
+      };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://yiwei-nius-note.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        loadComments();
+      
+    </script>
+  
+
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

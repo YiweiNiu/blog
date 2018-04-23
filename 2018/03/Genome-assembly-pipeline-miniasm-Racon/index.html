@@ -1,0 +1,1502 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="_en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="3dnqtuxhGQK5nK7aqRtU2c3DzZlaVtBMN6M39UoGcgY" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/blog/css/main.css?v=6.1.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png?v=6.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png?v=6.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png?v=6.1.0">
+
+
+  <link rel="mask-icon" href="/blog/images/logo.svg?v=6.1.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '6.1.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="miniasm + Racon is a long-read de novo genome assembly pipeline.  miniasm + Racon assembly pipeline There are two good examples:  Assembly using miniasm+racon Genome Assembly – minimap/miniasm/racon O">
+<meta name="keywords" content="bio-tools,genome assembly pipeline,TGS genome assembly">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Genome Assembly Pipeline: miniasm &amp; Racon">
+<meta property="og:url" content="https://yiweiniu.github.io/blog/2018/03/Genome-assembly-pipeline-miniasm-Racon/index.html">
+<meta property="og:site_name" content="Yiwei Niu&#39;s Note">
+<meta property="og:description" content="miniasm + Racon is a long-read de novo genome assembly pipeline.  miniasm + Racon assembly pipeline There are two good examples:  Assembly using miniasm+racon Genome Assembly – minimap/miniasm/racon O">
+<meta property="og:locale" content="_en">
+<meta property="og:updated_time" content="2018-04-23T09:06:23.924Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Genome Assembly Pipeline: miniasm &amp; Racon">
+<meta name="twitter:description" content="miniasm + Racon is a long-read de novo genome assembly pipeline.  miniasm + Racon assembly pipeline There are two good examples:  Assembly using miniasm+racon Genome Assembly – minimap/miniasm/racon O">
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="Yiwei Niu's Note" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="https://yiweiniu.github.io/blog/2018/03/Genome-assembly-pipeline-miniasm-Racon/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Genome Assembly Pipeline: miniasm & Racon | Yiwei Niu's Note</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="_en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> 
+
+<div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Yiwei Niu's Note</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">to share, to learn</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-home menu-item-active">
+    <a href="/blog/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-categories menu-item-active">
+    <a href="/blog/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-tags">
+    <a href="/blog/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />Tags</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-archives">
+    <a href="/blog/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-about">
+    <a href="https:/yiweiniu.github.io/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />About</a>
+</li>
+
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+  
+
+
+
+ </div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yiweiniu.github.io/blog/blog/2018/03/Genome-assembly-pipeline-miniasm-Racon/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yiwei Niu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/blog/images/portrait.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yiwei Niu's Note">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Genome Assembly Pipeline: miniasm & Racon</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-30T00:23:24+08:00">2018-03-30</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/blog/categories/genome-assembly/" itemprop="url" rel="index"><span itemprop="name">genome assembly</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/blog/categories/genome-assembly/TGS-pipeline/" itemprop="url" rel="index"><span itemprop="name">TGS pipeline</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2018/03/Genome-assembly-pipeline-miniasm-Racon/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/03/Genome-assembly-pipeline-miniasm-Racon/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views: 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-symbolscount">
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                <span title="Symbols count in article">12k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                <span title="Reading time">0:12</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><code>miniasm + Racon</code> is a long-read <em>de novo</em> genome assembly pipeline.</p>
+<h2 id="miniasm-racon-assembly-pipeline"><a class="markdownIt-Anchor" href="#miniasm-racon-assembly-pipeline"></a> miniasm + Racon assembly pipeline</h2>
+<p>There are two good examples:</p>
+<ul>
+<li><a href="http://inf-biox121.readthedocs.io/en/2017/Assembly/practicals/07_Assembly_using_minasm+racon.html" target="_blank" rel="noopener">Assembly using miniasm+racon</a></li>
+<li><a href="http://onsnetwork.org/kubu4/2017/10/04/genome-assembly-minimapminiasmracon-overview/" target="_blank" rel="noopener">Genome Assembly – minimap/miniasm/racon Overview</a></li>
+</ul>
+<p>and a paper based on <code>miniasm</code>, actually, it is a consensus tool called <a href="https://github.com/isovic/racon" target="_blank" rel="noopener">Racon</a> <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>.</p>
+<p>The <code>miniasm + Racon</code> pipeline consists of the following steps:</p>
+<ul>
+<li>using <code>minimap</code>/<code>minimap2</code> <sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup> for fast all-vs-all overlap of raw reads (<code>Minimap</code> for overlap detection, Overlap)</li>
+<li>using <code>miniasm</code>, this “simply concatenates pieces of read sequences to generate the final sequences. Thus the per-base error rate is similar to the raw input reads.” (<code>Miniasm</code> layout for generating raw contigs, Layout)</li>
+<li>mapping the raw reads back to the assembly using <code>minimap</code> again (<code>Minimap</code> for mapping of raw reads to raw contigs, Consensus)</li>
+<li>using <code>racon</code> (‘rapid consensus’) for consensus calling (<code>Racon</code> for generating high-quality consensus sequences, Consensus)</li>
+</ul>
+<p>Compared with general pipelines, it achieves ‘similar or better quliaty’ while ‘being an order of magnitude faster’.</p>
+<p>As described in the <code>miniasm</code> paper <sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>, published long-read assembly pipelines all include four stages:</p>
+<ol>
+<li>all-vs-all raw read mapping</li>
+<li>raw read error correction</li>
+<li>assembly of error corrected reads (may involve all-vs-all read mapping again, but as the error rate is much reduced at this step, it is easier and faster than stage 1)</li>
+<li>contig consensus polish</li>
+</ol>
+<h2 id="intro"><a class="markdownIt-Anchor" href="#intro"></a> Intro</h2>
+<h3 id="minimap"><a class="markdownIt-Anchor" href="#minimap"></a> minimap</h3>
+<blockquote>
+<p>Minimap is an experimental tool to efficiently find multiple approximate mapping positions between two sets of long sequences, such as between reads and reference genomes, between genomes and between long noisy reads. By default, it is tuned to have high sensitivity to 2kb matches around 20% divergence but with low specificity. Minimap does not generate alignments as of now and because of this, it is usually tens of times faster than mainstream aligners. With four CPU cores, minimap can map 1.6Gbp PacBio reads to human in 2.5 minutes, 1Gbp PacBio E. coli reads to pre-indexed 9.6Gbp bacterial genomes in 3 minutes, to pre-indexed &gt;100Gbp nt database in ~1 hour (of which ~20 minutes are spent on loading index from the network filesystem; peak RAM: 10GB), map 2800 bacteria to themselves in 1 hour, and map 1Gbp E. coli reads against themselves in a couple of minutes.<br><br>
+Minimap does not replace mainstream aligners, but it can be useful when you want to quickly identify long approximate matches at moderate divergence among a huge collection of sequences. For this task, it is much faster than most existing tools.</p>
+</blockquote>
+<h3 id="minimap2"><a class="markdownIt-Anchor" href="#minimap2"></a> minimap2</h3>
+<blockquote>
+<p>Minimap2 is a versatile sequence alignment program that aligns DNA or mRNA sequences against a large reference database. Typical use cases include: (1) mapping PacBio or Oxford Nanopore genomic reads to the human genome; (2) finding overlaps between long reads with error rate up to ~15%; (3) splice-aware alignment of PacBio Iso-Seq or Nanopore cDNA or Direct RNA reads against a reference genome; (4) aligning Illumina single- or paired-end reads; (5) assembly-to-assembly alignment; (6) full-genome alignment between two closely related species with divergence below ~15%.<br><br>
+For ~10kb noisy reads sequences, minimap2 is tens of times faster than mainstream long-read mappers such as BLASR, BWA-MEM, NGMLR and GMAP. It is more accurate on simulated long reads and produces biologically meaningful alignment ready for downstream analyses. For &gt;100bp Illumina short reads, minimap2 is three times as fast as BWA-MEM and Bowtie2, and as accurate on simulated data. Detailed evaluations are available from the minimap2 preprint.</p>
+</blockquote>
+<h3 id="miniasm"><a class="markdownIt-Anchor" href="#miniasm"></a> miniasm</h3>
+<p><a href="https://github.com/lh3/miniasm" target="_blank" rel="noopener">miniasm</a> was developed by <a href="https://lh3.github.io/" target="_blank" rel="noopener">Heng Li</a>.</p>
+<p>From its git repo:</p>
+<blockquote>
+<p>Miniasm is a very fast OLC-based de novo assembler for noisy long reads. It takes all-vs-all read self-mappings (typically by minimap) as input and outputs an assembly graph in the GFA format. Different from mainstream assemblers, miniasm does not have a consensus step. It simply concatenates pieces of read sequences to generate the final unitig sequences. Thus the per-base error rate is similar to the raw input reads.<br><br>
+So far miniasm is in early development stage. It has only been tested on a dozen of PacBio and Oxford Nanopore (ONT) bacterial data sets. Including the mapping step, it takes about 3 minutes to assemble a bacterial genome. Under the default setting, miniasm assembles 9 out of 12 PacBio datasets and 3 out of 4 ONT datasets into a single contig. The 12 PacBio data sets are PacBio E. coli sample, ERS473430, ERS544009, ERS554120, ERS605484, ERS617393, ERS646601, ERS659581, ERS670327, ERS685285, ERS743109 and a deprecated PacBio E. coli data set. ONT data are acquired from the Loman Lab.<br><br>
+Miniasm confirms that at least for high-coverage bacterial genomes, it is possible to generate long contigs from raw PacBio or ONT reads without error correction. It also shows that minimap can be used as a read overlapper, even though it is probably not as sensitive as the more sophisticated overlapers such as MHAP and DALIGNER. Coupled with long-read error correctors and consensus tools, miniasm may also be useful to produce high-quality assemblies.</p>
+</blockquote>
+<h4 id="algorithm-overview"><a class="markdownIt-Anchor" href="#algorithm-overview"></a> Algorithm Overview</h4>
+<blockquote>
+<ul>
+<li>Crude read selection. For each read, find the longest contiguous region covered by three good mappings. Get an approximate estimate of read coverage.</li>
+<li>Fine read selection. Use the coverage information to find the good regions again but with more stringent thresholds. Discard contained reads.</li>
+<li>Generate a string graph. Prune tips, drop weak overlaps and collapse short bubbles. These procedures are similar to those implemented in short-read assemblers.</li>
+<li>Merge unambiguous overlaps to produce unitig sequences.</li>
+</ul>
+</blockquote>
+<h4 id="limitations"><a class="markdownIt-Anchor" href="#limitations"></a> Limitations</h4>
+<blockquote>
+<ul>
+<li>Consensus base quality is similar to input reads (may be fixed with a consensus tool).</li>
+<li>Only tested on a dozen of high-coverage PacBio/ONT data sets (more testing needed).</li>
+<li>Prone to collapse repeats or segmental duplications longer than input reads (hard to fix without error correction).</li>
+</ul>
+</blockquote>
+<p>Since <code>miniasm</code> is not a stand-alone genome assembly tool, it depends on <a href="https://github.com/lh3/minimap" target="_blank" rel="noopener">minimap</a> or <a href="https://github.com/lh3/minimap2" target="_blank" rel="noopener">minimap2</a>. <code>minimap</code> had been archived by the author, and <code>minimap2</code> now is the successor. But <code>minimap</code> is also worth a try.</p>
+<p>In this note I only used <code>minimap</code> or <code>minimap2</code> as a read overlapper for assembly. Go see the <a href="https://github.com/lh3/minimap2" target="_blank" rel="noopener">docs of minimap2</a> for full instructions.</p>
+<h3 id="racon"><a class="markdownIt-Anchor" href="#racon"></a> Racon</h3>
+<p><a href="https://github.com/isovic/racon" target="_blank" rel="noopener">Racon</a> is a consensus module for raw de novo DNA assembly of long uncorrected reads.</p>
+<blockquote>
+<p>Racon is intended as a standalone consensus module to correct raw contigs generated by rapid assembly methods which do not include a consensus step. The goal of Racon is to generate genomic consensus which is of similar or better quality compared to the output generated by assembly methods which employ both error correction and consensus steps, while providing a speedup of several times compared to those methods. It supports data produced by both Pacific Biosciences and Oxford Nanopore Technologies.<br><br>
+Racon can be used as a polishing tool after the assembly with either Illumina data or data produced by third generation of sequencing. The type of data inputed is automatically detected.<br><br>
+Racon takes as input only three files: contigs in FASTA/FASTQ format, reads in FASTA/FASTQ format and overlaps/alignments between the reads and the contigs in MHAP/PAF/SAM format. Output is a set of polished contigs in FASTA format printed to stdout. All input files can be compressed with gzip.<br><br>
+Racon can also be used as a read error-correction tool. In this scenario, the MHAP/PAF/SAM file needs to contain pairwise overlaps between reads with dual overlaps.<br><br>
+A wrapper script is also available to enable easier usage to the end-user for large datasets. It has the same interface as racon but adds two additional features from the outside. Sequences can be subsampled to decrease the total execution time (accuracy might be lower) while target sequences can be split into smaller chunks and run sequentially to decrease memory consumption. Both features can be run at the same time as well.</p>
+</blockquote>
+<p>My feelings (about <code>miniasm</code>):</p>
+<ul>
+<li>very fast</li>
+<li>comparatively good results</li>
+<li>The docs are not good enough</li>
+<li>huge memory consumption (may not suitable for large genome)</li>
+<li>bugs (at least for <code>miniasm</code>)</li>
+</ul>
+<h2 id="general-usage"><a class="markdownIt-Anchor" href="#general-usage"></a> General usage</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"># Install minimap and miniasm (requiring gcc and zlib)</span><br><span class="line">git clone https://github.com/lh3/minimap &amp;&amp; (cd minimap &amp;&amp; make)</span><br><span class="line">git clone https://github.com/lh3/minimap2 &amp;&amp; (cd minimap2 &amp;&amp; make)</span><br><span class="line">git clone https://github.com/lh3/miniasm &amp;&amp; (cd miniasm &amp;&amp; make)</span><br><span class="line"></span><br><span class="line"># Install Racon (requiring gcc 4.8+ or clang 3.4+, and cmake 3.2+)</span><br><span class="line">git clone --recursive https://github.com/isovic/racon.git racon</span><br><span class="line">cd racon</span><br><span class="line">mkdir build</span><br><span class="line">cd build</span><br><span class="line">cmake -DCMAKE_BUILD_TYPE=Release ..</span><br><span class="line">make</span><br><span class="line"></span><br><span class="line"># All-vs-all PacBio read Overlap with minimap</span><br><span class="line">minimap/minimap -Sw5 -L100 -m0 -t 8 reads.fq reads.fq | gzip -1 &gt; reads.paf.gz</span><br><span class="line"># or minimap2</span><br><span class="line">minimap2/minimap2 -x ava-pb -t 8 reads.fq reads.fq | gzip -1 &gt; reads.paf.gz</span><br><span class="line"></span><br><span class="line"># Layout</span><br><span class="line">miniasm/miniasm -f reads.fq reads.paf.gz &gt; reads.gfa</span><br><span class="line"></span><br><span class="line"># Consensus</span><br><span class="line">## GFA to fasta</span><br><span class="line">awk &apos;$1 ~/S/ &#123;print &quot;&gt;&quot;$2&quot;\n&quot;$3&#125;&apos; reads.gfa &gt; reads.fasta</span><br><span class="line"></span><br><span class="line">## Correction 1</span><br><span class="line">minimap/minimap2 -t 8 reads.fasta reads.fq &gt; reads.gfa1.paf</span><br><span class="line">racon -t 8 reads.fq reads.gfa1.paf reads.fasta reads.racon1.fasta</span><br><span class="line"></span><br><span class="line">## Correction 2 (optional)</span><br><span class="line">minimap/minimap2 -t 8 reads.racon1.fasta reads.fq &gt; reads.gfa2.paf</span><br><span class="line">racon -t 8 reads.fq reads.gfa2.paf reads.racon1.fasta reads.racon2.fasta</span><br></pre></td></tr></table></figure>
+<h2 id="in-practice"><a class="markdownIt-Anchor" href="#in-practice"></a> In practice</h2>
+<ul>
+<li>
+<p>OS environment: CentOS6.6  86_64  glibc-2.12. QSUB grid system. 15 Fat nodes (2TB RAM, 40 CPU) and 10 Blade nodes (156G RAM, 24 CPU).</p>
+</li>
+<li>
+<p><code>minimap2</code> version: 2.8-r672</p>
+</li>
+<li>
+<p><code>miniasm</code> version: 0.2-r168-dirty</p>
+</li>
+<li>
+<p><code>Racon</code> version: 0.5.0</p>
+</li>
+</ul>
+<h3 id="run-1-with-about-50x-data"><a class="markdownIt-Anchor" href="#run-1-with-about-50x-data"></a> run 1, with about 50X data</h3>
+<p>commands:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> run1, 171224 third data</span></span><br><span class="line"><span class="meta">$</span><span class="bash">TOOLDIR/minimap2-2.8_x64-linux/minimap2 -t <span class="variable">$PPN</span> -x ava-pb <span class="variable">$DATADIR</span>/171224.fasta <span class="variable">$DATADIR</span>/171224.fasta | gzip -1 &gt; reads.paf.gz</span></span><br><span class="line">/home/zhangll/software/minimap/miniasm/miniasm -f $DATADIR/171224.fasta reads.paf.gz &gt; reads.gfa</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> racon</span></span><br><span class="line">awk '$1 ~/S/ &#123;print "&gt;"$2"\n"$3&#125;' reads.gfa &gt; reads.fasta</span><br><span class="line"><span class="meta">$</span><span class="bash">TOOLDIR/minimap2-2.8_x64-linux/minimap2 -t <span class="variable">$PPN</span> reads.fasta <span class="variable">$DATADIR</span>/171224.fasta | /home/zhangll/software/racon/bin/racon -t <span class="variable">$PPN</span> <span class="variable">$DATADIR</span>/171224.fastq - reads.gfa racon1.fasta</span></span><br></pre></td></tr></table></figure>
+<p>stats:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Size_includeN	1475310871</span><br><span class="line">Size_withoutN	1475310871</span><br><span class="line">Seq_Num	20186</span><br><span class="line">Mean_Size	73085</span><br><span class="line">Median_Size	52525</span><br><span class="line">Longest_Seq	1183822</span><br><span class="line">Shortest_Seq	689</span><br><span class="line">GC_Content	31.66</span><br><span class="line">N50	97955</span><br><span class="line">L50	4346</span><br><span class="line">N90	33406</span><br><span class="line">Gap	0.0</span><br></pre></td></tr></table></figure>
+<h3 id="run2-with-about-70x-data"><a class="markdownIt-Anchor" href="#run2-with-about-70x-data"></a> run2, with about 70X data</h3>
+<p>Didn’t run <code>Racon</code>.</p>
+<p>commands:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> run2, all thid data</span></span><br><span class="line"><span class="meta">$</span><span class="bash">TOOLDIR/minimap2-2.8_x64-linux/minimap2 -t <span class="variable">$PPN</span> -x ava-pb <span class="variable">$DATADIR</span>/third_all.fasta <span class="variable">$DATADIR</span>/third_all.fasta | gzip -1 &gt; reads.paf.gz</span></span><br><span class="line">/home/zhangll/software/minimap/miniasm/miniasm -f $DATADIR/third_all.fasta reads.paf.gz &gt; reads.gfa</span><br></pre></td></tr></table></figure>
+<p>stats:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Size_includeN	1592482491</span><br><span class="line">Size_withoutN	1592482491</span><br><span class="line">Seq_Num	23120</span><br><span class="line">Mean_Size	68879</span><br><span class="line">Median_Size	49376</span><br><span class="line">Longest_Seq	1002424</span><br><span class="line">Shortest_Seq	689</span><br><span class="line">GC_Content	33.1</span><br><span class="line">N50	92250</span><br><span class="line">L50	5029</span><br><span class="line">N90	31666</span><br><span class="line">Gap	0.0</span><br></pre></td></tr></table></figure>
+<p>The assembling size were larger than the estimated genome size (~850M) in both runs. But this pipeline is very fast.</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Vaser R, Sovic I, Nagarajan N, Sikic M. Fast and accurate de novo genome assembly from long uncorrected reads. Genome Research. 2017 Jan 18:gr.214270.116. doi:10.1101/gr.214270.116 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Li H. Minimap2: versatile pairwise alignment for nucleotide sequences. arXiv:1708.01492 [q-bio]. 2017 Aug 4 [accessed 2018 Jan 10]. <a href="http://arxiv.org/abs/1708.01492" target="_blank" rel="noopener">http://arxiv.org/abs/1708.01492</a> <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>Li H. Minimap and miniasm: fast mapping and de novo assembly for noisy long sequences. Bioinformatics. 2016;32(14):2103–2110. doi:10.1093/bioinformatics/btw152 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author: </strong>Yiwei Niu</li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="https://yiweiniu.github.io/blog/2018/03/Genome-assembly-pipeline-miniasm-Racon/" title="Genome Assembly Pipeline: miniasm & Racon">https://yiweiniu.github.io/blog/2018/03/Genome-assembly-pipeline-miniasm-Racon/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/bio-tools/" rel="tag"># bio-tools</a>
+          
+            <a href="/blog/tags/genome-assembly-pipeline/" rel="tag"># genome assembly pipeline</a>
+          
+            <a href="/blog/tags/TGS-genome-assembly/" rel="tag"># TGS genome assembly</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/03/Genome-assembly-pipeline-OPERA-LG/" rel="next" title="Genome Assembly Pipeline: OPERA-LG">
+                <i class="fa fa-chevron-left"></i> Genome Assembly Pipeline: OPERA-LG
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/03/Genome-assembly-pipeline-Flye/" rel="prev" title="Genome Assembly Pipeline: Flye">
+                Genome Assembly Pipeline: Flye <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type = "text/javascript" src = "//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a7ad07b7823d03b" async = "async" ></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/blog/images/portrait.jpg"
+                alt="Yiwei Niu" />
+            
+              <p class="site-author-name" itemprop="name">Yiwei Niu</p>
+              <p class="site-description motion-element" itemprop="description">a beginner, a learner</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/blog/archives/">
+                
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/blog/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/blog/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">19</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/blog/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:xiaohuwangwang@qq.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/YiweiNiu" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://weibo.com/u/3049858680" target="_blank" title="Weibo"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/ywniu" target="_blank" title="Twitter"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kaigedong.github.io/" title="Kaige Dong" target="_blank">Kaige Dong</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://homolog.us/blogs/" title="Homolog.us" target="_blank">Homolog.us</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://cgatoxford.wordpress.com/" title="CGAT" target="_blank">CGAT</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.gettinggeneticsdone.com/" title="Getting Genetics Done" target="_blank">Getting Genetics Done</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.acgt.me/" title="ACGT" target="_blank">ACGT</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#miniasm-racon-assembly-pipeline"><span class="nav-number">1.</span> <span class="nav-text"> miniasm + Racon assembly pipeline</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#intro"><span class="nav-number">2.</span> <span class="nav-text"> Intro</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#minimap"><span class="nav-number">2.1.</span> <span class="nav-text"> minimap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#minimap2"><span class="nav-number">2.2.</span> <span class="nav-text"> minimap2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#miniasm"><span class="nav-number">2.3.</span> <span class="nav-text"> miniasm</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#algorithm-overview"><span class="nav-number">2.3.1.</span> <span class="nav-text"> Algorithm Overview</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#limitations"><span class="nav-number">2.3.2.</span> <span class="nav-text"> Limitations</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#racon"><span class="nav-number">2.4.</span> <span class="nav-text"> Racon</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#general-usage"><span class="nav-number">3.</span> <span class="nav-text"> General usage</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#in-practice"><span class="nav-number">4.</span> <span class="nav-text"> In practice</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#run-1-with-about-50x-data"><span class="nav-number">4.1.</span> <span class="nav-text"> run 1, with about 50X data</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#run2-with-about-70x-data"><span class="nav-number">4.2.</span> <span class="nav-text"> run2, with about 70X data</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-mars"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yiwei Niu</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=6.1.0"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=6.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=6.1.0"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=6.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=6.1.0"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=6.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=6.1.0"></script>
+
+
+
+  
+
+  
+    <script id="dsq-count-scr" src="https://yiwei-nius-note.disqus.com/count.js" async></script>
+  
+
+  
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'https://yiweiniu.github.io/blog/2018/03/Genome-assembly-pipeline-miniasm-Racon/';
+        this.page.identifier = '2018/03/Genome-assembly-pipeline-miniasm-Racon/';
+        this.page.title = 'Genome Assembly Pipeline: miniasm & Racon';
+      };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://yiwei-nius-note.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        loadComments();
+      
+    </script>
+  
+
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

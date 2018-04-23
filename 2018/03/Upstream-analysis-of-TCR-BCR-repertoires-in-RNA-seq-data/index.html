@@ -1,0 +1,1525 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="_en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="3dnqtuxhGQK5nK7aqRtU2c3DzZlaVtBMN6M39UoGcgY" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/blog/css/main.css?v=6.1.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png?v=6.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png?v=6.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png?v=6.1.0">
+
+
+  <link rel="mask-icon" href="/blog/images/logo.svg?v=6.1.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '6.1.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Bacground: because the transcriptome data I recently worked with is highly related with immune. So I want to dig out something about immune. When I viewed RNAseq analysis notes from Tommy Tang, I foun">
+<meta name="keywords" content="bio-tools,RNA-seq,immune,TCR&#x2F;BCR">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Upstream analysis of TCR&#x2F;BCR repertoires in RNA-seq data">
+<meta property="og:url" content="https://yiweiniu.github.io/blog/2018/03/Upstream-analysis-of-TCR-BCR-repertoires-in-RNA-seq-data/index.html">
+<meta property="og:site_name" content="Yiwei Niu&#39;s Note">
+<meta property="og:description" content="Bacground: because the transcriptome data I recently worked with is highly related with immune. So I want to dig out something about immune. When I viewed RNAseq analysis notes from Tommy Tang, I foun">
+<meta property="og:locale" content="_en">
+<meta property="og:image" content="https://yiweiniu.github.io/blog/2018/03/Upstream-analysis-of-TCR-BCR-repertoires-in-RNA-seq-data/mixcr_work_1521857914_11153.png">
+<meta property="og:image" content="https://yiweiniu.github.io/blog/2018/03/Upstream-analysis-of-TCR-BCR-repertoires-in-RNA-seq-data/imrep_work_1521858447_27255.png">
+<meta property="og:updated_time" content="2018-03-29T15:37:10.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Upstream analysis of TCR&#x2F;BCR repertoires in RNA-seq data">
+<meta name="twitter:description" content="Bacground: because the transcriptome data I recently worked with is highly related with immune. So I want to dig out something about immune. When I viewed RNAseq analysis notes from Tommy Tang, I foun">
+<meta name="twitter:image" content="https://yiweiniu.github.io/blog/2018/03/Upstream-analysis-of-TCR-BCR-repertoires-in-RNA-seq-data/mixcr_work_1521857914_11153.png">
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="Yiwei Niu's Note" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="https://yiweiniu.github.io/blog/2018/03/Upstream-analysis-of-TCR-BCR-repertoires-in-RNA-seq-data/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Upstream analysis of TCR/BCR repertoires in RNA-seq data | Yiwei Niu's Note</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="_en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> 
+
+<div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Yiwei Niu's Note</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">to share, to learn</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-home menu-item-active">
+    <a href="/blog/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-categories menu-item-active">
+    <a href="/blog/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-tags">
+    <a href="/blog/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />Tags</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-archives">
+    <a href="/blog/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-about">
+    <a href="https:/yiweiniu.github.io/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />About</a>
+</li>
+
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+  
+
+
+
+ </div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yiweiniu.github.io/blog/blog/2018/03/Upstream-analysis-of-TCR-BCR-repertoires-in-RNA-seq-data/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yiwei Niu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/blog/images/portrait.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yiwei Niu's Note">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Upstream analysis of TCR/BCR repertoires in RNA-seq data</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-29T23:25:12+08:00">2018-03-29</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/blog/categories/RNA-seq/" itemprop="url" rel="index"><span itemprop="name">RNA-seq</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/blog/categories/RNA-seq/immune/" itemprop="url" rel="index"><span itemprop="name">immune</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/blog/categories/RNA-seq/immune/TCR-BCR/" itemprop="url" rel="index"><span itemprop="name">TCR/BCR</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2018/03/Upstream-analysis-of-TCR-BCR-repertoires-in-RNA-seq-data/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/03/Upstream-analysis-of-TCR-BCR-repertoires-in-RNA-seq-data/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views: 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-symbolscount">
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                <span title="Symbols count in article">11k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                <span title="Reading time">0:11</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>Bacground</strong>: because the transcriptome data I recently worked with is highly related with immune. So I want to dig out something about immune.</p>
+<p>When I viewed <a href="https://github.com/crazyhottommy/RNA-seq-analysis#immnune-related" target="_blank" rel="noopener">RNAseq analysis notes from Tommy Tang</a>, I found <a href="https://github.com/mandricigor/imrep/wiki" target="_blank" rel="noopener">ImReP</a>. It’s a tool designed for profiling TCR/BCR repertoire in regular RNA-seq data. That was something I nerver heard before.</p>
+<p>Then I found more tools through the paper of <code>ImRep</code> <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>. They are:</p>
+<ul>
+<li><code>MiXCR</code> <sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></li>
+<li><code>TRUST</code> <sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></li>
+<li><code>TraCeR</code> <sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></li>
+<li><code>V'DJer</code> <sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></li>
+<li><code>IgBlast-based	pipeline</code> <sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></li>
+<li><code>iSSAKE</code> <sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></li>
+</ul>
+<p>And the paper of <code>ImRep</code> introduce them as follows:</p>
+<blockquote>
+<p>TRUST and TraCeR do not support the analysis of BCR sequences and were excluded from the comparison based for the IGH data. iSSAKE is no longer supported and was not recommended for use. Unfortunately, we obtained empty output after running V’DJer, and increasing coverage in the simulated data did not solve the problem. Alternative approaches, such as IMSEQ, cannot be applied directly to RNA-Seq reads because they were originally designed for targeted sequencing of B or T cell receptor loci. Thus, to independently assess and compare accuracy with ImReP, we only ran IMSEQ with the simulated reads derived from BCR or TCR transcripts (Figure S1). Scripts and commands to run all tools used in this study are provided in the Extended Experimental Procedures and are available online at <a href="https://github.com/smangul1/Profiling-adaptive-immune-repertoires-across-multiple-humantissues-by-RNA-Sequencing" target="_blank" rel="noopener">https://github.com/smangul1/Profiling-adaptive-immune-repertoires-across-multiple-humantissues-by-RNA-Sequencing</a>. ImReP consistently outperformed existing methods on IGH data in both recall and precision rates for the majority of simulated parameters. ImReP and MiXCR show similar performance on TCRA data and outperform other methods. Notably, ImReP was the only method with acceptable performance on IGH data at 50bp read length, reconstructing with a higher precision rate significantly more CDR3 clonotypes than other methods.</p>
+</blockquote>
+<p>Because I only have regular RNA-seq data (non-enriched and/or randomly-shred ©DNA libraries), <code>ImRep</code> and <code>MiXCR</code> were the only two software I want to try.</p>
+<h2 id="mixcr"><a class="markdownIt-Anchor" href="#mixcr"></a> MiXCR</h2>
+<h3 id="intro"><a class="markdownIt-Anchor" href="#intro"></a> Intro</h3>
+<blockquote>
+<p>MiXCR is a universal framework that processes big immunome data from raw sequences to quantitated clonotypes. MiXCR efficiently handles paired- and single-end reads, considers sequence quality, corrects PCR errors and identifies germline hypermutations. The software supports both partial- and full-length profiling and employs all available RNA or DNA information, including sequences upstream of V and downstream of J gene segments. (<a href="https://mixcr.readthedocs.io/en/latest/" target="_blank" rel="noopener">https://mixcr.readthedocs.io/en/latest/</a>)</p>
+</blockquote>
+<p><code>MiXCR</code> has very nice docs: <a href="https://mixcr.readthedocs.io/en/latest" target="_blank" rel="noopener">https://mixcr.readthedocs.io/en/latest</a>. See them for full instructions.</p>
+<blockquote>
+<p>Typical MiXCR workflow consists of three main processing steps:</p>
+<ul>
+<li>align: align sequencing reads to reference V, D, J and C genes of T- or B- cell receptors</li>
+<li>assemble: assemble clonotypes using alignments obtained on previous step (in order to extract specific gene regions e.g. CDR3)</li>
+<li>export: export alignment (<code>exportAlignments</code>) or clones (<code>exportClones</code>) to human-readable text file</li>
+</ul>
+</blockquote>
+<img src="/blog/2018/03/Upstream-analysis-of-TCR-BCR-repertoires-in-RNA-seq-data/mixcr_work_1521857914_11153.png" title="mixcr_workflow">
+<p><strong>Enriched RepSeq Data</strong></p>
+<blockquote>
+<p>Here is a very simple usage example that will extract repertoire data (in the form of clonotypes list) from raw sequencing data of enriched RepSeq library:</p>
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mixcr align -r log.txt input_R1.fastq.gz input_R2.fastq.gz alignments.vdjca</span><br><span class="line">mixcr assemble -r log.txt alignments.vdjca clones.clns</span><br><span class="line">mixcr exportClones clones.clns clones.txt</span><br></pre></td></tr></table></figure>
+</blockquote>
+</blockquote>
+<blockquote>
+<p>this will produce a tab-delimited list of clones (<code>clones.txt</code>) assembled by their CDR3 sequences with extensive information on their abundances, V, D and J genes, mutations in germline regions, topology of VDJ junction etc.</p>
+</blockquote>
+<p><strong>Repertoire extraction from RNA-Seq</strong></p>
+<blockquote>
+<p>MiXCR is equally effective in extraction of repertoire information from non-enriched data, like RNA-Seq or WGS. This example illustrates usage for RNA-Seq:</p>
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mixcr align -p rna-seq -r log.txt input_R1.fastq.gz input_R2.fastq.gz alignments.vdjca</span><br><span class="line">mixcr assemblePartial alignments.vdjca alignment_contigs.vdjca</span><br><span class="line">mixcr assemble -r log.txt alignment_contigs.vdjca clones.clns</span><br><span class="line">mixcr exportClones clones.clns clones.txt</span><br></pre></td></tr></table></figure>
+</blockquote>
+</blockquote>
+<h3 id="install"><a class="markdownIt-Anchor" href="#install"></a> Install</h3>
+<ul>
+<li>download the latest stable <code>MiXCR</code> build from <a href="https://github.com/milaboratory/mixcr/releases/latest" target="_blank" rel="noopener">release page</a></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">unzip mixcr-2.1.9.zip &amp;&amp; cd mixcr-2.1.9</span><br><span class="line">$ $ ./mixcr -h</span><br><span class="line">Usage: mixcr [options] [command] [command options]</span><br><span class="line">  Options:</span><br><span class="line">    -h, --help</span><br><span class="line">       Displays this help message.</span><br></pre></td></tr></table></figure>
+<h3 id="run"><a class="markdownIt-Anchor" href="#run"></a> Run</h3>
+<p>Pipelines from <a href="https://github.com/milaboratory/mixcr" target="_blank" rel="noopener">https://github.com/milaboratory/mixcr</a> and <a href="http://mixcr.readthedocs.io/en/latest/rnaseq.html" target="_blank" rel="noopener">http://mixcr.readthedocs.io/en/latest/rnaseq.html</a> are not exactly the same. I used the latter.</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">path2MiXCR=$TOOLDIR/mixcr-2.1.9/mixcr</span><br><span class="line">MiXCR_output=$&#123;WORKDIR&#125;/MiXCR/human/$&#123;sample&#125;</span><br><span class="line"></span><br><span class="line">PPN=20</span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash">path2MiXCR align -t <span class="variable">$PPN</span> -r <span class="variable">$MiXCR_output</span>/log.txt -p rna-seq -s hsa -OallowPartialAlignments=<span class="literal">true</span> <span class="variable">$WORKDIR</span>/clean_fastq/human/<span class="variable">$&#123;sample&#125;</span>_R1.fastq.gz <span class="variable">$WORKDIR</span>/clean_fastq/human/<span class="variable">$&#123;sample&#125;</span>_R2.fastq.gz <span class="variable">$MiXCR_output</span>/alignments.vdjca</span></span><br><span class="line"><span class="meta">$</span><span class="bash">path2MiXCR assemblePartial -r <span class="variable">$MiXCR_output</span>/log.txt <span class="variable">$MiXCR_output</span>/alignments.vdjca <span class="variable">$MiXCR_output</span>/alignments_rescued_1.vdjca</span></span><br><span class="line"><span class="meta">$</span><span class="bash">path2MiXCR assemblePartial -r <span class="variable">$MiXCR_output</span>/log.txt <span class="variable">$MiXCR_output</span>/alignments_rescued_1.vdjca <span class="variable">$MiXCR_output</span>/alignments_rescued_2.vdjca</span></span><br><span class="line"><span class="meta">$</span><span class="bash">path2MiXCR extendAlignments -r <span class="variable">$MiXCR_output</span>/log.txt <span class="variable">$MiXCR_output</span>/alignments_rescued_2.vdjca <span class="variable">$MiXCR_output</span>/alignments_rescued_2_extended.vdjca</span></span><br><span class="line"><span class="meta">$</span><span class="bash">path2MiXCR assemble -r <span class="variable">$MiXCR_output</span>/log.txt -t <span class="variable">$PPN</span> <span class="variable">$MiXCR_output</span>/alignments_rescued_2_extended.vdjca <span class="variable">$MiXCR_output</span>/clones.clns</span></span><br><span class="line"><span class="meta">$</span><span class="bash">path2MiXCR exportClones <span class="variable">$MiXCR_output</span>/clones.clns <span class="variable">$MiXCR_output</span>/clones.txt</span></span><br></pre></td></tr></table></figure>
+<p>And the output looks like this:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> head -n 3 clones.txt</span></span><br><span class="line">cloneId	cloneCount	cloneFraction	clonalSequence	clonalSequenceQuality	allVHitsWithScore	allDHitsWithScore	allJHitsWithScore	allCHitsWithScore	allVAlignments	allDAlignments	allJAlignments	allCAlignments	nSeqFR1	minQualFR1	nSeqCDR1	minQualCDR1	nSeqFR2	minQualFR2	nSeqCDR2	minQualCDR2	nSeqFR3	minQualFR3  nSeqCDR3	minQualCDR3	nSeqFR4	minQualFR4	aaSeqFR1	aaSeqCDR1	aaSeqFR2	aaSeqCDR2	aaSeqFR3	aaSeqCDR3	aaSeqFR4	refPoints</span><br><span class="line">0	130	0.008044056679660912	TGCTGCTCATATGCAGGCAGCTACACTTGGGTGTTC	FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF	IGLV2-11*00(498.3)		IGLJ3*00(155.3)	IGLC2*00(628.6),IGLC3*00(628.3),IGLC7*00(558)	324|352|374|0|28||140.0		20|30|58|26|36||50.0	;;											TGCTGCTCATATGCAGGCAGCTACACTTGGGTGTTC	37								CCSYAGSYTWVF		:::::::::0:-2:28:::::26:0:36:::</span><br><span class="line">1	62	0.003836396262607512	TGCAGCTCATATACAAGCAGCAGCACTTTCGTCTTC	FFFFFFFFFFFFFFFFFFFFFFFFFNNNNNNNNNNN	IGLV2-14*00(599.8)		IGLJ1*00(118.3)	IGLC1*00(446.2)	324|355|374|0|31|SC351T|139.0		24|30|58|30|36||30.0												TGCAGCTCATATACAAGCAGCAGCACTTTCGTCTTC37								CSSYTSSSTFVF		:::::::::0:1:31:::::30:-4:36:::</span><br></pre></td></tr></table></figure>
+<p>No ideas what to do next… I will try some post-analysis tools to explore the clonetypes.</p>
+<h2 id="imrep"><a class="markdownIt-Anchor" href="#imrep"></a> ImRep</h2>
+<h3 id="intro-2"><a class="markdownIt-Anchor" href="#intro-2"></a> Intro</h3>
+<blockquote>
+<p>ImReP is a method for rapid and accurate profiling of the adaptive immune repertoires from regular RNA-Seq data.</p>
+</blockquote>
+<img src="/blog/2018/03/Upstream-analysis-of-TCR-BCR-repertoires-in-RNA-seq-data/imrep_work_1521858447_27255.png" title="imrep_workflow">
+<h3 id="install-2"><a class="markdownIt-Anchor" href="#install-2"></a> Install</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/mandricigor/imrep.git &amp;&amp; cd imrep</span><br><span class="line">./install.sh</span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> python imrep.py -h</span></span><br><span class="line"></span><br><span class="line">usage: python2 imrep.py [-h] [--fastq] [--bam] [--chrFormat2] [--hg38]</span><br><span class="line">                        [-a ALLREADS] [--digGold] [-s SPECIES] [-o OVERLAPLEN]</span><br><span class="line">                        [--noOverlapStep] [--extendedOutput] [-c CHAINS]</span><br><span class="line">                        [--noCast] [-f FILTERTHRESHOLD]</span><br><span class="line">                        [--minOverlap1 MINOVERLAP1]</span><br><span class="line">                        [--minOverlap2 MINOVERLAP2] [--misMatch1 MISMATCH1]</span><br><span class="line">                        [--misMatch2 MISMATCH2]</span><br><span class="line">                        reads_file output_clones</span><br></pre></td></tr></table></figure>
+<h3 id="run-2"><a class="markdownIt-Anchor" href="#run-2"></a> Run</h3>
+<p>Then I was caught in an embarrassing situation.</p>
+<p><code>ImRep</code> now is designed to handle two cases:</p>
+<ul>
+<li>When you have saved <strong>mapped and unmapped</strong> reads in one <code>BAM</code> file, <code>ImRep</code> can accept one <code>BAM</code> as input.</li>
+</ul>
+<blockquote>
+<p>Given the bam file with mapped and unmapped reads, you can run ImReP using this command.</p>
+<blockquote>
+<p><code>python imrep.py --bam example/toyExample.bam example/toyExample.cdr3</code></p>
+</blockquote>
+</blockquote>
+<ul>
+<li>When you forgot to save unmapped reads, <code>ImRep</code> can accept <code>BAM</code> file with mapped reads and all raw <code>FASTQ</code> files as input.</li>
+</ul>
+<blockquote>
+<p>Forgot to save unmapped reads, we got you covered. Use <code>--digGold</code> and <code>-a</code> options. For example:</p>
+<blockquote>
+<p><code>python imrep.py --digGold -a example/toyExample_allReads.fastq example/toyExample_onlyMapped.bam example/toyExample.cdr3</code></p>
+</blockquote>
+</blockquote>
+<p>I’ve aligned the <code>FASTQ</code> files to genome with <code>STAR</code>, and saved unmapped reads in <code>FASTQ</code> format (using <code>--outReadsUnmapped Fastx</code>).</p>
+<p>And the author said:</p>
+<blockquote>
+<p>Some mapping tools produce partially-mapped reads (i.e. STAR). In case read is mapped to BCR or TCR genes and is partially mapped to V or J gene, such read may be used to assemble full-length CDR3 sequences. Considering only unmapped reads will result in missing such reads.</p>
+</blockquote>
+<p>So the first case doesn’t suit me, I have to follow the second.</p>
+<p>And the questions are:</p>
+<ul>
+<li>Can I feed <code>ImRep</code> with the <code>BAM</code> and unmapped reads? not all raw reads.</li>
+<li>It seems <code>ImRep</code> only accepts one single <code>FATSQ</code> as input, should I cat two <code>FASTQ</code> of pair-end data? Or it just works for single-end data?</li>
+</ul>
+<p>I reported a issue to the author: <a href="https://github.com/mandricigor/imrep/issues/32" target="_blank" rel="noopener">unmapped reads in fastq/fasta format and pair-end data</a>.</p>
+<p>And he suggested:</p>
+<blockquote>
+<p>Please merge PE into one file. Also to use --digGold, you need to provide original reads, not the unmapped reads. Please let me know how it goes. If this doesn’t’ work for you, we can implement the option to allow to supply bam with mapped and FASTQ with unmapped (this is on our TODO list anyway). Thanks, Serghei</p>
+</blockquote>
+<p>I should run <code>STAR</code> with <code>--outSamUnmapped Within</code> option hereafter. And I’ll not plan to re-align the reads for now.</p>
+<p>Moreover, using <code>MiXCR</code>, I can use post-analysis tools such as <code>VDJtools</code> easily.</p>
+<h2 id="change-notes"><a class="markdownIt-Anchor" href="#change-notes"></a> Change notes</h2>
+<ul>
+<li>20180324: create the note.</li>
+</ul>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Mangul S, Mandric I, Yang HT, Strauli N, Montoya D, Rotman J, Wey WVD, Ronas JR, Statz B, Zelikovsky A, et al. Profiling adaptive immune repertoires across multiple human tissues by RNA Sequencing. bioRxiv. 2017 Mar 25:089235. doi:10.1101/089235 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Bolotin DA, Poslavsky S, Mitrophanov I, Shugay M, Mamedov IZ, Putintseva EV, Chudakov DM. MiXCR: software for comprehensive adaptive immunity profiling. Nature Methods. 2015;12(5):380–381. doi:10.1038/nmeth.3364 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>Li B, Li T, Wang B, Dou R, Pignon J-C, Choueiri TK, Signoretti S, Liu JS, Liu XS. Ultrasensitive detection of TCR hypervariable region in solid-tissue RNA-seq data. bioRxiv. 2016 Sep 5:073395. doi:10.1101/073395 <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>Stubbington MJT, Lönnberg T, Proserpio V, Clare S, Speak AO, Dougan G, Teichmann SA. T cell fate and clonality inference from single-cell transcriptomes. Nature Methods. 2016;13(4):329–332. doi:10.1038/nmeth.3800 <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>Mose LE, Selitsky SR, Bixby LM, Marron DL, Iglesia MD, Serody JS, Perou CM, Vincent BG, Parker JS. Assembly-based inference of B-cell receptor repertoires from short read RNA sequencing data with V’DJer. Bioinformatics. 2016;32(24):3729–3734. doi:10.1093/bioinformatics/btw526 <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>Strauli NB, Hernandez RD. Statistical inference of a convergent antibody repertoire response to influenza vaccine. Genome Medicine. 2016;8:60. doi:10.1186/s13073-016-0314-z <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>Warren RL, Nelson BH, Holt RA. Profiling model T-cell metagenomes with short reads. Bioinformatics (Oxford, England). 2009;25(4):458–464. doi:10.1093/bioinformatics/btp010 <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author: </strong>Yiwei Niu</li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="https://yiweiniu.github.io/blog/2018/03/Upstream-analysis-of-TCR-BCR-repertoires-in-RNA-seq-data/" title="Upstream analysis of TCR/BCR repertoires in RNA-seq data">https://yiweiniu.github.io/blog/2018/03/Upstream-analysis-of-TCR-BCR-repertoires-in-RNA-seq-data/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/bio-tools/" rel="tag"># bio-tools</a>
+          
+            <a href="/blog/tags/RNA-seq/" rel="tag"># RNA-seq</a>
+          
+            <a href="/blog/tags/immune/" rel="tag"># immune</a>
+          
+            <a href="/blog/tags/TCR-BCR/" rel="tag"># TCR/BCR</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/03/Tools-for-analysis-TEs-in-RNA-seq-data/" rel="next" title="Tools for analysis TEs in RNA-seq data">
+                <i class="fa fa-chevron-left"></i> Tools for analysis TEs in RNA-seq data
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/03/Genome-assembly-pipeline-MEGAHIT-SOAPdenovo-fusion/" rel="prev" title="Genome Assembly Pipeline: MEGAHIT & SOAPdenovo-fusion">
+                Genome Assembly Pipeline: MEGAHIT & SOAPdenovo-fusion <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type = "text/javascript" src = "//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a7ad07b7823d03b" async = "async" ></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/blog/images/portrait.jpg"
+                alt="Yiwei Niu" />
+            
+              <p class="site-author-name" itemprop="name">Yiwei Niu</p>
+              <p class="site-description motion-element" itemprop="description">a beginner, a learner</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/blog/archives/">
+                
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/blog/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/blog/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">19</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/blog/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:xiaohuwangwang@qq.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/YiweiNiu" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://weibo.com/u/3049858680" target="_blank" title="Weibo"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/ywniu" target="_blank" title="Twitter"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kaigedong.github.io/" title="Kaige Dong" target="_blank">Kaige Dong</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://homolog.us/blogs/" title="Homolog.us" target="_blank">Homolog.us</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://cgatoxford.wordpress.com/" title="CGAT" target="_blank">CGAT</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.gettinggeneticsdone.com/" title="Getting Genetics Done" target="_blank">Getting Genetics Done</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.acgt.me/" title="ACGT" target="_blank">ACGT</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#mixcr"><span class="nav-number">1.</span> <span class="nav-text"> MiXCR</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#intro"><span class="nav-number">1.1.</span> <span class="nav-text"> Intro</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#install"><span class="nav-number">1.2.</span> <span class="nav-text"> Install</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#run"><span class="nav-number">1.3.</span> <span class="nav-text"> Run</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#imrep"><span class="nav-number">2.</span> <span class="nav-text"> ImRep</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#intro-2"><span class="nav-number">2.1.</span> <span class="nav-text"> Intro</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#install-2"><span class="nav-number">2.2.</span> <span class="nav-text"> Install</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#run-2"><span class="nav-number">2.3.</span> <span class="nav-text"> Run</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#change-notes"><span class="nav-number">3.</span> <span class="nav-text"> Change notes</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-mars"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yiwei Niu</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=6.1.0"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=6.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=6.1.0"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=6.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=6.1.0"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=6.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=6.1.0"></script>
+
+
+
+  
+
+  
+    <script id="dsq-count-scr" src="https://yiwei-nius-note.disqus.com/count.js" async></script>
+  
+
+  
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'https://yiweiniu.github.io/blog/2018/03/Upstream-analysis-of-TCR-BCR-repertoires-in-RNA-seq-data/';
+        this.page.identifier = '2018/03/Upstream-analysis-of-TCR-BCR-repertoires-in-RNA-seq-data/';
+        this.page.title = 'Upstream analysis of TCR/BCR repertoires in RNA-seq data';
+      };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://yiwei-nius-note.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        loadComments();
+      
+    </script>
+  
+
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

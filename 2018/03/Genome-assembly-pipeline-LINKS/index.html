@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="_en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="3dnqtuxhGQK5nK7aqRtU2c3DzZlaVtBMN6M39UoGcgY" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/blog/css/main.css?v=6.1.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png?v=6.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png?v=6.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png?v=6.1.0">
+
+
+  <link rel="mask-icon" href="/blog/images/logo.svg?v=6.1.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '6.1.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Intro From its official site  LINKS is a scalable genomics application for scaffolding or re-scaffolding genome assembly drafts with long reads, such as those produced by Oxford Nanopore Technologies">
+<meta name="keywords" content="bio-tools,genome assembly pipeline,scaffolding,hybrid genome assembly">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Genome Assembly Pipeline: LINKS">
+<meta property="og:url" content="https://yiweiniu.github.io/blog/2018/03/Genome-assembly-pipeline-LINKS/index.html">
+<meta property="og:site_name" content="Yiwei Niu&#39;s Note">
+<meta property="og:description" content="Intro From its official site  LINKS is a scalable genomics application for scaffolding or re-scaffolding genome assembly drafts with long reads, such as those produced by Oxford Nanopore Technologies">
+<meta property="og:locale" content="_en">
+<meta property="og:updated_time" content="2018-04-23T09:06:01.228Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Genome Assembly Pipeline: LINKS">
+<meta name="twitter:description" content="Intro From its official site  LINKS is a scalable genomics application for scaffolding or re-scaffolding genome assembly drafts with long reads, such as those produced by Oxford Nanopore Technologies">
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="Yiwei Niu's Note" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="https://yiweiniu.github.io/blog/2018/03/Genome-assembly-pipeline-LINKS/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Genome Assembly Pipeline: LINKS | Yiwei Niu's Note</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="_en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> 
+
+<div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Yiwei Niu's Note</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">to share, to learn</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-home menu-item-active">
+    <a href="/blog/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-categories menu-item-active">
+    <a href="/blog/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-tags">
+    <a href="/blog/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />Tags</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-archives">
+    <a href="/blog/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-about">
+    <a href="https:/yiweiniu.github.io/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />About</a>
+</li>
+
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+  
+
+
+
+ </div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yiweiniu.github.io/blog/blog/2018/03/Genome-assembly-pipeline-LINKS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yiwei Niu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/blog/images/portrait.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yiwei Niu's Note">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Genome Assembly Pipeline: LINKS</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-30T00:07:28+08:00">2018-03-30</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/blog/categories/genome-assembly/" itemprop="url" rel="index"><span itemprop="name">genome assembly</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/blog/categories/genome-assembly/hybrid-pipeline/" itemprop="url" rel="index"><span itemprop="name">hybrid pipeline</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2018/03/Genome-assembly-pipeline-LINKS/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/03/Genome-assembly-pipeline-LINKS/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views: 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-symbolscount">
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                <span title="Symbols count in article">12k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                <span title="Reading time">0:12</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="intro"><a class="markdownIt-Anchor" href="#intro"></a> Intro</h2>
+<p>From its <a href="http://www.bcgsc.ca/platform/bioinfo/software/links" target="_blank" rel="noopener">official site</a></p>
+<blockquote>
+<p>LINKS is a scalable genomics application for scaffolding or re-scaffolding genome assembly drafts with long reads, such as those produced by Oxford Nanopore Technologies Ltd and Pacific Biosciences. It provides a generic alignment-free framework for scaffolding and can work on any sequences. It is versatile and supports not only long sequences as a source of long-range information, but also MPET pairs and linked-reads, such as those from the 10X Genomics GemCode and Chromium platform, via ARCS (<a href="http://www.bcgsc.ca/platform/bioinfo/software/arcs" target="_blank" rel="noopener">http://www.bcgsc.ca/platform/bioinfo/software/arcs</a>). Fill gaps in LINKS-derived scaffolds using Sealer (<a href="http://www.bcgsc.ca/platform/bioinfo/software/sealer" target="_blank" rel="noopener">http://www.bcgsc.ca/platform/bioinfo/software/sealer</a>).</p>
+</blockquote>
+<p>Its paper:</p>
+<blockquote>
+<p>Warren RL, Yang C, Vandervalk BP, Behsaz B, Lagman A, Jones SJM, Birol I. LINKS: Scalable, alignment-free scaffolding of draft genomes with long reads. GigaScience. 2015;4:35. doi:10.1186/s13742-015-0076-3</p>
+</blockquote>
+<p>My feelings:</p>
+<ul>
+<li>easy to use</li>
+<li>support scaffolding and re-scaffolding</li>
+<li>Fast</li>
+<li>comparatively good results (at least in my case, compared to BESST and OPERA-LG)</li>
+</ul>
+<h2 id="general-usage"><a class="markdownIt-Anchor" href="#general-usage"></a> General usage</h2>
+<p>Note: this section is modified from <a href="https://github.com/bcgsc/LINKS" target="_blank" rel="noopener">LINKS git repo</a> for quick reference. Please read the entire doc if you want to use the tool.</p>
+<h3 id="running-links"><a class="markdownIt-Anchor" href="#running-links"></a> Running LINKS</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">e.g. ./LINKS -f ecoliK12_abyss_illumina_contig_baseline.fa -s K12_F2D.fof -b ecoliK12-ONT_linksSingleIterationTIG</span><br><span class="line"></span><br><span class="line">Usage: ./LINKS [v1.8.5]</span><br><span class="line">-f  sequences to scaffold (Multi-FASTA format, required)</span><br><span class="line">-s  file-of-filenames, full path to long sequence reads or MPET pairs [see below] (Multi-FASTA/fastq format, required)</span><br><span class="line">-m  MPET reads (default -m 1 = yes, default = no, optional</span><br><span class="line">	! DO NOT SET IF NOT USING MPET. WHEN SET, LINKS WILL EXPECT A SPECIAL FORMAT UNDER -s</span><br><span class="line">	! Paired MPET reads in their original outward orientation &lt;- -&gt; must be separated by ":"</span><br><span class="line"><span class="meta">	  &gt;</span><span class="bash">template_name</span></span><br><span class="line">	  ACGACACTATGCATAAGCAGACGAGCAGCGACGCAGCACG:ATATATAGCGCACGACGCAGCACAGCAGCAGACGAC</span><br><span class="line">-d  distance between k-mer pairs (ie. target distances to re-scaffold on. default -d 4000, optional)</span><br><span class="line">	Multiple distances are separated by comma. eg. -d 500,1000,2000,3000</span><br><span class="line">-k  k-mer value (default -k 15, optional)</span><br><span class="line">-t  step of sliding window when extracting k-mer pairs from long reads</span><br><span class="line">(default -t 2, optional)</span><br><span class="line">	Multiple steps are separated by comma. eg. -t 10,5</span><br><span class="line">-o  offset position for extracting k-mer pairs (default -o 0, optional)</span><br><span class="line">-e  error (%) allowed on -d distance   e.g. -e 0.1  == distance +/- 10%</span><br><span class="line">(default -e 0.1, optional)</span><br><span class="line">-l  minimum number of links (k-mer pairs) to compute scaffold (default -l 5, optional) </span><br><span class="line">-a  maximum link ratio between two best contig pairs (default -a 0.3, optional)</span><br><span class="line">	 *higher values lead to least accurate scaffolding*</span><br><span class="line">-z  minimum contig length to consider for scaffolding (default -z 500, optional)</span><br><span class="line">-b  base name for your output files (optional)</span><br><span class="line">-r  Bloom filter input file for sequences supplied in -s (optional, if none provided will output to .bloom)</span><br><span class="line">	 NOTE: BLOOM FILTER MUST BE DERIVED FROM THE SAME FILE SUPPLIED IN -f WITH SAME -k VALUE</span><br><span class="line">	 IF YOU DO NOT SUPPLY A BLOOM FILTER, ONE WILL BE CREATED (.bloom)</span><br><span class="line">-p  Bloom filter false positive rate (default -p 0.001, optional; increase to prevent memory allocation errors)</span><br><span class="line">-x  Turn off Bloom filter functionality (-x 1 = yes, default = no, optional)</span><br><span class="line">-v  Runs in verbose mode (-v 1 = yes, default = no, optional)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Notes:</span><br><span class="line">-s K12_F2D.fof specifies a file-of-filenames (text file) listing: K12_full2dONT_longread.fa (see ./test folder)</span><br><span class="line">-x When turned on (-x 1), LINKS will run with a behaviour equivalent to v1.3 (no Bloom filters).  </span><br><span class="line">This may be useful for large genome assembly drafts and when long reads are extremely high quality.</span><br></pre></td></tr></table></figure>
+<h3 id="tips-to-minimize-memory-usage-and-additional-notes"><a class="markdownIt-Anchor" href="#tips-to-minimize-memory-usage-and-additional-notes"></a> Tips to minimize memory usage and additional notes</h3>
+<p>The most important parameters for decreasing RAM usage are <code>-t</code> and <code>-d</code>. The largest dataset used for scaffolding by our group was a draft assembly of the white spruce genome (20 Gb)* - For this, a large sliding window, -t (200) was used and was decreased as the k-mer distance -d increased. *refer to LINKSrecipe_pglaucaPG29-WS77111.sh in the ./test folder</p>
+<p>Because you want want to start with a low -d for scaffolding, you have to estimate how many minimum links (-l) would fit in a -d window +/- error -e given sliding window -t. For instance, it may not make sense to use -t 200, -d 500 at low coverages BUT if you have at least 10-fold coverage it might since, in principle, you should be able to derive sufficient k-mer pairs within same locus if there’s no bias in genome sequencing.</p>
+<p>For re-scaffolding white spruce, only 1X coverage was available (since the re-scaffolding used a draft assembly instead of long reads), but even -t 200 -d 5000 (1st iteration) did merge scaffolds even though, in theory, the -e parameter will play an important role limiting linkages outside of the target range -d (+/-) -e %. This is especially true when using raw MPET for scaffolding, to limit spurious linkages by contaminating PETs.</p>
+<p>On the data side of things, reducing the coverage (using less long reads), and limiting to only the highest quality reads would help decrease RAM usage.</p>
+<p>In v1.5, LINKS builds a Bloom filter that comprises all k-mer of a supplied (-f) genome draft and uses it to only hash k-mer pairs from longreads having an equivalent in the Bloom filter. When LINKS runs iteratively, the bloom filter built at the first iteration is re-used thus saving execution time.</p>
+<p>In v1.8, Users may input multiple distances using the -d parameter, separating each distance by a comma. eg. -d 500,1000,2000,4000,5000 will have for effect to extract kmer pairs at these five distance intervals.</p>
+<p>Similarly, the window step size now accepts multiple integers, each separated by a comma and with the order matching that in -d However, the size of the array can be shorter, and the last valid -t will be propagated to subsequent distances when they are not defined. eg. -t 20,10,5 A step size of 20, 10, 5, 5, 5 bp will be used when exploring the distances supplied above.</p>
+<p>In v1.8, a single round of scaffolding is done, using the kmer pair space extracted at the specified distances. Accordingly, v1.8 is not expected to yield the exact same results as separate iterative LINKS runs. For users comfortable with the original set up, no change is needed to make use of the previous LINKS behavior.</p>
+<p>Simultaneous exploration of vast kmer space is expected to yield better scaffolding results.</p>
+<p>WARNING: Specifying many distances will require large amount of RAM, especially with low -t values.</p>
+<h2 id="in-practice"><a class="markdownIt-Anchor" href="#in-practice"></a> In practice</h2>
+<p>I’ve tried LINKS with differenct contigs/scaffolds, and with different parameters/different PacBio coverages.</p>
+<p>I encounter a problem and solved with the help of the author: <a href="https://github.com/bcgsc/LINKS/issues/12" target="_blank" rel="noopener">LINKS termineted with no error message when I used hybrid reads to scaffold</a>.</p>
+<p>The <code>-t</code> and <code>-d</code> are important for RAM consuming. I’ve tried <code>-t</code> with <code>5, 10, 20</code>, and <code>-t 20</code> works. <code>-d</code> doesn’t matter in my case, so I just set lots of <code>-d</code>.</p>
+<p>Scripts I used and the stats I got:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/sh</span></span><br><span class="line"><span class="meta">#</span><span class="bash">PBS -N reLINKS5</span></span><br><span class="line"><span class="meta">#</span><span class="bash">PBS -j eo</span></span><br><span class="line"><span class="meta">#</span><span class="bash">PBS -q Fat</span></span><br><span class="line"><span class="meta">#</span><span class="bash">PBS -l nodes=1:ppn=2</span></span><br><span class="line"><span class="meta">#</span><span class="bash">PBS -d /home/haoyj/tasks/DenovoSeq/MEGAHIT/LINKS</span></span><br><span class="line"><span class="meta">#</span><span class="bash">PBS -V</span></span><br><span class="line"></span><br><span class="line">LINKS_HOME=/home/software/links_v1.8.5</span><br><span class="line">WORK_DIR=/home/haoyj/tasks/DenovoSeq</span><br><span class="line"></span><br><span class="line">echo Start time is `date +%Y/%m/%d--%H:%M`</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> scaffold the output of MEGAHIT, t tried: 5, 10, 20 works</span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="variable">$LINKS_HOME</span>/LINKS -k 21 -f <span class="variable">$WORK_DIR</span>/MEGAHIT/megahit_out1/final.contigs.fa -s Pacbio.fof -b LINKS1 -t 20 -d 4000,5000,6000,8000,10000,15000,20000</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> scaffold the output of MEGAHIT no 270, t tried: 5, 10, 20 works</span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="variable">$LINKS_HOME</span>/LINKS -k 21 -f <span class="variable">$WORK_DIR</span>/MEGAHIT/megahit_out.no270/final.contigs.fa -s Pacbio.fof -b LINKS2 -t 20 -d 4000,5000,6000,8000,10000,15000,20000</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> re-scaffold the output of SOAP with long <span class="built_in">read</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="variable">$LINKS_HOME</span>/LINKS -k 21 -f <span class="variable">$WORK_DIR</span>/MEGAHIT/SOAP_fusion_no270/k63.scafSeq -s Pacbio.fof -b reLINKS1 -t 20 -d 4000,5000,6000,8000,10000,15000,20000</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> re-scafflod the output of MEGAHIT small insert size and SOAP-fusion</span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="variable">$LINKS_HOME</span>/LINKS -k 21 -f <span class="variable">$WORK_DIR</span>/MEGAHIT/small_insert.no270/SOAP-fusion/k41.scafSeq -s Pacbio.fof -b reLINKS2 -t 20 -d 4000,5000,6000,8000,10000,15000,20000</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> re-scafflod the output of MEGAHIT small insert size and SOAP-fusion, min contig length used: 300</span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="variable">$LINKS_HOME</span>/LINKS -k 21 -f <span class="variable">$WORK_DIR</span>/MEGAHIT/small_insert.no270/SOAP-fusion/k41.scafSeq -s Pacbio.fof -b reLINKS3 -z 300 -t 20 -d 4000,5000,6000,8000,10000,15000,20000</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> re-scaffold the output of MEGAHIT small insert size and SOAP-fusion with -F, min contig length used: 300</span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="variable">$LINKS_HOME</span>/LINKS -k 21 -f <span class="variable">$WORK_DIR</span>/MEGAHIT/small_insert.no270/SOAP-fusion/k41_1.scafSeq -s Pacbio.fof -b reLINKS4 -z 300 -t 20 -d 4000,5000,6000,8000,10000,15000,20000</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> re-scaffold the output of MEGAHIT small insert size and SOAP-fusion with -F</span></span><br><span class="line"><span class="meta">$</span><span class="bash">LINKS_HOME/LINKS -k 21 -f <span class="variable">$WORK_DIR</span>/MEGAHIT/small_insert.no270/SOAP-fusion/k41_1.scafSeq -s Pacbio.fof -b reLINKS5 -t 20 -d 4000,5000,6000,8000,10000,15000,20000</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> re-scaffold the output of MEGAHIT small insert size and SOAP-fusion with -F, use all third data</span></span><br><span class="line"><span class="meta">$</span><span class="bash">LINKS_HOME/LINKS -k 21 -f <span class="variable">$WORK_DIR</span>/MEGAHIT/small_insert.no270/SOAP-fusion/k41.scafSeq -s Pacbio_171231.fof -b reLINKS_171231 -t 20 -d 4000,5000,6000,8000,10000,15000,20000</span></span><br><span class="line"></span><br><span class="line">echo Finish time is `date +%Y/%m/%d--%H:%M`</span><br></pre></td></tr></table></figure>
+<p>And the input data:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># first batch PB data, about 20X</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cat Pacbio.fof</span></span><br><span class="line">/home/haoyj/tasks/DenovoSeq/Third_rawData/av_20k.fasta</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># all PB data, about 70X</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cat Pacbio_171231.fof</span></span><br><span class="line">/home/zhangll/DenovoSeq/Third_rawData/third_all.fasta</span><br></pre></td></tr></table></figure>
+<p>The stats I got:</p>
+<p>scaffold the output of MEGAHIT:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Size_includeN: 944039311</span><br><span class="line">Size_withoutN: 894816039</span><br><span class="line">Seq_Num: 1262222</span><br><span class="line">Mean_Size: 747</span><br><span class="line">Median_Size: 413</span><br><span class="line">Longest_Seq: 153276</span><br><span class="line">Shortest_Seq: 200</span><br><span class="line">GC_Content: 32.9</span><br><span class="line">N50: 931</span><br><span class="line">N90: 335</span><br><span class="line">Gap: 5.21</span><br></pre></td></tr></table></figure>
+<p>scaffold the output of MEGAHIT no ins_270 library:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Size_includeN: 729700672</span><br><span class="line">Size_withoutN: 679262960</span><br><span class="line">Seq_Num: 746838</span><br><span class="line">Mean_Size: 977</span><br><span class="line">Median_Size: 418</span><br><span class="line">Longest_Seq: 162877</span><br><span class="line">Shortest_Seq: 200</span><br><span class="line">GC_Content: 32.31</span><br><span class="line">N50: 1919</span><br><span class="line">N90: 353</span><br><span class="line">Gap: 6.91</span><br></pre></td></tr></table></figure>
+<p>re-scaffold the output of SOAP with long read:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Size_includeN: 1089523659</span><br><span class="line">Size_withoutN: 749662666</span><br><span class="line">Seq_Num: 678859</span><br><span class="line">Mean_Size: 1604</span><br><span class="line">Median_Size: 402</span><br><span class="line">Longest_Seq: 604854</span><br><span class="line">Shortest_Seq: 200</span><br><span class="line">GC_Content: 32.64</span><br><span class="line">N50: 17115</span><br><span class="line">N90: 399</span><br><span class="line">Gap: 31.19</span><br></pre></td></tr></table></figure>
+<p>re-scafflod the output of MEGAHIT small insert size and SOAP-fusion:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Size_includeN: 776147223</span><br><span class="line">Size_withoutN: 574675978</span><br><span class="line">Seq_Num: 370033</span><br><span class="line">Mean_Size: 2097</span><br><span class="line">Median_Size: 389</span><br><span class="line">Longest_Seq: 621272</span><br><span class="line">Shortest_Seq: 200</span><br><span class="line">GC_Content: 31.42</span><br><span class="line">N50: 42519</span><br><span class="line">N90: 444</span><br><span class="line">Gap: 25.96</span><br></pre></td></tr></table></figure>
+<p>re-scafflod the output of MEGAHIT small insert size and SOAP-fusion, min contig length used: 300</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Size_includeN: 774100547</span><br><span class="line">Size_withoutN: 574675978</span><br><span class="line">Seq_Num: 371317</span><br><span class="line">Mean_Size: 2084</span><br><span class="line">Median_Size: 390</span><br><span class="line">Longest_Seq: 621233</span><br><span class="line">Shortest_Seq: 200</span><br><span class="line">GC_Content: 31.42</span><br><span class="line">N50: 40936</span><br><span class="line">N90: 443</span><br><span class="line">Gap: 25.76</span><br></pre></td></tr></table></figure>
+<p>re-scaffold the output of MEGAHIT small insert size and SOAP-fusion with -F, min contig length used: 300</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"> Size_includeN: 773726178</span><br><span class="line">Size_withoutN: 579451220</span><br><span class="line">Seq_Num: 371323</span><br><span class="line">Mean_Size: 2083</span><br><span class="line">Median_Size: 390</span><br><span class="line">Longest_Seq: 586345</span><br><span class="line">Shortest_Seq: 200</span><br><span class="line">GC_Content: 31.45</span><br><span class="line">N50: 40889</span><br><span class="line">N90: 443</span><br><span class="line">Gap: 25.11</span><br></pre></td></tr></table></figure>
+<p>re-scaffold the output of MEGAHIT small insert size and SOAP-fusion with -F</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Size_includeN: 775797415</span><br><span class="line">Size_withoutN: 579451220</span><br><span class="line">Seq_Num: 370041</span><br><span class="line">Mean_Size: 2096</span><br><span class="line">Median_Size: 389</span><br><span class="line">Longest_Seq: 586343</span><br><span class="line">Shortest_Seq: 200</span><br><span class="line">GC_Content: 31.45</span><br><span class="line">N50: 42504</span><br><span class="line">N90: 443</span><br><span class="line">Gap: 25.31</span><br></pre></td></tr></table></figure>
+<p>re-scaffold the output of MEGAHIT small insert size and SOAP-fusion with -F, use all third data</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Size_includeN: 798803587</span><br><span class="line">Size_withoutN: 574675978</span><br><span class="line">Seq_Num: 359653</span><br><span class="line">Mean_Size: 2221</span><br><span class="line">Median_Size: 384</span><br><span class="line">Longest_Seq: 732454</span><br><span class="line">Shortest_Seq: 200</span><br><span class="line">GC_Content: 31.42</span><br><span class="line">N50: 68195</span><br><span class="line">N90: 453</span><br><span class="line">Gap: 28.06</span><br></pre></td></tr></table></figure>
+<p>The last run took about <code>27 hours</code>.</p>
+<p>This note can serve as a reference in case I will have to use it again.</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author: </strong>Yiwei Niu</li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="https://yiweiniu.github.io/blog/2018/03/Genome-assembly-pipeline-LINKS/" title="Genome Assembly Pipeline: LINKS">https://yiweiniu.github.io/blog/2018/03/Genome-assembly-pipeline-LINKS/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/bio-tools/" rel="tag"># bio-tools</a>
+          
+            <a href="/blog/tags/genome-assembly-pipeline/" rel="tag"># genome assembly pipeline</a>
+          
+            <a href="/blog/tags/scaffolding/" rel="tag"># scaffolding</a>
+          
+            <a href="/blog/tags/hybrid-genome-assembly/" rel="tag"># hybrid genome assembly</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/03/Genome-assembly-pipeline-MEGAHIT-SOAPdenovo-fusion/" rel="next" title="Genome Assembly Pipeline: MEGAHIT & SOAPdenovo-fusion">
+                <i class="fa fa-chevron-left"></i> Genome Assembly Pipeline: MEGAHIT & SOAPdenovo-fusion
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/03/Genome-assembly-pipeline-BESST/" rel="prev" title="Genome Assembly Pipeline: BESST">
+                Genome Assembly Pipeline: BESST <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type = "text/javascript" src = "//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a7ad07b7823d03b" async = "async" ></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/blog/images/portrait.jpg"
+                alt="Yiwei Niu" />
+            
+              <p class="site-author-name" itemprop="name">Yiwei Niu</p>
+              <p class="site-description motion-element" itemprop="description">a beginner, a learner</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/blog/archives/">
+                
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/blog/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/blog/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">19</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/blog/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:xiaohuwangwang@qq.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/YiweiNiu" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://weibo.com/u/3049858680" target="_blank" title="Weibo"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/ywniu" target="_blank" title="Twitter"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kaigedong.github.io/" title="Kaige Dong" target="_blank">Kaige Dong</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://homolog.us/blogs/" title="Homolog.us" target="_blank">Homolog.us</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://cgatoxford.wordpress.com/" title="CGAT" target="_blank">CGAT</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.gettinggeneticsdone.com/" title="Getting Genetics Done" target="_blank">Getting Genetics Done</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.acgt.me/" title="ACGT" target="_blank">ACGT</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#intro"><span class="nav-number">1.</span> <span class="nav-text"> Intro</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#general-usage"><span class="nav-number">2.</span> <span class="nav-text"> General usage</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#running-links"><span class="nav-number">2.1.</span> <span class="nav-text"> Running LINKS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tips-to-minimize-memory-usage-and-additional-notes"><span class="nav-number">2.2.</span> <span class="nav-text"> Tips to minimize memory usage and additional notes</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#in-practice"><span class="nav-number">3.</span> <span class="nav-text"> In practice</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-mars"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yiwei Niu</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=6.1.0"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=6.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=6.1.0"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=6.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=6.1.0"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=6.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=6.1.0"></script>
+
+
+
+  
+
+  
+    <script id="dsq-count-scr" src="https://yiwei-nius-note.disqus.com/count.js" async></script>
+  
+
+  
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'https://yiweiniu.github.io/blog/2018/03/Genome-assembly-pipeline-LINKS/';
+        this.page.identifier = '2018/03/Genome-assembly-pipeline-LINKS/';
+        this.page.title = 'Genome Assembly Pipeline: LINKS';
+      };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://yiwei-nius-note.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        loadComments();
+      
+    </script>
+  
+
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

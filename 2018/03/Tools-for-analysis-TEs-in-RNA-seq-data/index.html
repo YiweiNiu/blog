@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="_en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="3dnqtuxhGQK5nK7aqRtU2c3DzZlaVtBMN6M39UoGcgY" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/blog/css/main.css?v=6.1.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png?v=6.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png?v=6.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png?v=6.1.0">
+
+
+  <link rel="mask-icon" href="/blog/images/logo.svg?v=6.1.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '6.1.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="I observed large fraction reads from intronic regions in my total RNA-seq data. Considering that many Alu elements are located in introns, I want to check the TEs in RNA-seq data. I will first go thro">
+<meta name="keywords" content="bio-tools,RNA-seq,TE">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tools for analysis TEs in RNA-seq data">
+<meta property="og:url" content="https://yiweiniu.github.io/blog/2018/03/Tools-for-analysis-TEs-in-RNA-seq-data/index.html">
+<meta property="og:site_name" content="Yiwei Niu&#39;s Note">
+<meta property="og:description" content="I observed large fraction reads from intronic regions in my total RNA-seq data. Considering that many Alu elements are located in introns, I want to check the TEs in RNA-seq data. I will first go thro">
+<meta property="og:locale" content="_en">
+<meta property="og:image" content="https://yiweiniu.github.io/blog/2018/03/Tools-for-analysis-TEs-in-RNA-seq-data/repenrich__1521546095_26949.jpg">
+<meta property="og:image" content="https://yiweiniu.github.io/blog/2018/03/Tools-for-analysis-TEs-in-RNA-seq-data/tetranscri_1521545833_29749.png">
+<meta property="og:image" content="https://yiweiniu.github.io/blog/2018/03/Tools-for-analysis-TEs-in-RNA-seq-data/lions_work_1521546174_11152.png">
+<meta property="og:image" content="https://yiweiniu.github.io/blog/2018/03/Tools-for-analysis-TEs-in-RNA-seq-data/imfusion_o_1521548556_18711.png">
+<meta property="og:image" content="https://yiweiniu.github.io/blog/2018/03/Tools-for-analysis-TEs-in-RNA-seq-data/salmonte_p_1521548399_15951.png">
+<meta property="og:updated_time" content="2018-04-14T07:32:45.908Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Tools for analysis TEs in RNA-seq data">
+<meta name="twitter:description" content="I observed large fraction reads from intronic regions in my total RNA-seq data. Considering that many Alu elements are located in introns, I want to check the TEs in RNA-seq data. I will first go thro">
+<meta name="twitter:image" content="https://yiweiniu.github.io/blog/2018/03/Tools-for-analysis-TEs-in-RNA-seq-data/repenrich__1521546095_26949.jpg">
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="Yiwei Niu's Note" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="https://yiweiniu.github.io/blog/2018/03/Tools-for-analysis-TEs-in-RNA-seq-data/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Tools for analysis TEs in RNA-seq data | Yiwei Niu's Note</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="_en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> 
+
+<div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Yiwei Niu's Note</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">to share, to learn</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-home menu-item-active">
+    <a href="/blog/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-categories menu-item-active">
+    <a href="/blog/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-tags">
+    <a href="/blog/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />Tags</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-archives">
+    <a href="/blog/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-about">
+    <a href="https:/yiweiniu.github.io/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />About</a>
+</li>
+
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+  
+
+
+
+ </div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yiweiniu.github.io/blog/blog/2018/03/Tools-for-analysis-TEs-in-RNA-seq-data/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yiwei Niu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/blog/images/portrait.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yiwei Niu's Note">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Tools for analysis TEs in RNA-seq data</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-21T20:42:15+08:00">2018-03-21</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/blog/categories/RNA-seq/" itemprop="url" rel="index"><span itemprop="name">RNA-seq</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/blog/categories/RNA-seq/TE/" itemprop="url" rel="index"><span itemprop="name">TE</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2018/03/Tools-for-analysis-TEs-in-RNA-seq-data/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/03/Tools-for-analysis-TEs-in-RNA-seq-data/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views: 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-symbolscount">
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                <span title="Symbols count in article">23k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                <span title="Reading time">0:23</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>I observed large fraction reads from intronic regions in my total RNA-seq data. Considering that many <a href="https://en.wikipedia.org/wiki/Alu_element" target="_blank" rel="noopener">Alu elements</a> are located in introns, I want to check the <a href="https://en.wikipedia.org/wiki/Transposable_element" target="_blank" rel="noopener">TEs</a> in RNA-seq data.</p>
+<p>I will first go through tools avaiable for analysis TEs in RNA-seq data, then use two of them to quantify TEs in test or real data.</p>
+<h2 id="tools-avaiable"><a class="markdownIt-Anchor" href="#tools-avaiable"></a> Tools avaiable</h2>
+<p>Tools for the analysis of TEs (or REs) in RNA-seq data can be divided into three categories based on their function/purpose:</p>
+<ol>
+<li>Quantification of TEs (also compare the expression of TEs from different conditions)
+<ul>
+<li>RepEnrich, TEtranscripts, SalmonTE</li>
+</ul>
+</li>
+<li>Analyze TE involved transcript (find them, quantification, compare)
+<ul>
+<li>LIONS, CLIFinder</li>
+</ul>
+</li>
+<li>others
+<ul>
+<li>IM-Fusion</li>
+</ul>
+</li>
+</ol>
+<p>I will introduce them by the order of their publication dates.</p>
+<h3 id="repenrich"><a class="markdownIt-Anchor" href="#repenrich"></a> <a href="https://github.com/nskvir/RepEnrich" target="_blank" rel="noopener">RepEnrich</a></h3>
+<blockquote>
+<p>RepEnrich is a method to estimate repetitive element enrichment using high-throughput sequencing data.</p>
+</blockquote>
+<p>Its paper:</p>
+<blockquote>
+<p>Criscione SW, Zhang Y, Thompson W, Sedivy JM, Neretti N. Transcriptional landscape of repetitive elements in normal and cancer human cells. BMC Genomics. 2014;15:583. doi:10.1186/1471-2164-15-583</p>
+</blockquote>
+<p><code>RepEnrich</code> uses the repeatmasker files which can be downloaded from <a href="http://www.repeatmasker.org/genomicDatasets/RMGenomicDatasets.html" target="_blank" rel="noopener">repeatmasker.org</a> or  <a href="http://genome.ucsc.edu/cgi-bin/hgTables" target="_blank" rel="noopener">UCSC genome table browser</a>. It first sets up the annotations, then maps the <code>FASTQ</code> files to genome using <code>Bowtie1</code>, and finally computes count of TEs. Examples in the docs are very detailed and also provide <code>R</code> codes of using <code>edgeR</code> for differential enrichment analysis.</p>
+<blockquote>
+<p><code>RepEnrich</code> read mapping strategy. Reads are mapped to the genome using the Bowtie1 aligner. Reads mapping uniquely to the genome are assigned to subfamilies of repetitive elements based on their degree of overlap to RepeatMasker annotated genomic instances of each repetitive element subfamily. Reads mapping to multiple locations are separately mapped to repetitive element assemblies – referred to as repetitive element psuedogenomes – built from RepeatMasker annotated genomic instances of repetitive element subfamilies.</p>
+</blockquote>
+<img src="/blog/2018/03/Tools-for-analysis-TEs-in-RNA-seq-data/repenrich__1521546095_26949.jpg" title="RepEnrich_read_mapping_strategy">
+<p>In the <code>RepEnrich</code> paper, the authors also analyzed data from ChIP-seq, they found:</p>
+<blockquote>
+<p>We show that many of the Long Terminal Repeat retrotransposons in humans are transcriptionally active in a cell line-specific manner. Cancer cell lines display increased RNA Polymerase II binding to retrotransposons than cell lines derived from normal tissue. Consistent with increased transcriptional activity of retrotransposons in cancer cells we found significantly higher levels of L1 retrotransposon RNA expression in prostate tumors compared to normal-matched controls.</p>
+</blockquote>
+<h3 id="tetoolkittetranscripts"><a class="markdownIt-Anchor" href="#tetoolkittetranscripts"></a> <a href="https://github.com/mhammell-laboratory/tetoolkit" target="_blank" rel="noopener">TEToolkit/TEtranscripts</a></h3>
+<blockquote>
+<p>TEToolkit is a software package that utilizes both unambiguously (uniquely) and ambiguously (multi-) mapped reads to perform differential enrichment analyses from high throughput sequencing experiments. Currently, most expression analysis software packates are not optimized for handling the complexities involved in quantifying highly repetitive regions of the genome, especially transposable elements (TE), from short sequencing reads. Although transposon elements make up between 20 to 80% of many eukaryotic genomes and contribute significantly to the cellular transcriptome output, the difficulty in quantifying their abundances from high throughput sequencing experiments has led them to be largely ignored in most studies. The TEToolkit provides a noticeable improvement in the recovery of TE transcripts from RNA-Seq experiments and identification of peaks associated with repetitive regions of the genome.</p>
+</blockquote>
+<p>Its paper:</p>
+<blockquote>
+<p>Jin Y, Tam OH, Paniagua E, Hammell M. TEtranscripts: a package for including transposable elements in differential expression analysis of RNA-seq datasets. Bioinformatics. 2015;31(22):3593–3599. doi:10.1093/bioinformatics/btv422</p>
+</blockquote>
+<p><code>TEToolkit</code> includes two tools:</p>
+<ul>
+<li><code>TEtranscripts</code> quantifies both gene and transposable element (TE) transcript abundances from RNA-Seq experiments, utilizing both uniquely and ambiguously mapped short read sequences. It processes the short reads alignments (BAM files) and proportionally assigns read counts to the corresponding gene or TE based on the user-provided annotation files (GTF files).</li>
+<li><code>TEpeaks</code> identifies regions enriched for protein binding or modification to repetitive DNA and RNA sequences. It has been utilized in a variety of high throughput sequencing experiments, such as ChIP-Seq, CLIP-Seq and RIP-Seq. The tool performs peak calling utilizing a method that extends the approach implemented by MACS, utilizing ambiguously mapped reads and bin-correlation normalization to identify narrow enriched repetitive regions typically missed by standard approaches. Differential peak enrichment can also be performed to identify regions of differential protein-association in high throughput sequencing experiments.</li>
+</ul>
+<p><code>TEtranscripts</code> is suitable for my purpose. It uses BAM files generated by other software, and the author recommended that users identify the optimal parameters for their particular genome and alignment program in order to get the best results.</p>
+<blockquote>
+<p><code>TEtranscripts</code> flow chart. Reads mapping to TEs are assigned in two different modes: uniq (reads mapping uniquely in the genome), and multi (reads mapping to multiple insertions of TEs). In the multi mode, an iterative algorithm is used to optimally distribute ambiguously mapped reads. Figure was downloaded from <a href="http://hammelllab.labsites.cshl.edu/software/#TEToolkit" target="_blank" rel="noopener">here</a>.</p>
+</blockquote>
+<img src="/blog/2018/03/Tools-for-analysis-TEs-in-RNA-seq-data/tetranscri_1521545833_29749.png" title="TEtranscripts_flow_chart">
+<h3 id="rprofilerop"><a class="markdownIt-Anchor" href="#rprofilerop"></a> <a href="https://github.com/smangul1/rop/wiki" target="_blank" rel="noopener">rprofile/rop</a></h3>
+<p><code>rprofile</code> is part of <code>rop</code>, which is designed to find all the origin of RNA-seq reads (mapped/unmapped, human/non-human, etc.).</p>
+<blockquote>
+<p><code>rprofile</code> is disigned to profile repetitive elements of the human genome from RNA-Seq data.</p>
+</blockquote>
+<p>Its paper:</p>
+<blockquote>
+<p>Mangul S, Yang HT, Strauli N, Gruhl F, Porath H, Hsieh K, Chen L, Daley T, Christenson S, Andersen AW, et al. Comprehensive analysis of RNA-sequencing to find the source of 1 trillion reads across diverse adult human tissues. bioRxiv. 2017 Jun 12:053041. doi:10.1101/053041</p>
+</blockquote>
+<p>It uses <code>BAM</code> file to profile REs in mapped reads. Not accurate, not for quantification, just for wider snapshot of RE fraction in RNA-seq data.</p>
+<p>The annotation of TEs <code>rprofile</code> used now is just the one generated by <code>TEtranscripts</code>, only <code>hg19</code> available. But we can create other TE annotations using <code>makeTEgtf.pl</code> script in <code>TETookit</code>.</p>
+<h3 id="lions"><a class="markdownIt-Anchor" href="#lions"></a> <a href="https://github.com/ababaian/LIONS" target="_blank" rel="noopener">LIONS</a></h3>
+<p>Introduction from Git repo:</p>
+<blockquote>
+<p>LIONS is a bioinformatic analysis pipeline which brings together a few pieces of software and some home-brewed scripts to annotate a paired-end RNAseq library <strong>to detect TE-intiated transcripts</strong>.</p>
+</blockquote>
+<p>Its paper:</p>
+<blockquote>
+<p>Babaian A, Lever J, Gagnier L, Mager DL. LIONS: Analysis Suite for Detecting and Quantifying Transposable Element Initiated Transcription from RNA-seq. bioRxiv. 2017 Jun 14:149864. doi:10.1101/149864</p>
+</blockquote>
+<p>The last paragraph of the “Backgroud” part describes it more clear:</p>
+<blockquote>
+<p>To quantitatively measure and compare the contribution of TE promoters to normal and cancer  transcriptomes we developed a tool that incorporates features of previous methods but significantly  builds upon them. We were motivated to use paired-end RNA-seq data alone, a broadly  available data- type, to rapidly measure TE-initiations and transcriptome contributions. With a defined set of TE- initiated transcripts in each library, commonalities and differences between sets of data (biological  replicates) can be determined.</p>
+</blockquote>
+<p>Its workflow:</p>
+<img src="/blog/2018/03/Tools-for-analysis-TEs-in-RNA-seq-data/lions_work_1521546174_11152.png" title="LIONS_workflow">
+<p>This tool has not been published yet (<code>20180320</code>). There are limited docs in its Git repo and so many dependencies (it bases on the transcriptome assembled by <code>cufflinks</code>, so I doubt its accuracy).</p>
+<h3 id="im-fusion"><a class="markdownIt-Anchor" href="#im-fusion"></a> <a href="https://github.com/NKI-CCB/imfusion" target="_blank" rel="noopener">IM-Fusion</a></h3>
+<blockquote>
+<p>IM-Fusion is a tool for identifying transposon insertion sites in insertional mutagenesis screens using single- and paired-end RNA-sequencing data. It essentially identifies insertion sites from gene-transposon fusions in the RNA-sequencing data, which represent splicing events between the transposon and endogeneous genes.<br><br><br>
+IM-Fusion also identifies candidate genes for a given screen using a statistical test (based on the Poisson distribution) that identifies Commonly Targeted Genes (CTGs) – genes that are more frequently affected by insertions than would be expected by chance. To further narrow down a list of CTGs, which may contain hundreds of genes, IM-Fusion also tests if insertions in a CTG have a significant effect on the expression of the gene, which is a strong indicator of them having an actual biological effect.</p>
+</blockquote>
+<p>Its paper:</p>
+<blockquote>
+<p>de Ruiter JR, Kas SM, Schut E, Adams DJ, Koudijs MJ, Wessels LFA, Jonkers J. Identifying transposon insertions and their effects from RNA-sequencing data. Nucleic Acids Research. 2017;45(12):7064–7077. doi:10.1093/nar/gkx461</p>
+</blockquote>
+<p>The abstract from its paper:</p>
+<blockquote>
+<p>Insertional mutagenesis using engineered transposons is a potent forward genetic screening technique used to identify cancer genes in mouse model systems. In the analysis of these screens, transposon insertion sites are typically identified by targeted DNA-sequencing and subsequently assigned to predicted target genes using heuristics. As such, these approaches provide no direct evidence that inser- tions actually affect their predicted targets or how transcripts of these genes are affected. To address this, we developed IM-Fusion, an approach that identifies insertion sites from gene-transposon fusions in standard single- and paired-end RNA-sequencing data. We demonstrate IM-Fusion on two separate transposon screens of 123 mammary tumors and 20 B-cell acute lymphoblastic leukemias, respectively. We show that IM-Fusion accurately identifies trans- poson insertions and their true target genes. Fur- thermore, by combining the identified insertion sites with expression quantification, we show that we can determine the effect of a transposon insertion on its target gene(s) and prioritize insertions that have a significant effect on expression. We expect that IM-Fusion will significantly enhance the accuracy of cancer gene discovery in forward genetic screens and provide initial insight into the biological effects of insertions on candidate cancer genes.</p>
+</blockquote>
+<p>Overview of <code>IM-Fusion</code>:</p>
+<img src="/blog/2018/03/Tools-for-analysis-TEs-in-RNA-seq-data/imfusion_o_1521548556_18711.png" title="IM-Fusion_Overview">
+<p>I do not know what is “Insertional mutagenesis using engineered transposons”. So I do not know when to use this tool. It seems that <code>IM-Fusion</code> does not suit me.</p>
+<h3 id="clifinder"><a class="markdownIt-Anchor" href="#clifinder"></a> <a href="https://github.com/GReD-Clermont/CLIFinder" target="_blank" rel="noopener">CLIFinder</a></h3>
+<blockquote>
+<p>L1 Chimeric Transcripts (LCTs) are initiated by repeated LINE-1 element antisense promoters and include the L1 5′UTR sequence in antisense orientation followed by the adjacent genomic region. LCTs have been characterized mainly using bioinformatics approaches to query dbEST. To take advantage of NGS data to unravel the transcriptome composition, we developed Chimeric LIne Finder (CLIFinder), a new bioinformatics tool. Using stranded paired-end RNA-seq data, we demonstrated that CLIFinder can identify genome-wide transcribed chimera sequences corresponding to potential LCTs. Moreover, CLIFinder can be adapted to study transcription from other repeat types.<br><br>
+CLIFinder v0.4.1 is <strong>a Galaxy tool</strong>, specifically designed to identify  potential LCTs from one or several oriented RNA-seq paired-end reads in the human genome.<br><br>
+CLIFinder v0.4.1 is customizable to detect transcripts initiated by different types of repeat elements.</p>
+</blockquote>
+<p>Its paper:</p>
+<blockquote>
+<p>Pinson M-E, Pogorelcnik R, Court F, Arnaud P, Vaurs-Barriere C. CLIFinder: Identification of LINE-1 Chimeric Transcripts in RNA-seq data. Bioinformatics. 2017 Oct 23 [accessed 2017 Nov 2]. <a href="https://academic.oup.com/bioinformatics/article/doi/10.1093/bioinformatics/btx671/4562333" target="_blank" rel="noopener">https://academic.oup.com/bioinformatics/article/doi/10.1093/bioinformatics/btx671/4562333</a>. doi:10.1093/bioinformatics/btx671</p>
+</blockquote>
+<p>It is a <code>Galaxy</code> tool, so…(we do not have <code>Galaxy</code> installed on the computer cluster.)</p>
+<h3 id="salmonte"><a class="markdownIt-Anchor" href="#salmonte"></a> <a href="https://github.com/hyunhwaj/SalmonTE" target="_blank" rel="noopener">SalmonTE</a></h3>
+<blockquote>
+<p>SalmonTE is an ultra-Fast and Scalable Quantification Pipeline of Transpose Element (TE) Abundances.</p>
+</blockquote>
+<p>Its paper:</p>
+<blockquote>
+<p>Jeong H-H, Yalamanchili HK, Guo C, Shulman JM, Liu Z. An ultra-fast and scalable quantification pipeline for transposable elements from next generation sequencing data. In: Biocomputing 2018. WORLD SCIENTIFIC; 2017. p. 168–179. <a href="http://www.worldscientific.com/doi/abs/10.1142/9789813235533_0016" target="_blank" rel="noopener">http://www.worldscientific.com/doi/abs/10.1142/9789813235533_0016</a>. doi:10.1142/9789813235533_0016</p>
+</blockquote>
+<p>Below is its working pipeline, clear and simple!</p>
+<img src="/blog/2018/03/Tools-for-analysis-TEs-in-RNA-seq-data/salmonte_p_1521548399_15951.png" title="SalmonTE_pipeline">
+<p>Pros. from its paper:</p>
+<blockquote>
+<p>In contrast to TEtranscripts, SalmonTE starts with raw RNA-seq files, and does not need any additional pre-processing for a given sequence file. Moreover, TEtranscripts requires a modied GTF files based on RepeatMasker database. SalmonTE only needs the FASTA file of cDNA (complementary DNA) sequences of each TE.</p>
+</blockquote>
+<p><code>SalmonTE</code> is based on <a href="https://github.com/COMBINE-lab/salmon" target="_blank" rel="noopener">Salmon</a>, which is a very fantastic tool for RNA-seq quantification. I will give it a try.</p>
+<h3 id="summary"><a class="markdownIt-Anchor" href="#summary"></a> Summary</h3>
+<ul>
+<li>
+<p><strong>TE quantification</strong>:</p>
+<ul>
+<li><code>RepEnrich</code>: map <code>FASTQ</code> files to the genome using <code>Bowtie1</code>, use repeat annotation from <a href="http://www.repeatmasker.org/genomicDatasets/RMGenomicDatasets.html" target="_blank" rel="noopener">repeatmasker.org</a> or <a href="http://genome.ucsc.edu/cgi-bin/hgTables" target="_blank" rel="noopener">UCSC genome table browser</a>, can also analyze ChIP-seq data.</li>
+<li><code>TEtranscripts</code>: map <code>FASTQ</code> files to the genome using any alignment software (but need to tune the parameters), use a custom <code>GTF</code> file for repeat and gene annotation.</li>
+<li><code>SalmonTE</code>: no need to align reads to genome, use <code>Salmon</code> for TE quantification, only four species’ reference available now (hs, mm, dm, dr, <code>20180320</code>), base on annotation of Repbase (a website I do not like…), not easy to create customized  reference.</li>
+</ul>
+</li>
+<li>
+<p><strong>TE involved transcript</strong>:</p>
+<ul>
+<li><code>LIONS</code>: limited docs.</li>
+<li><code>CLIFincer</code>: a Galaxy tool</li>
+</ul>
+</li>
+<li>
+<p><strong>Other</strong>:</p>
+<ul>
+<li><code>IM-Fusion</code></li>
+</ul>
+</li>
+</ul>
+<p>A little thoughts: all above tools for TE quantification may be inaccurate (the intrinsic drawback of short-reads mapping). Even <code>SalmonTE</code> does not need alignment, it may also deviate from reality. These tools maybe more suit for compasion of different conditions.</p>
+<h2 id="using-tetranscripts-for-te-quantification"><a class="markdownIt-Anchor" href="#using-tetranscripts-for-te-quantification"></a> Using <code>TEtranscripts</code> for TE quantification</h2>
+<h3 id="install"><a class="markdownIt-Anchor" href="#install"></a> Install</h3>
+<p>Download <code>zip</code> file from tetoolkit <a href="https://github.com/mhammell-laboratory/tetoolkit/releases" target="_blank" rel="noopener">release page</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> unzip tetoolkit-1.5.0.zip &amp;&amp; <span class="built_in">cd</span> tetoolkit-1.5.0</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> install using Python 2.7 from Anaconda, failed, don<span class="string">'t know why, maybe something related to PYTHONPATH</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> python setup.py install</span></span><br><span class="line">Installed /home/niuyw/software/anaconda2/lib/python2.7/site-packages/TEToolkit-1.5.0-py2.7.egg</span><br><span class="line">Processing dependencies for TEToolkit==1.5.0</span><br><span class="line">Searching for pysam&gt;=0.8</span><br><span class="line">Reading http://pypi.python.org/simple/pysam/</span><br><span class="line">Couldn't find index page for 'pysam' (maybe misspelled?)</span><br><span class="line">Scanning index of all packages (this may take a while)</span><br><span class="line">Reading http://pypi.python.org/simple/</span><br><span class="line">No local packages or download links found for pysam&gt;=0.8</span><br><span class="line">error: Could not find suitable distribution for Requirement.parse('pysam&gt;=0.8')</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> install using original Python 2.7, it worked</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> /home/niuyw/software/Python.2.7.13/bin/python setup.py  install</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> ~/software/Python.2.7.13/bin/TEtranscripts -h</span></span><br><span class="line">usage: TEtranscripts [-h] -t treatment sample [treatment sample ...] -c</span><br><span class="line">                     control sample [control sample ...] --GTF genic-GTF-file</span><br><span class="line">                     --TE TE-GTF-file [--format [input file format]]</span><br><span class="line">                     [--stranded [option]] [--mode [TE counting mode]]</span><br><span class="line">                     [--project [name]] [-p [pvalue]] [-f [foldchange]]</span><br><span class="line">                     [--minread [min_read]] [-n [normalization]] [--sortByPos]</span><br><span class="line">                     [-i [iteration]] [--maxL [maxL]] [--minL [minL]]</span><br><span class="line">                     [-L [fragLength]] [--verbose [verbose]] [--version]</span><br><span class="line">Required arguments:</span><br><span class="line">  -t | --treatment [treatment sample 1 treatment sample 2...]</span><br><span class="line">     Sample files in group 1 (e.g. treatment/mutant), separated by space</span><br><span class="line">  -c | --control [control sample 1 control sample 2 ...]</span><br><span class="line">     Sample files in group 2 (e.g. control/wildtype), separated by space</span><br><span class="line">  --GTF genic-GTF-file  GTF file for gene annotations</span><br><span class="line">  --TE TE-GTF-file      GTF file for transposable element annotations</span><br><span class="line"></span><br><span class="line">Identifying differential transcription of gene and transposable elements.</span><br></pre></td></tr></table></figure>
+<p>So <code>TEtranscripts</code> is mainly for compare two conditions.</p>
+<h3 id="prepare-annotations"><a class="markdownIt-Anchor" href="#prepare-annotations"></a> Prepare annotations</h3>
+<p>Download RepeatMasker tracks from UCSC Table Browser for <a href="http://genome.ucsc.edu/cgi-bin/hgTables?hgsid=661002703_YPeG8TMraFo0XjOX8Af2dM6VOPnp&amp;clade=mammal&amp;org=Pig&amp;db=0&amp;hgta_group=varRep&amp;hgta_track=rmsk&amp;hgta_table=rmsk&amp;hgta_regionType=genome&amp;position=&amp;hgta_outputType=primaryTable&amp;hgta_outFileName=susScr11_rmsk.gz" target="_blank" rel="noopener">pig: susScr11</a> and <a href="http://genome.ucsc.edu/cgi-bin/hgTables?hgsid=661002703_YPeG8TMraFo0XjOX8Af2dM6VOPnp&amp;clade=mammal&amp;org=Rhesus&amp;db=0&amp;hgta_group=varRep&amp;hgta_track=rmsk&amp;hgta_table=rmsk&amp;hgta_regionType=genome&amp;position=&amp;hgta_outputType=primaryTable&amp;hgta_outFileName=rheMac8_rmsk.gz" target="_blank" rel="noopener">rhesus: rheMac8</a>.</p>
+<p>Then use <code>makeTEgtf.pl</code> from <a href="http://labshare.cshl.edu/shares/mhammelllab/www-data/TEToolkit/TE_GTF/" target="_blank" rel="noopener">here</a> to make <code>GTF</code> files for TE.</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> perl ~/software/tetoolkit-1.5.0/makeTEgtf.pl</span></span><br><span class="line"></span><br><span class="line"> Usage: makeTEgtf.pl -c [chrom column] -s [start column] -e [stop/end column] </span><br><span class="line">                     -o [strand column] -n [source] -t [TE name column] </span><br><span class="line">                     (-f [TE family column] -C [TE class column] -1)</span><br><span class="line">                     [INFILE]</span><br><span class="line"></span><br><span class="line"> Output is printed to STDOUT</span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> head -5 susScr11_rmsk</span></span><br><span class="line"><span class="meta">#</span><span class="bash">bin	swScore	milliDiv	milliDel	milliIns	genoName	genoStart	genoEnd	genoLeft	strand	repName	repClass	repFamily	repStart	repEnd	repLeft	id</span></span><br><span class="line">2	20440	173	38	45	chr1	75496265	75498174	-198832358	-	L1B_SS	LINE	L1	-3164	3808	1876	1</span><br><span class="line">2	4217	186	71	11	chr1	92274327	92275321	-182055211	-	L1MA9	LINE	L1	-322	7082	5254	1</span><br><span class="line">2	762	294	110	60	chr1	117440307	117440687	-156889845	-	L2c	LINE	L2	-511	2908	2508	1</span><br><span class="line">3	49915	32	7	3	chr1	142603227	142607372	-131723160	-	L1_SS	LINE	L1	-5	6813	2643	2</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> pig</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> perl ~/software/tetoolkit-1.5.0/makeTEgtf.pl -c 6 -s 7 -e 8 -o 10 -t 11 -n susScr11_rmsk -f 13 -C 12 -S 2 susScr11_rmsk &gt; susScr11_rmsk.gtf</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> monkey</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> perl ~/software/tetoolkit-1.5.0/makeTEgtf.pl -c 6 -s 7 -e 8 -o 10 -t 11 -n susScr11_rmsk -f 13 -C 12 -S 2 rheMac8_rmsk &gt; rheMac8_rmsk.gtf</span></span><br></pre></td></tr></table></figure>
+<h3 id="mapping-reads-to-genome-using-star"><a class="markdownIt-Anchor" href="#mapping-reads-to-genome-using-star"></a> Mapping reads to genome using <code>STAR</code></h3>
+<p>There are detailed discussions about the parameters:</p>
+<ul>
+<li><a href="https://github.com/mhammell-laboratory/tetoolkit/issues/16" target="_blank" rel="noopener">Question about the alignments preparation</a></li>
+<li><a href="https://github.com/alexdobin/STAR/issues/243" target="_blank" rel="noopener">Question reagarding a parameter in STAR</a></li>
+</ul>
+<p>I have over 70 samples and have aligned reads to the genomes using <code>STAR</code> before. I do not want to align again…</p>
+<p>The author provided some test files at <a href="http://labshare.cshl.edu/shares/mhammelllab/www-data/TEToolkit/test_data/" target="_blank" rel="noopener">this location</a>. I will download BAM files of human for test.</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> GTF</span></span><br><span class="line">wget http://labshare.cshl.edu/shares/mhammelllab/www-data/TEToolkit/test_data/testdata_GTF/hg19_rmsk_TE.gtf.gz</span><br><span class="line">wget http://labshare.cshl.edu/shares/mhammelllab/www-data/TEToolkit/test_data/testdata_GTF/hg19_refGene.gtf.gz</span><br><span class="line"><span class="meta">#</span><span class="bash"> BAM</span></span><br><span class="line">wget http://labshare.cshl.edu/shares/mhammelllab/www-data/TEToolkit/test_data/testdata_PE/test_data_PE_control.bam</span><br><span class="line">wget http://labshare.cshl.edu/shares/mhammelllab/www-data/TEToolkit/test_data/testdata_PE/test_data_PE_treatment.bam</span><br></pre></td></tr></table></figure>
+<h3 id="quantification"><a class="markdownIt-Anchor" href="#quantification"></a> Quantification</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ~/software/Python.2.7.13/bin/TEtranscripts --sortByPos --mode multi --TE hg19_rmsk_TE.gtf --GTF hg19_refGene.gtf --project pairedEnd_test -t test_data_PE_treatment.bam -c test_data_PE_control.bam 2&gt; <span class="built_in">log</span></span></span><br></pre></td></tr></table></figure>
+<p>Then got the following errors:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">INFO  @ Wed, 21 Mar 2018 18:47:20: </span><br><span class="line">Reading sample files ...</span><br><span class="line"> </span><br><span class="line">Error occured when reading first line of sample file test_data_PE_treatment.bam.</span><br><span class="line">Error: 'samtools returned with error 1: stdout=, stderr=[bam_sort] Use -T PREFIX / -o FILE to specify temporary and final output files\nUsage: samtools sort [options...] [in.bam]\nOptions:\n  -l INT     Set compression level, from 0 (uncompressed) to 9 (best)\n  -m INT     Set maximum memory per thread; suffix K/M/G recognized [768M]\n  -n         Sort by read name\n  -o FILE    Write final output to FILE rather than standard output\n  -T PREFIX  Write temporary files to PREFIX.nnnn.bam\n      --input-fmt-option OPT[=VAL]\n               Specify a single input file format option in the form\n               of OPTION or OPTION=VALUE\n  -O, --output-fmt FORMAT[,OPT[=VAL]]...\n               Specify output format (SAM, BAM, CRAM)\n      --output-fmt-option OPT[=VAL]\n               Specify a single output file format option in the form\n               of OPTION or OPTION=VALUE\n      --reference FILE\n               Reference sequence FASTA FILE [null]\n  -@, --threads INT\n               Number of additional threads to use [0]\n'</span><br><span class="line">[Exception type: SamtoolsError, raised in utils.py:75]</span><br></pre></td></tr></table></figure>
+<p>Other users also found this bug: <a href="https://github.com/mhammell-laboratory/tetoolkit/issues/11" target="_blank" rel="noopener">Problem with samtools</a>. It was caused by <code>pysam (&gt;0.9)</code> and <code>samtools (&gt;1.3)</code>. A solution is sorting the <code>BAM</code> files according to read names rather than by coordinates then feeding to <code>TEtranscripts</code> for now.</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> samtools sort -@4 -O BAM -n test_data_PE_treatment.bam -o test_data_PE_treatment.sortedByReadname.bam</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> samtools sort -@4 -O BAM -n test_data_PE_control.bam -o test_data_PE_control.sortedByReadname.bam</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> ~/software/Python.2.7.13/bin/TEtranscripts --mode multi --TE hg19_rmsk_TE.gtf --GTF hg19_refGene.gtf --project pairedEnd_test -t test_data_PE_treatment.sortedByReadname.bam -c test_data_PE_control.sortedByReadname.bam 2&gt; <span class="built_in">log</span></span></span><br></pre></td></tr></table></figure>
+<p>There are four outputs of the above command:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pairedEnd_test.cntTable        # the count table (genes along with TEs)</span><br><span class="line">pairedEnd_test_DESeq.R        # the R codes for DE analysis</span><br><span class="line">pairedEnd_test_gene_TE_analysis.txt    # analysis result of DEseq</span><br><span class="line">pairedEnd_test_sigdiff_gene_TE.txt    # significant genes and TEs</span><br></pre></td></tr></table></figure>
+<p>We can also use the count table for DE analysis.</p>
+<h2 id="using-salmonte-for-te-quantification"><a class="markdownIt-Anchor" href="#using-salmonte-for-te-quantification"></a> Using <code>SalmonTE</code> for TE quantification</h2>
+<h3 id="install-2"><a class="markdownIt-Anchor" href="#install-2"></a> Install</h3>
+<p>Install <code>Python3</code> modules:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> pip3 install snakemake docopt pandas</span></span><br></pre></td></tr></table></figure>
+<p>Install <code>R</code> packages:</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">install.packages(c(<span class="string">"tidyverse"</span>, <span class="string">"cowplot"</span>, <span class="string">"scales"</span>, <span class="string">"WriteXLS"</span>))</span><br><span class="line"><span class="keyword">source</span>(<span class="string">"https://bioconductor.org/biocLite.R"</span>)</span><br><span class="line">biocLite(c(<span class="string">"DESeq2"</span>, <span class="string">"tximport"</span>))</span><br></pre></td></tr></table></figure>
+<p>Clone the repository</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git <span class="built_in">clone</span> https://github.com/hyunhwaj/SalmonTE</span></span><br></pre></td></tr></table></figure>
+<p>Add <code>PATH</code> of <code>SalmonTE</code> to your <code>.bashrc</code> file:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PATH=$PATH:/PATH_OF_SALMON_TE/</span><br></pre></td></tr></table></figure>
+<p>After sweating my blood (trying different <code>R</code> versions, different <code>gcc</code> versions, using <code>callr 1.0</code> rather than <code>callr 2.0</code>）, I installed all dependent <code>R</code> packages  … I hate installing software.</p>
+<h3 id="build-index"><a class="markdownIt-Anchor" href="#build-index"></a> Build index</h3>
+<p><code>SalmonTE</code> now (<code>20180320</code>) provides pre-built reference for four species: human (hs), <em>Mus musculus</em> (mm), <em>Danio rerio</em> (dr), <em>Fruit fly</em> (dm).</p>
+<p>It provides a doc about <a href="https://github.com/hyunhwaj/SalmonTE/wiki/How-to-build-a-customized-index" target="_blank" rel="noopener">How to build a customized index</a>, but when the species is not included in Repbase, it is not easy to create a index.</p>
+<p>I asked the author about this: <a href="https://github.com/hyunhwaj/SalmonTE/issues/9" target="_blank" rel="noopener">build index from species which is not available in Repbase</a>, and there is no good solutions so far. There is also a thread talking about this: <a href="https://github.com/hyunhwaj/SalmonTE/issues/5" target="_blank" rel="noopener">reference</a>.</p>
+<p>Well, I will just try <code>SalmonTE</code> for human.</p>
+<h3 id="quantification-2"><a class="markdownIt-Anchor" href="#quantification-2"></a> Quantification</h3>
+<p>Then, I encountered another problem: <a href="https://github.com/hyunhwaj/SalmonTE/issues/9#issuecomment-374853104" target="_blank" rel="noopener">SalmonTE only recognize .fastq and .fastq.gz extensions</a>, but all my files end with <code>.fq.gz</code>. Even by using <code>ln -s</code> to create files with <code>.fastq.gz</code> extensions, it still went wrong.</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> /home/niuyw/bin/python3 /home/niuyw/software/SalmonTE/SalmonTE.py quant --reference=hs clean_fastq/human</span></span><br><span class="line">2018-03-21 14:53:13,061 Starting quantification mode</span><br><span class="line">2018-03-21 14:53:13,061 Collecting FASTQ files...</span><br><span class="line">2018-03-21 14:53:13,062 Failed to read clean_fastq/human</span><br></pre></td></tr></table></figure>
+<p>This problem was also reported by other users: <a href="https://github.com/hyunhwaj/SalmonTE/issues/4" target="_blank" rel="noopener">Nothing to be done</a>, and it has not been solved. So I have to change the name my files…I have lots files.</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> output count</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> /home/niuyw/bin/python3 /home/niuyw/software/SalmonTE/SalmonTE.py quant --reference=hs --outpath=SalmonTE/human/count --num_threads=16 clean_fastq/human</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> output TPM</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> /home/niuyw/bin/python3 /home/niuyw/software/SalmonTE/SalmonTE.py quant --reference=hs --outpath=SalmonTE/human/TPM --num_threads=16 --exprtype=TPM clean_fastq/human</span></span><br></pre></td></tr></table></figure>
+<p>It was very fast. Using 16 threads, 22 samples took about 150 minutes.</p>
+<p>The output count/TPM are just like what <code>Salmon</code> does. All samples are put into one file named <code>EXPR.csv</code>. We can use this file for downstream analysis.</p>
+<p>Good.</p>
+<h2 id="change-notes"><a class="markdownIt-Anchor" href="#change-notes"></a> Change notes</h2>
+<ul>
+<li>20180322: create the note.</li>
+<li>20180323: add <code>rprofile</code>.</li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author: </strong>Yiwei Niu</li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="https://yiweiniu.github.io/blog/2018/03/Tools-for-analysis-TEs-in-RNA-seq-data/" title="Tools for analysis TEs in RNA-seq data">https://yiweiniu.github.io/blog/2018/03/Tools-for-analysis-TEs-in-RNA-seq-data/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/bio-tools/" rel="tag"># bio-tools</a>
+          
+            <a href="/blog/tags/RNA-seq/" rel="tag"># RNA-seq</a>
+          
+            <a href="/blog/tags/TE/" rel="tag"># TE</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/03/set-up-Jupyter-Notebook-on-the-server/" rel="next" title="Set up Jupyter Notebook on the Server">
+                <i class="fa fa-chevron-left"></i> Set up Jupyter Notebook on the Server
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/03/Upstream-analysis-of-TCR-BCR-repertoires-in-RNA-seq-data/" rel="prev" title="Upstream analysis of TCR/BCR repertoires in RNA-seq data">
+                Upstream analysis of TCR/BCR repertoires in RNA-seq data <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type = "text/javascript" src = "//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a7ad07b7823d03b" async = "async" ></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/blog/images/portrait.jpg"
+                alt="Yiwei Niu" />
+            
+              <p class="site-author-name" itemprop="name">Yiwei Niu</p>
+              <p class="site-description motion-element" itemprop="description">a beginner, a learner</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/blog/archives/">
+                
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/blog/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/blog/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">19</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/blog/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:xiaohuwangwang@qq.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/YiweiNiu" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://weibo.com/u/3049858680" target="_blank" title="Weibo"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/ywniu" target="_blank" title="Twitter"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kaigedong.github.io/" title="Kaige Dong" target="_blank">Kaige Dong</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://homolog.us/blogs/" title="Homolog.us" target="_blank">Homolog.us</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://cgatoxford.wordpress.com/" title="CGAT" target="_blank">CGAT</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.gettinggeneticsdone.com/" title="Getting Genetics Done" target="_blank">Getting Genetics Done</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.acgt.me/" title="ACGT" target="_blank">ACGT</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#tools-avaiable"><span class="nav-number">1.</span> <span class="nav-text"> Tools avaiable</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#repenrich"><span class="nav-number">1.1.</span> <span class="nav-text"> RepEnrich</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tetoolkittetranscripts"><span class="nav-number">1.2.</span> <span class="nav-text"> TEToolkit/TEtranscripts</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rprofilerop"><span class="nav-number">1.3.</span> <span class="nav-text"> rprofile/rop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lions"><span class="nav-number">1.4.</span> <span class="nav-text"> LIONS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#im-fusion"><span class="nav-number">1.5.</span> <span class="nav-text"> IM-Fusion</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#clifinder"><span class="nav-number">1.6.</span> <span class="nav-text"> CLIFinder</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#salmonte"><span class="nav-number">1.7.</span> <span class="nav-text"> SalmonTE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#summary"><span class="nav-number">1.8.</span> <span class="nav-text"> Summary</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#using-tetranscripts-for-te-quantification"><span class="nav-number">2.</span> <span class="nav-text"> Using TEtranscripts for TE quantification</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#install"><span class="nav-number">2.1.</span> <span class="nav-text"> Install</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#prepare-annotations"><span class="nav-number">2.2.</span> <span class="nav-text"> Prepare annotations</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mapping-reads-to-genome-using-star"><span class="nav-number">2.3.</span> <span class="nav-text"> Mapping reads to genome using STAR</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#quantification"><span class="nav-number">2.4.</span> <span class="nav-text"> Quantification</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#using-salmonte-for-te-quantification"><span class="nav-number">3.</span> <span class="nav-text"> Using SalmonTE for TE quantification</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#install-2"><span class="nav-number">3.1.</span> <span class="nav-text"> Install</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#build-index"><span class="nav-number">3.2.</span> <span class="nav-text"> Build index</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#quantification-2"><span class="nav-number">3.3.</span> <span class="nav-text"> Quantification</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#change-notes"><span class="nav-number">4.</span> <span class="nav-text"> Change notes</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-mars"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yiwei Niu</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=6.1.0"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=6.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=6.1.0"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=6.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=6.1.0"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=6.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=6.1.0"></script>
+
+
+
+  
+
+  
+    <script id="dsq-count-scr" src="https://yiwei-nius-note.disqus.com/count.js" async></script>
+  
+
+  
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'https://yiweiniu.github.io/blog/2018/03/Tools-for-analysis-TEs-in-RNA-seq-data/';
+        this.page.identifier = '2018/03/Tools-for-analysis-TEs-in-RNA-seq-data/';
+        this.page.title = 'Tools for analysis TEs in RNA-seq data';
+      };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://yiwei-nius-note.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        loadComments();
+      
+    </script>
+  
+
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
