@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://yiweiniu.github.io/blog/2018/06/Find-Contamination-in-Genome-Assembly-by-Kraken/</loc>
+    
+    <lastmod>2018-06-28T06:09:16.300Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yiweiniu.github.io/blog/2018/02/%E6%9E%84%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%94%E8%AE%B0%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/</loc>
+    
+    <lastmod>2018-05-07T06:57:38.121Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://yiweiniu.github.io/blog/2018/05/Viral-Expression-in-RNA-seq-data/</loc>
     
     <lastmod>2018-05-04T02:26:18.770Z</lastmod>
@@ -96,13 +110,6 @@
     <loc>https://yiweiniu.github.io/blog/2018/02/Hexo-%E5%BB%BA%E7%AB%99%E8%AE%B0%E5%BD%95/</loc>
     
     <lastmod>2018-04-09T03:55:44.851Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yiweiniu.github.io/blog/2018/02/%E6%9E%84%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%94%E8%AE%B0%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/</loc>
-    
-    <lastmod>2018-03-29T01:23:24.462Z</lastmod>
     
   </url>
   

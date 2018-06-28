@@ -101,16 +101,20 @@
 
 
 
-  <meta name="description" content="a beginner, a learner">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Yiwei Niu&#39;s Note">
-<meta property="og:url" content="https://yiweiniu.github.io/blog/categories/genome-assembly/NGS-pipeline/index.html">
+  <meta name="description" content="Purpose in short: I want to remove potential contaminants in the genome assembly, and Kraken is a tool designed for that.  Introduction From its webpage:  Kraken is a system for assigning taxonomic la">
+<meta name="keywords" content="bio-tools,genome assembly,contamination">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Find Contamination in Genome Assembly by Kraken">
+<meta property="og:url" content="https://yiweiniu.github.io/blog/2018/06/Find-Contamination-in-Genome-Assembly-by-Kraken/index.html">
 <meta property="og:site_name" content="Yiwei Niu&#39;s Note">
-<meta property="og:description" content="a beginner, a learner">
+<meta property="og:description" content="Purpose in short: I want to remove potential contaminants in the genome assembly, and Kraken is a tool designed for that.  Introduction From its webpage:  Kraken is a system for assigning taxonomic la">
 <meta property="og:locale" content="_en">
+<meta property="og:image" content="https://yiweiniu.github.io/blog/2018/06/Find-Contamination-in-Genome-Assembly-by-Kraken/contamination_ratio.png">
+<meta property="og:updated_time" content="2018-06-28T06:09:16.300Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Yiwei Niu&#39;s Note">
-<meta name="twitter:description" content="a beginner, a learner">
+<meta name="twitter:title" content="Find Contamination in Genome Assembly by Kraken">
+<meta name="twitter:description" content="Purpose in short: I want to remove potential contaminants in the genome assembly, and Kraken is a tool designed for that.  Introduction From its webpage:  Kraken is a system for assigning taxonomic la">
+<meta name="twitter:image" content="https://yiweiniu.github.io/blog/2018/06/Find-Contamination-in-Genome-Assembly-by-Kraken/contamination_ratio.png">
 
 
 
@@ -119,7 +123,7 @@
 
 
 
-  <link rel="canonical" href="https://yiweiniu.github.io/blog/categories/genome-assembly/NGS-pipeline/"/>
+  <link rel="canonical" href="https://yiweiniu.github.io/blog/2018/06/Find-Contamination-in-Genome-Assembly-by-Kraken/"/>
 
 
 
@@ -129,7 +133,7 @@
   };
 </script>
 
-  <title>Category: NGS pipeline | Yiwei Niu's Note</title>
+  <title>Find Contamination in Genome Assembly by Kraken | Yiwei Niu's Note</title>
   
 
 
@@ -176,7 +180,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -321,113 +325,307 @@
           
             
 
-    
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-    
-
-  
-
-
           
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block category">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>NGS pipeline<small>Category</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
+
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yiweiniu.github.io/blog/blog/2018/06/Find-Contamination-in-Genome-Assembly-by-Kraken/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yiwei Niu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/blog/images/portrait.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yiwei Niu's Note">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/blog/2018/03/Genome-assembly-pipeline-BESST/" itemprop="url">
-              
-                <span itemprop="name">Genome Assembly Pipeline: BESST</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">Find Contamination in Genome Assembly by Kraken</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-03-30T00:15:04+08:00"
-              content="2018-03-30" >
-          03-30
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-28T13:45:10+08:00">2018-06-28</time>
+            
 
-    </header>
-  </article>
+            
+            
 
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/blog/categories/genome-assembly/" itemprop="url" rel="index"><span itemprop="name">genome assembly</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/blog/categories/genome-assembly/contamination/" itemprop="url" rel="index"><span itemprop="name">contamination</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2018/06/Find-Contamination-in-Genome-Assembly-by-Kraken/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/06/Find-Contamination-in-Genome-Assembly-by-Kraken/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views: 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-symbolscount">
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                <span title="Symbols count in article">6.6k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                <span title="Reading time">0:07</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-        
+      
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/blog/2018/03/Genome-assembly-pipeline-MEGAHIT-SOAPdenovo-fusion/" itemprop="url">
-              
-                <span itemprop="name">Genome Assembly Pipeline: MEGAHIT & SOAPdenovo-fusion</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-03-29T23:54:59+08:00"
-              content="2018-03-29" >
-          03-29
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+      
+        <p>Purpose in short: I want to remove potential contaminants in the genome assembly, and Kraken is a tool designed for that.</p>
+<h2 id="introduction"><a class="markdownIt-Anchor" href="#introduction"></a> Introduction</h2>
+<p>From <a href="http://ccb.jhu.edu/software/kraken" target="_blank" rel="noopener">its webpage</a>:</p>
+<blockquote>
+<p>Kraken is a system for assigning taxonomic labels to short DNA sequences, usually obtained through metagenomic studies. Previous attempts by other bioinformatics software to accomplish this task have often used sequence alignment or machine learning techniques that were quite slow, leading to the development of less sensitive but much faster abundance estimation programs. Kraken aims to achieve high sensitivity and high speed by utilizing exact alignments of k-mers and a novel classification algorithm.<br><br>
+In its fastest mode of operation, for a simulated metagenome of 100 bp reads, Kraken processed over 4 million reads per minute on a single core, over 900 times faster than Megablast and over 11 times faster than the abundance estimation program MetaPhlAn. Kraken’s accuracy is comparable with Megablast, with slightly lower sensitivity and very high precision.<br><br>
+Kraken is written in C++ and Perl, and is designed for use with the Linux operating system. We have also successfully compiled and run it under the Mac OS.</p>
+</blockquote>
+<h2 id="in-practice"><a class="markdownIt-Anchor" href="#in-practice"></a> In practice</h2>
+<p>See <a href="https://github.com/DerrickWood/kraken/blob/master/docs/MANUAL.markdown" target="_blank" rel="noopener">Kraken manual</a> for full instructions.</p>
+<h3 id="install"><a class="markdownIt-Anchor" href="#install"></a> Install</h3>
+<p>Download the latest <a href="https://github.com/DerrickWood/kraken/releases" target="_blank" rel="noopener">release</a>.</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> unzip kraken-1.1.zip &amp;&amp; <span class="built_in">cd</span> kraken-1.1</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> install</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ./install_kraken.sh /home/niuyw/software/kraken.1.1</span></span><br></pre></td></tr></table></figure>
+<p>If you want to build your own dabase, <a href="http://www.cbcb.umd.edu/software/jellyfish/" target="_blank" rel="noopener">jellyfish</a> <strong>version 1</strong> should be in your <code>PATH</code>.</p>
+<h3 id="build-standard-kraken-database"><a class="markdownIt-Anchor" href="#build-standard-kraken-database"></a> Build standard Kraken database</h3>
+<p>The standard Kraken database includes bacterial, archeal, and viral genomes in Refseq at the time of the build.</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/sh</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> bioBrain</span></span><br><span class="line">TOOLDIR=/home/niuyw/software</span><br><span class="line">path2kraken=$TOOLDIR/kraken.1.1</span><br><span class="line"></span><br><span class="line">DBNAME=/data2/niuyw/Kraken_DB</span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash">path2kraken/kraken-build --standard --threads 16 --db <span class="variable">$DBNAME</span></span></span><br></pre></td></tr></table></figure>
+<p>If any step (including the initial downloads) fails, the build process will abort. However, kraken-build will produce checkpoints throughout the installation process, and will restart the build at the last incomplete step if you attempt to run the same command again on a partially-built database.</p>
+<h3 id="build-custom-kraken-database"><a class="markdownIt-Anchor" href="#build-custom-kraken-database"></a> Build custom Kraken database</h3>
+<p>Because the standard Kraken database does not include fungi and protozoa, which I want to include in my analysis.</p>
+<p>I found <a href="https://github.com/sschmeier/refseq2kraken" target="_blank" rel="noopener">refseq2kraken</a>, which facilitates the downloading and preparation of Kraken database.</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">TOOLDIR=/home/niuyw/software</span><br><span class="line">path2kraken=$TOOLDIR/kraken.1.1</span><br><span class="line"></span><br><span class="line">DBNAME=Kraken_DB_201806</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> install refseq2kraken</span></span><br><span class="line">git clone https://github.com/sschmeier/refseq2kraken.git refseq2kraken</span><br><span class="line">cd refseq2kraken</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Download refseq =&gt; here only <span class="string">"Complete Genome"</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> assemblies, e.g. the default</span></span><br><span class="line">python getRefseqGenomic.py -p 8</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> convert to kraken format =&gt; again only <span class="string">"Complete Genome"</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> assemblies here, e.g. the default</span></span><br><span class="line">python getKrakenFna.py -p 8 $DBNAME</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> build a new minikraken database</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> download taxonomy</span></span><br><span class="line">kraken-build --download-taxonomy --db $DBNAME</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> <span class="keyword">for</span> each branch, add all fna <span class="keyword">in</span> the directory to the database</span></span><br><span class="line">for dir in bacteria viral archaea fungi protozoa ; do</span><br><span class="line">    find $DBNAME/$dir/ -name '*.fna' -print0 | xargs -0 -I&#123;&#125; -n1 -P8 kraken-build --add-to-library &#123;&#125; --db $DBNAME;</span><br><span class="line">done</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> build the actual database</span></span><br><span class="line">kraken-build --build --db $DBNAME</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> remove intermediate files</span></span><br><span class="line">kraken-build --clean --db $DBNAME</span><br></pre></td></tr></table></figure>
+<p>This post <a href="http://www.opiniomics.org/building-a-kraken-database-with-new-ftp-structure-and-no-gi-numbers/" target="_blank" rel="noopener">Download refseq-genomic data and prepare it for Kraken</a> is also helpful.</p>
+<h3 id="classify-contigs"><a class="markdownIt-Anchor" href="#classify-contigs"></a> Classify contigs</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> classify</span></span><br><span class="line">kraken --db $Kraken_DB --threads 24 --fasta-input /Project/beetle_genome_171231/canu/run_1/beetle.contigs.fasta --classified-out classified.fa --unclassified-out unclassified.fa &gt; bettle.kraken</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> report</span></span><br><span class="line">kraken-report --db $Kraken_DB bettle.kraken &gt; bettle_kraken.report</span><br></pre></td></tr></table></figure>
+<p>The ‘classified’ sequences will be saved in ‘classified.fa’, and the ‘unclassified.fa’ will be the ‘clean’ one, which can be used for downstream analysis.</p>
+<p>But when I looked over the ‘report’, the result quite disappointed me.</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> head -5 bettle_kraken.report</span></span><br><span class="line"> 24.53	5144	5144	U	0	unclassified</span><br><span class="line"> 75.47	15830	773	-	1	root</span><br><span class="line"> 56.13	11772	336	-	131567	  cellular organisms</span><br><span class="line"> 50.36	10563	858	D	2	    Bacteria</span><br><span class="line"> 23.20	4866	51	P	1224	      Proteobacteria</span><br></pre></td></tr></table></figure>
+<p>This means about 25% contigs were contaminated!</p>
+<p>My collaborator asked me to give him a assembly draft for meta-genomic study, which a ‘clean’ one was needed. Removing all the contaminated sequences was not feasible, since there would be few contigs left.</p>
+<p>Then I checked the file ‘bettle.kraken’, which contained the detailed information of each contig:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> head -3 bettle.kraken</span></span><br><span class="line">C	tig00000621	118110	53116	0:3562 118110:7 2:7 131567:1 1:19 1727164:1 0:1495 1580580:1 0:18 118110:3 1:3 118110:1 0:5 1:1 456320:1 0:8 307461:2 0:1 1580580:1 0:3 379529:1 0:4 1783272:1 273035:1 1:23 456320:1 0:109 2:2 1:25 1783272:2 1898474:2 2:1 131567:2 118110:3 0:93 273035:1 0:20219 456320:1 0:1 1313292:1 0:27453</span><br><span class="line">C	tig00000630	287	38031	0:9202 523794:2 1:7 131567:1 2151:1 2:1 0:58 251749:1 0:1 287:3 1236:3 0:62 1783272:2 1:6 2:3 33990:1 0:285 1307:1 1:22 1307:2 0:28337</span><br><span class="line">C	tig00000631	1224	49852	0:14729 39640:1 1:24 2:2 444612:1 0:1357 1:46 0:31014 118110:1 1:8 0:2639</span><br></pre></td></tr></table></figure>
+<p>Because Kraken uses a k-mer mapping strategy to locate potential contaminants, there would be many contigs within which only a small part could be aligned to bacteria/virul sequences. So I retrieved the precise k-mers that mapped to contamination, and masked them with ‘N’. I discussed this with another guy: <a href="https://www.biostars.org/p/321334/#321479" target="_blank" rel="noopener">Questions about de novo genome assembly from mixed DNA samples</a>, and he also thought it’s a vivid approach.</p>
+<p><a href="./mask_N_kraken_res.py">Here</a> is the <code>Python</code> script I used.</p>
+<p>I then used <code>R</code> to visualize the relationship between contig lengths and the contaminated lengths. There were 20974 contigs, among which 18869 (89.9%) contigs, 2075 (9.89%) contigs and 30 contigs has a contaminated rate of blow 1%, between 1% and 10%, and more than 10% respectively.</p>
+<img src="/blog/2018/06/Find-Contamination-in-Genome-Assembly-by-Kraken/contamination_ratio.png" title="contamination_ratio">
+<p><a href="./contaminant_ratio.R">Here</a> is the <code>R</code> script I used.</p>
+<p>But I began to think how the contaminanted sequences would affect the assembly process, and maybe removing contaminants from raw data is a good way. See discussions here: <a href="https://www.researchgate.net/post/Filtering_for_contamination_when_assembling_a_genome_before_or_after_assemby" target="_blank" rel="noopener">Filtering for contamination when assembling a genome, before or after assemby?</a>.</p>
+<h2 id="useful-links"><a class="markdownIt-Anchor" href="#useful-links"></a> Useful links</h2>
+<ul>
+<li><a href="http://ccb.jhu.edu/software/kraken" target="_blank" rel="noopener">Kraken official site</a></li>
+<li><a href="https://github.com/DerrickWood/kraken/" target="_blank" rel="noopener">Kraken Git repository</a></li>
+<li><a href="https://github.com/sschmeier/refseq2kraken" target="_blank" rel="noopener">refseq2kraken: download refseq-genomic data and prepare it for Kraken</a></li>
+<li><a href="http://www.opiniomics.org/building-a-kraken-database-with-new-ftp-structure-and-no-gi-numbers/" target="_blank" rel="noopener">Download refseq-genomic data and prepare it for Kraken</a></li>
+<li><a href="https://www.biostars.org/p/321334" target="_blank" rel="noopener">Questions about de novo genome assembly from mixed DNA samples</a></li>
+<li><a href="https://www.molecularecologist.com/2017/01/handling-microbial-contamination-in-ngs-data/" target="_blank" rel="noopener">Handling microbial contamination in NGS data</a></li>
+<li><a href="https://www.biostars.org/p/237168/" target="_blank" rel="noopener">Question: Contamination in assembly</a></li>
+<li><a href="https://www.researchgate.net/post/Filtering_for_contamination_when_assembling_a_genome_before_or_after_assemby" target="_blank" rel="noopener">Filtering for contamination when assembling a genome, before or after assemby?</a></li>
+<li><a href="https://www.biostars.org/p/165059/" target="_blank" rel="noopener">Question: How to remove contamination from the transcriptome assembly</a></li>
+</ul>
+<h2 id="change-note"><a class="markdownIt-Anchor" href="#change-note"></a> Change note</h2>
+<ul>
+<li>20180424: create the note.</li>
+<li>20180620: add the “refseq2kraken” part.</li>
+</ul>
 
       
     </div>
 
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/bio-tools/" rel="tag"># bio-tools</a>
+          
+            <a href="/blog/tags/genome-assembly/" rel="tag"># genome assembly</a>
+          
+            <a href="/blog/tags/contamination/" rel="tag"># contamination</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/05/Viral-Expression-in-RNA-seq-data/" rel="next" title="Viral Expression in RNA-seq data">
+                <i class="fa fa-chevron-left"></i> Viral Expression in RNA-seq data
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type = "text/javascript" src = "//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a7ad07b7823d03b" async = "async" ></script>
+</div>
+
+      
+    </div>
+  </div>
 
 
           </div>
           
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -448,8 +646,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -656,6 +863,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#introduction"><span class="nav-number">1.</span> <span class="nav-text"> Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#in-practice"><span class="nav-number">2.</span> <span class="nav-text"> In practice</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#install"><span class="nav-number">2.1.</span> <span class="nav-text"> Install</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#build-standard-kraken-database"><span class="nav-number">2.2.</span> <span class="nav-text"> Build standard Kraken database</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#build-custom-kraken-database"><span class="nav-number">2.3.</span> <span class="nav-text"> Build custom Kraken database</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#classify-contigs"><span class="nav-number">2.4.</span> <span class="nav-text"> Classify contigs</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#useful-links"><span class="nav-number">3.</span> <span class="nav-text"> Useful links</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#change-note"><span class="nav-number">4.</span> <span class="nav-text"> Change note</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -805,6 +1028,10 @@
 
 
   
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=6.1.0"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=6.1.0"></script>
+
+
 
   
 
@@ -819,6 +1046,23 @@
     <script id="dsq-count-scr" src="https://yiwei-nius-note.disqus.com/count.js" async></script>
   
 
+  
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'https://yiweiniu.github.io/blog/2018/06/Find-Contamination-in-Genome-Assembly-by-Kraken/';
+        this.page.identifier = '2018/06/Find-Contamination-in-Genome-Assembly-by-Kraken/';
+        this.page.title = 'Find Contamination in Genome Assembly by Kraken';
+      };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://yiwei-nius-note.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        loadComments();
+      
+    </script>
   
 
 
