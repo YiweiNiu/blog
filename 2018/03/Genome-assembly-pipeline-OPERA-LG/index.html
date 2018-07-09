@@ -109,7 +109,7 @@
 <meta property="og:site_name" content="Yiwei Niu&#39;s Note">
 <meta property="og:description" content="Genome assembly pipeline: OPERA-LG tags: bio-tools, genome assembly pipeline, hybrid genome assembly, scaffloding category: genome assembly, hyrid pipeline  Intro From The OPERA wiki   OPERA (Optimal">
 <meta property="og:locale" content="_en">
-<meta property="og:updated_time" content="2018-04-23T12:01:24.675Z">
+<meta property="og:updated_time" content="2018-06-30T07:13:53.894Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Genome Assembly Pipeline: OPERA-LG">
 <meta name="twitter:description" content="Genome assembly pipeline: OPERA-LG tags: bio-tools, genome assembly pipeline, hybrid genome assembly, scaffloding category: genome assembly, hyrid pipeline  Intro From The OPERA wiki   OPERA (Optimal">
@@ -229,7 +229,7 @@
         
           
   
-  <li class="menu-item menu-item-categories">
+  <li class="menu-item menu-item-categories menu-item-active">
     <a href="/blog/categories/" rel="section">
       <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories</a>
 </li>
@@ -239,7 +239,7 @@
         
           
   
-  <li class="menu-item menu-item-tags menu-item-active">
+  <li class="menu-item menu-item-tags">
     <a href="/blog/tags/" rel="section">
       <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />Tags</a>
 </li>
@@ -447,7 +447,7 @@
                   <i class="fa fa-file-word-o"></i>
                 </span>
                 
-                <span title="Symbols count in article">6.7k</span>
+                <span title="Symbols count in article">6.3k</span>
               
 
               
@@ -459,7 +459,7 @@
                   <i class="fa fa-clock-o"></i>
                 </span>
                 
-                <span title="Reading time">0:07</span>
+                <span title="Reading time">0:06</span>
               
             </div>
           
@@ -503,9 +503,9 @@
 <li>can’t use NGS reads and long-reads simultaneously.</li>
 </ul>
 <h2 id="in-practice"><a class="markdownIt-Anchor" href="#in-practice"></a> In practice</h2>
-<p>See <a href="https://sourceforge.net/p/operasf/wiki/The%20OPERA%20wiki/" target="_blank" rel="noopener">The OPERA wiki </a> for full docs.</p>
+<p>See <a href="https://sourceforge.net/p/operasf/wiki/The%20OPERA%20wiki/" target="_blank" rel="noopener">The OPERA wiki</a> for full docs.</p>
 <p>Scripts used:</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/sh</span></span><br><span class="line"><span class="meta">#</span><span class="bash">PBS -N OPERA-LG</span></span><br><span class="line"><span class="meta">#</span><span class="bash">PBS -j eo</span></span><br><span class="line"><span class="meta">#</span><span class="bash">PBS -q Test</span></span><br><span class="line"><span class="meta">#</span><span class="bash">PBS -l nodes=1:ppn=8</span></span><br><span class="line"><span class="meta">#</span><span class="bash">PBS -d /home/haoyj/tasks/DenovoSeq/OPERA-LG</span></span><br><span class="line"><span class="meta">#</span><span class="bash">PBS -V</span></span><br><span class="line"></span><br><span class="line">echo Start time is `date +%Y/%m/%d--%H:%M`</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> scaffold with short reads</span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># preprocess reads</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="keyword">for</span> sample <span class="keyword">in</span> 270B 500B 800B 3k_1 5k-1 5k-2 10k; <span class="keyword">do</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash">perl /home/software/OPERA-LG_v2.0.6/bin/preprocess_reads.pl --contig /home/haoyj/tasks/DenovoSeq/MEGAHIT/megahit_out.no270/final.contigs.fa --illumina-read1 /home/haoyj/tasks/DenovoSeq/trimmomatic/<span class="variable">$&#123;sample&#125;</span>_R_1P.fastq --illumina-read2 /home/haoyj/tasks/DenovoSeq/trimmomatic/<span class="variable">$&#123;sample&#125;</span>_R_2P.fastq --out <span class="variable">$&#123;sample&#125;</span>.map --tool-dir /home/software/bwa-0.7.15 --samtools-dir /home/software/samtools-0.1.19</span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="keyword">done</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># with all libraries</span></span></span><br><span class="line">/home/software/OPERA-LG_v2.0.6/bin/OPERA-LG /home/haoyj/tasks/DenovoSeq/MEGAHIT/megahit_out.no270/final.contigs.fa 270B.map,500B.map,800B.map,3k_1.map,5k-1.map,5k-2.map,10k.map ./opera /home/software/samtools-0.1.19</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># without 270 library</span></span></span><br><span class="line">/home/software/OPERA-LG_v2.0.6/bin/OPERA-LG /home/haoyj/tasks/DenovoSeq/MEGAHIT/megahit_out.no270/final.contigs.fa 500B.map,800B.map,3k_1.map,5k-1.map,5k-2.map,10k.map ./opera.no270 /home/software/samtools-0.1.19</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> This is the first run of OPERA-LG, with 270 library, and megahit<span class="string">'s contigs</span></span></span><br><span class="line">perl /home/software/OPERA-LG_v2.0.6/bin/OPERA-long-read.pl --contig-file /home/haoyj/tasks/DenovoSeq/MEGAHIT/megahit_out/final.contigs.fa --illumina-read1 10k_R1.fasta --illumina-read2 10k_R2.fasta --long-read-file av_20k.fasta --output-prefix 10k.lr --output-directory ./ --num-of-processors 40 --blasr /home/software/src/wgs-8.3rc2/Linux-amd64/bin --short-read-tooldir /home/software/bwa-0.7.15 --opera /home/software/OPERA-LG_v2.0.6/bin</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> This the second run of OPERA-LG, re-scaffold the results of SOAP-fusion. ins_270 library</span></span><br><span class="line">perl /home/software/OPERA-LG_v2.0.6/bin/OPERA-long-read.pl --contig-file /home/haoyj/tasks/DenovoSeq/MEGAHIT/small_insert.no270/SOAP-fusion/k41.scafSeq --illumina-read1 /home/haoyj/tasks/DenovoSeq/trimmomatic/270B_R_1P.fasta --illumina-read2 /home/haoyj/tasks/DenovoSeq/trimmomatic/270B_R_2P.fasta --long-read-file /home/haoyj/tasks/DenovoSeq/Third_rawData/av_20k.fasta --output-prefix 270B.lr --output-directory ./270B --num-of-processors 10 --blasr /home/software/src/wgs-8.3rc2/Linux-amd64/bin --short-read-tooldir /home/software/bwa-0.7.15 --opera /home/software/OPERA-LG_v2.0.6/bin --samtools-dir /home/software/samtools-0.1.19/</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> This is the third run of OPERA-LG, re-scaffold the results of SOAP-fusion. ins_500 library</span></span><br><span class="line">perl /home/software/OPERA-LG_v2.0.6/bin/OPERA-long-read.pl --contig-file /home/haoyj/tasks/DenovoSeq/MEGAHIT/small_insert.no270/SOAP-fusion/k41.scafSeq --illumina-read1 /home/haoyj/tasks/DenovoSeq/trimmomatic/500B_R_1P.fasta --illumina-read2 /home/haoyj/tasks/DenovoSeq/trimmomatic/500B_R_2P.fasta --long-read-file /home/haoyj/tasks/DenovoSeq/Third_rawData/av_20k.fasta --output-prefix 500B.lr --output-directory ./500B --num-of-processors 10 --blasr /home/software/src/wgs-8.3rc2/Linux-amd64/bin --short-read-tooldir /home/software/bwa-0.7.15 --opera /home/software/OPERA-LG_v2.0.6/bin --samtools-dir /home/software/samtools-0.1.19/</span><br><span class="line"></span><br><span class="line">echo Finish time is `date +%Y/%m/%d--%H:%M`</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/sh</span></span><br><span class="line"><span class="meta">#</span><span class="bash">PBS -N OPERA-LG</span></span><br><span class="line"><span class="meta">#</span><span class="bash">PBS -j eo</span></span><br><span class="line"><span class="meta">#</span><span class="bash">PBS -q Test</span></span><br><span class="line"><span class="meta">#</span><span class="bash">PBS -l nodes=1:ppn=8</span></span><br><span class="line"><span class="meta">#</span><span class="bash">PBS -d /DenovoSeq/OPERA-LG</span></span><br><span class="line"><span class="meta">#</span><span class="bash">PBS -V</span></span><br><span class="line"></span><br><span class="line">echo Start time is `date +%Y/%m/%d--%H:%M`</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> scaffold with short reads</span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># preprocess reads</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="keyword">for</span> sample <span class="keyword">in</span> 270B 500B 800B 3k_1 5k-1 5k-2 10k; <span class="keyword">do</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash">perl /software/OPERA-LG_v2.0.6/bin/preprocess_reads.pl --contig /DenovoSeq/MEGAHIT/megahit_out.no270/final.contigs.fa --illumina-read1 /DenovoSeq/trimmomatic/<span class="variable">$&#123;sample&#125;</span>_R_1P.fastq --illumina-read2 /DenovoSeq/trimmomatic/<span class="variable">$&#123;sample&#125;</span>_R_2P.fastq --out <span class="variable">$&#123;sample&#125;</span>.map --tool-dir /software/bwa-0.7.15 --samtools-dir /software/samtools-0.1.19</span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="keyword">done</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># with all libraries</span></span></span><br><span class="line">/software/OPERA-LG_v2.0.6/bin/OPERA-LG /DenovoSeq/MEGAHIT/megahit_out.no270/final.contigs.fa 270B.map,500B.map,800B.map,3k_1.map,5k-1.map,5k-2.map,10k.map ./opera /software/samtools-0.1.19</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># without 270 library</span></span></span><br><span class="line">/software/OPERA-LG_v2.0.6/bin/OPERA-LG /DenovoSeq/MEGAHIT/megahit_out.no270/final.contigs.fa 500B.map,800B.map,3k_1.map,5k-1.map,5k-2.map,10k.map ./opera.no270 /software/samtools-0.1.19</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> This is the first run of OPERA-LG, with 270 library, and megahit<span class="string">'s contigs</span></span></span><br><span class="line">perl /software/OPERA-LG_v2.0.6/bin/OPERA-long-read.pl --contig-file /DenovoSeq/MEGAHIT/megahit_out/final.contigs.fa --illumina-read1 10k_R1.fasta --illumina-read2 10k_R2.fasta --long-read-file av_20k.fasta --output-prefix 10k.lr --output-directory ./ --num-of-processors 40 --blasr /src/wgs-8.3rc2/Linux-amd64/bin --short-read-tooldir /software/bwa-0.7.15 --opera /software/OPERA-LG_v2.0.6/bin</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> This the second run of OPERA-LG, re-scaffold the results of SOAP-fusion. ins_270 library</span></span><br><span class="line">perl /software/OPERA-LG_v2.0.6/bin/OPERA-long-read.pl --contig-file /DenovoSeq/MEGAHIT/small_insert.no270/SOAP-fusion/k41.scafSeq --illumina-read1 /DenovoSeq/trimmomatic/270B_R_1P.fasta --illumina-read2 /DenovoSeq/trimmomatic/270B_R_2P.fasta --long-read-file /DenovoSeq/Third_rawData/av_20k.fasta --output-prefix 270B.lr --output-directory ./270B --num-of-processors 10 --blasr /software/src/wgs-8.3rc2/Linux-amd64/bin --short-read-tooldir /software/bwa-0.7.15 --opera /software/OPERA-LG_v2.0.6/bin --samtools-dir /software/samtools-0.1.19/</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> This is the third run of OPERA-LG, re-scaffold the results of SOAP-fusion. ins_500 library</span></span><br><span class="line">perl /software/OPERA-LG_v2.0.6/bin/OPERA-long-read.pl --contig-file /DenovoSeq/MEGAHIT/small_insert.no270/SOAP-fusion/k41.scafSeq --illumina-read1 /DenovoSeq/trimmomatic/500B_R_1P.fasta --illumina-read2 /DenovoSeq/trimmomatic/500B_R_2P.fasta --long-read-file /DenovoSeq/Third_rawData/av_20k.fasta --output-prefix 500B.lr --output-directory ./500B --num-of-processors 10 --blasr /software/src/wgs-8.3rc2/Linux-amd64/bin --short-read-tooldir /software/bwa-0.7.15 --opera /software/OPERA-LG_v2.0.6/bin --samtools-dir /software/samtools-0.1.19/</span><br><span class="line"></span><br><span class="line">echo Finish time is `date +%Y/%m/%d--%H:%M`</span><br></pre></td></tr></table></figure>
 <p>The stats I got:</p>
 <h3 id="opera"><a class="markdownIt-Anchor" href="#opera"></a> OPERA</h3>
 <p>with all libraries</p>
@@ -666,7 +666,7 @@
                 
                   <a href="/blog/archives/">
                 
-                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-count">19</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -705,7 +705,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">13</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">15</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -766,7 +770,17 @@
                     
                       
                     
-                    <span class="site-state-item-count">24</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">29</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>

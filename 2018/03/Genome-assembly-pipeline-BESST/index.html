@@ -109,7 +109,7 @@
 <meta property="og:site_name" content="Yiwei Niu&#39;s Note">
 <meta property="og:description" content="Intro From the introduction of BESST git repo:  BESST is a package for scaffolding genomic assemblies.  It paper  Sahlin K, Chikhi R, Arvestad L. Assembly scaffolding with PE-contaminated mate-pair l">
 <meta property="og:locale" content="_en">
-<meta property="og:updated_time" content="2018-04-23T09:05:39.652Z">
+<meta property="og:updated_time" content="2018-06-30T07:10:32.272Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Genome Assembly Pipeline: BESST">
 <meta name="twitter:description" content="Intro From the introduction of BESST git repo:  BESST is a package for scaffolding genomic assemblies.  It paper  Sahlin K, Chikhi R, Arvestad L. Assembly scaffolding with PE-contaminated mate-pair l">
@@ -229,7 +229,7 @@
         
           
   
-  <li class="menu-item menu-item-categories">
+  <li class="menu-item menu-item-categories menu-item-active">
     <a href="/blog/categories/" rel="section">
       <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories</a>
 </li>
@@ -239,7 +239,7 @@
         
           
   
-  <li class="menu-item menu-item-tags menu-item-active">
+  <li class="menu-item menu-item-tags">
     <a href="/blog/tags/" rel="section">
       <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />Tags</a>
 </li>
@@ -447,7 +447,7 @@
                   <i class="fa fa-file-word-o"></i>
                 </span>
                 
-                <span title="Symbols count in article">3.4k</span>
+                <span title="Symbols count in article">3.1k</span>
               
 
               
@@ -498,7 +498,7 @@
 <h2 id="in-practice"><a class="markdownIt-Anchor" href="#in-practice"></a> In practice</h2>
 <p><a href="https://github.com/ksahlin/BESST" target="_blank" rel="noopener">BESST git repo</a> has full docs.</p>
 <p>Scripts used:</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/sh</span></span><br><span class="line"><span class="meta">#</span><span class="bash">PBS -N BESST</span></span><br><span class="line"><span class="meta">#</span><span class="bash">PBS -j eo</span></span><br><span class="line"><span class="meta">#</span><span class="bash">PBS -q Test</span></span><br><span class="line"><span class="meta">#</span><span class="bash">PBS -l nodes=1:ppn=20</span></span><br><span class="line"><span class="meta">#</span><span class="bash">PBS -d /home/haoyj/tasks/DenovoSeq/BESST</span></span><br><span class="line"><span class="meta">#</span><span class="bash">PBS -V</span></span><br><span class="line"></span><br><span class="line">echo Start time is `date +%Y/%m/%d--%H:%M`</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> align the PE/MP reads to contigs with BWA MEM</span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="keyword">for</span> sample <span class="keyword">in</span> 270B 500B 800B 5k-1 10k; <span class="keyword">do</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash">/home/software/bwa-0.7.15/bwa mem -t 40 /home/haoyj/tasks/DenovoSeq/MEGAHIT/megahit_out/final.contigs.fa /home/haoyj/tasks/DenovoSeq/raw_data/<span class="variable">$&#123;sample&#125;</span>_R1.fastq /home/haoyj/tasks/DenovoSeq/raw_data/<span class="variable">$&#123;sample&#125;</span>_R2.fastq | samtools view -uS - | samtools sort -@ 8 -m 4G - -T sam_sort_tmp -o ./bwaout/<span class="variable">$&#123;sample&#125;</span>.sorted.bam</span></span><br><span class="line"><span class="meta">#</span><span class="bash">samtools index ./bwaout/<span class="variable">$&#123;sample&#125;</span>.sorted.bam</span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="keyword">done</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Damn, I forgot why I use repair.sh.</span></span><br><span class="line">for sample in 3k_1 5k-2; do</span><br><span class="line">/home/software/bbmap/repair.sh in1=/home/haoyj/tasks/DenovoSeq/raw_data/$&#123;sample&#125;_R1.fastq in2=/home/haoyj/tasks/DenovoSeq/raw_data/$&#123;sample&#125;_R2.fastq out1=/home/haoyj/tasks/DenovoSeq/raw_data/$&#123;sample&#125;_R1.fixed.fastq out2=/home/haoyj/tasks/DenovoSeq/raw_data/$&#123;sample&#125;_R2.fixed.fastq</span><br><span class="line">/home/software/bwa-0.7.15/bwa mem -t 40 /home/haoyj/tasks/DenovoSeq/MEGAHIT/megahit_out/final.contigs.fa /home/haoyj/tasks/DenovoSeq/raw_data/$&#123;sample&#125;_R1.fixed.fastq /home/haoyj/tasks/DenovoSeq/raw_data/$&#123;sample&#125;_R2.fixed.fastq | samtools view -uS - | samtools sort -@ 8 -m 4G - -T sam_sort_tmp -o ./bwaout/$&#123;sample&#125;.sorted.bam</span><br><span class="line">samtools index ./bwaout/$&#123;sample&#125;.sorted.bam</span><br><span class="line">done</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> scaffold the contigs of MEGAHIT</span></span><br><span class="line">export PATH=/home/niuyw/software/Python.2.7.13/bin:$PATH</span><br><span class="line"></span><br><span class="line">/home/software/BESST/runBESST -plots -q -c /home/haoyj/tasks/DenovoSeq/MEGAHIT/megahit_out/final.contigs.fa -f ./bwaout/270B.sorted.bam ./bwaout/500B.sorted.bam ./bwaout/800B.sorted.bam ./bwaout/3k_1.sorted.bam ./bwaout/5k-1.sorted.bam ./bwaout/5k-2.sorted.bam ./bwaout/10k.sorted.bam -orientation fr fr fr rf rf rf rf</span><br><span class="line"></span><br><span class="line">/home/software/BESST/runBESST -plots -q -c /home/haoyj/tasks/DenovoSeq/MEGAHIT/megahit_out.no270/final.contigs.fa -f ./bwaout/500B.sorted.bam ./bwaout/800B.sorted.bam ./bwaout/3k_1.sorted.bam ./bwaout/5k-1.sorted.bam ./bwaout/5k-2.sorted.bam ./bwaout/10k.sorted.bam -orientation  fr fr rf rf rf rf -o ./no270</span><br><span class="line"></span><br><span class="line">echo Finish time is `date +%Y/%m/%d--%H:%M`</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/sh</span></span><br><span class="line"><span class="meta">#</span><span class="bash">PBS -N BESST</span></span><br><span class="line"><span class="meta">#</span><span class="bash">PBS -j eo</span></span><br><span class="line"><span class="meta">#</span><span class="bash">PBS -q Test</span></span><br><span class="line"><span class="meta">#</span><span class="bash">PBS -l nodes=1:ppn=20</span></span><br><span class="line"><span class="meta">#</span><span class="bash">PBS -V</span></span><br><span class="line"></span><br><span class="line">echo Start time is `date +%Y/%m/%d--%H:%M`</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> align the PE/MP reads to contigs with BWA MEM</span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="keyword">for</span> sample <span class="keyword">in</span> 270B 500B 800B 5k-1 10k; <span class="keyword">do</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash">/software/bwa-0.7.15/bwa mem -t 40 /DenovoSeq/MEGAHIT/megahit_out/final.contigs.fa /DenovoSeq/raw_data/<span class="variable">$&#123;sample&#125;</span>_R1.fastq /DenovoSeq/raw_data/<span class="variable">$&#123;sample&#125;</span>_R2.fastq | samtools view -uS - | samtools sort -@ 8 -m 4G - -T sam_sort_tmp -o ./bwaout/<span class="variable">$&#123;sample&#125;</span>.sorted.bam</span></span><br><span class="line"><span class="meta">#</span><span class="bash">samtools index ./bwaout/<span class="variable">$&#123;sample&#125;</span>.sorted.bam</span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="keyword">done</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Damn, I forgot why I use repair.sh.</span></span><br><span class="line">for sample in 3k_1 5k-2; do</span><br><span class="line">/software/bbmap/repair.sh in1=/DenovoSeq/raw_data/$&#123;sample&#125;_R1.fastq in2=/DenovoSeq/raw_data/$&#123;sample&#125;_R2.fastq out1=/DenovoSeq/raw_data/$&#123;sample&#125;_R1.fixed.fastq out2=/DenovoSeq/raw_data/$&#123;sample&#125;_R2.fixed.fastq</span><br><span class="line">/software/bwa-0.7.15/bwa mem -t 40 /DenovoSeq/MEGAHIT/megahit_out/final.contigs.fa /DenovoSeq/raw_data/$&#123;sample&#125;_R1.fixed.fastq /DenovoSeq/raw_data/$&#123;sample&#125;_R2.fixed.fastq | samtools view -uS - | samtools sort -@ 8 -m 4G - -T sam_sort_tmp -o ./bwaout/$&#123;sample&#125;.sorted.bam</span><br><span class="line">samtools index ./bwaout/$&#123;sample&#125;.sorted.bam</span><br><span class="line">done</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> scaffold the contigs of MEGAHIT</span></span><br><span class="line">export PATH=/software/Python.2.7.13/bin:$PATH</span><br><span class="line"></span><br><span class="line">/software/BESST/runBESST -plots -q -c /DenovoSeq/MEGAHIT/megahit_out/final.contigs.fa -f ./bwaout/270B.sorted.bam ./bwaout/500B.sorted.bam ./bwaout/800B.sorted.bam ./bwaout/3k_1.sorted.bam ./bwaout/5k-1.sorted.bam ./bwaout/5k-2.sorted.bam ./bwaout/10k.sorted.bam -orientation fr fr fr rf rf rf rf</span><br><span class="line"></span><br><span class="line">/software/BESST/runBESST -plots -q -c /DenovoSeq/MEGAHIT/megahit_out.no270/final.contigs.fa -f ./bwaout/500B.sorted.bam ./bwaout/800B.sorted.bam ./bwaout/3k_1.sorted.bam ./bwaout/5k-1.sorted.bam ./bwaout/5k-2.sorted.bam ./bwaout/10k.sorted.bam -orientation  fr fr rf rf rf rf -o ./no270</span><br><span class="line"></span><br><span class="line">echo Finish time is `date +%Y/%m/%d--%H:%M`</span><br></pre></td></tr></table></figure>
 <p>Tested with or without ins_270 library.</p>
 <p>And the stats I got:</p>
 <p>with ins_270 library:</p>
@@ -652,7 +652,7 @@
                 
                   <a href="/blog/archives/">
                 
-                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-count">19</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -691,7 +691,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">13</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">15</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -752,7 +756,17 @@
                     
                       
                     
-                    <span class="site-state-item-count">24</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">29</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>

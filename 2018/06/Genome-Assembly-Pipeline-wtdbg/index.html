@@ -1,0 +1,1525 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="_en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="3dnqtuxhGQK5nK7aqRtU2c3DzZlaVtBMN6M39UoGcgY" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/blog/css/main.css?v=6.1.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png?v=6.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png?v=6.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png?v=6.1.0">
+
+
+  <link rel="mask-icon" href="/blog/images/logo.svg?v=6.1.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '6.1.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Introduction wtdbg has two git repos: wtdbg and wtdbg-1.2.8, and the author Jue Ruan (who also developed SMARTdenovo) introduces them as:  wtdbg: A fuzzy Bruijn graph approach to long noisy reads ass">
+<meta name="keywords" content="bio-tools,genome assembly,TGS genome assembly">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Genome Assembly Pipeline: wtdbg">
+<meta property="og:url" content="https://yiweiniu.github.io/blog/2018/06/Genome-Assembly-Pipeline-wtdbg/index.html">
+<meta property="og:site_name" content="Yiwei Niu&#39;s Note">
+<meta property="og:description" content="Introduction wtdbg has two git repos: wtdbg and wtdbg-1.2.8, and the author Jue Ruan (who also developed SMARTdenovo) introduces them as:  wtdbg: A fuzzy Bruijn graph approach to long noisy reads ass">
+<meta property="og:locale" content="_en">
+<meta property="og:updated_time" content="2018-07-03T10:49:59.793Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Genome Assembly Pipeline: wtdbg">
+<meta name="twitter:description" content="Introduction wtdbg has two git repos: wtdbg and wtdbg-1.2.8, and the author Jue Ruan (who also developed SMARTdenovo) introduces them as:  wtdbg: A fuzzy Bruijn graph approach to long noisy reads ass">
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="Yiwei Niu's Note" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="https://yiweiniu.github.io/blog/2018/06/Genome-Assembly-Pipeline-wtdbg/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Genome Assembly Pipeline: wtdbg | Yiwei Niu's Note</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="_en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> 
+
+<div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Yiwei Niu's Note</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">to share, to learn</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-home menu-item-active">
+    <a href="/blog/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-categories menu-item-active">
+    <a href="/blog/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-tags">
+    <a href="/blog/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />Tags</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-archives">
+    <a href="/blog/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+</li>
+
+      
+        
+        
+          
+  
+  <li class="menu-item menu-item-about">
+    <a href="https:/yiweiniu.github.io/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />About</a>
+</li>
+
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+  
+
+
+
+ </div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yiweiniu.github.io/blog/blog/2018/06/Genome-Assembly-Pipeline-wtdbg/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yiwei Niu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/blog/images/portrait.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yiwei Niu's Note">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Genome Assembly Pipeline: wtdbg</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-30T15:16:55+08:00">2018-06-30</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/blog/categories/genome-assembly/" itemprop="url" rel="index"><span itemprop="name">genome assembly</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/blog/categories/genome-assembly/TGS-pipeline/" itemprop="url" rel="index"><span itemprop="name">TGS pipeline</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2018/06/Genome-Assembly-Pipeline-wtdbg/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/06/Genome-Assembly-Pipeline-wtdbg/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views: 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-symbolscount">
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                <span title="Symbols count in article">7.7k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                <span title="Reading time">0:08</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="introduction"><a class="markdownIt-Anchor" href="#introduction"></a> Introduction</h2>
+<p><code>wtdbg</code> has two git repos: <a href="https://github.com/ruanjue/wtdbg" target="_blank" rel="noopener">wtdbg</a> and <a href="https://github.com/ruanjue/wtdbg-1.2.8" target="_blank" rel="noopener">wtdbg-1.2.8</a>, and the author Jue Ruan (who also developed <a href="https://github.com/ruanjue/smartdenovo" target="_blank" rel="noopener">SMARTdenovo</a>) introduces them as:</p>
+<blockquote>
+<p>wtdbg: A fuzzy Bruijn graph approach to long noisy reads assembly. wtdbg is desiged to assemble huge genomes in very limited time, it requires a PowerPC with multiple-cores and very big RAM (1Tb+). wtdbg can assemble a 100 X human pacbio dataset within one day.</p>
+</blockquote>
+<blockquote>
+<p>wtdbg-1.2.8: Important update of wtdbg</p>
+</blockquote>
+<p>Jue Ruan <a href="https://github.com/ruanjue/wtdbg-1.2.8/issues/2#issuecomment-372202134" target="_blank" rel="noopener">preferred <code>wtdbg-1.2.8</code></a>.</p>
+<blockquote>
+<p>In personal feeling, I like wtdbg-1.2.8 more than SMARTdenovo and wtdbg-1.1.006.</p>
+</blockquote>
+<p>This tool hasn’t been published now (20180307), and I found it in an evaluation paper from BIB:</p>
+<blockquote>
+<p>Jayakumar V, Sakakibara Y. Comprehensive evaluation of non-hybrid genome assembly tools for third-generation PacBio long-read sequence data. Briefings in Bioinformatics. 2017 Nov 3:bbx147-bbx147. doi:10.1093/bib/bbx147</p>
+</blockquote>
+<p>My feelings:</p>
+<ul>
+<li>very fast</li>
+<li>easy to install</li>
+<li>easy to use</li>
+<li>docs and discussions about this tool is limited.</li>
+<li>aggressive</li>
+<li>good N50 (at least in our two genome projects, an insect and a plant)</li>
+<li>relatively bad completeness</li>
+</ul>
+<h2 id="general-usage"><a class="markdownIt-Anchor" href="#general-usage"></a> General usage</h2>
+<p>Because <code>wtdbg</code> has two different versions and I didn’t know which one is more suitable for me, I just tried both.</p>
+<h3 id="wtdbg-v11006"><a class="markdownIt-Anchor" href="#wtdbg-v11006"></a> wtdbg v1.1.006</h3>
+<h4 id="install"><a class="markdownIt-Anchor" href="#install"></a> Install</h4>
+<p>I got <a href="https://github.com/ruanjue/wtdbg/issues/4" target="_blank" rel="noopener">a problem</a> when compile the software. The issue is caused by the <code>CPATH</code> of our OS, and eventually solved with the help of Jue Ruan.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/ruanjue/wtdbg.git &amp;&amp; cd wtdbg</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
+<h4 id="examples-in-the-doc"><a class="markdownIt-Anchor" href="#examples-in-the-doc"></a> Examples in the doc</h4>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> assembly of contigs</span></span><br><span class="line">wtdbg-1.1.006 -t 96 -i pb-reads.fa -o dbg -H -k 21 -S 1.02 -e 3 2&gt;&amp;1 | tee log.wtdbg</span><br><span class="line"><span class="meta">#</span><span class="bash"> -t: number of threads, please <span class="built_in">type</span> <span class="string">'wtdbg-1.1.006 -h'</span> to get a document</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> -i: you can <span class="built_in">set</span> more than one sequences files, such as -i 1.fa. -i 2.fq -i 3.fa.gz -i 4.fq.gz</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> -o: the prefix of results</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> -S: 1.01 will use all kmers, 1.02 will use half by sumsampling, 1.04 will use 1/4, and so on</span></span><br><span class="line"><span class="meta">#</span><span class="bash">     2.01 will use half by picking minimizers, but not fully tested</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> -e: <span class="keyword">if</span> too low coverage(&lt; 30 X), try to <span class="built_in">set</span> -e 2</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> please note that dbg.ctg.fa is full of errors from raw reads</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> first round of polishment</span></span><br><span class="line">wtdbg-cns -t 96 -i dbg.ctg.lay -o dbg.ctg.lay.fa -k 15 2&gt;&amp;1 | tee log.cns.1</span><br><span class="line"><span class="meta">#</span><span class="bash"> dbg.ctg.lay.fa is the polished contigs</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> <span class="keyword">if</span> possible, further polishment</span></span><br><span class="line">minimap -t 96 -L 100 dbg.ctg.lay.fa pb-reads.fa 2&gt; &gt;(tee log.minimap) | best_minimap_hit.pl | awk '&#123;print $6"\t"$8"\t"$9"\t"$1"\t"$5"\t"$3"\t"$4&#125;' &gt;dbg.map</span><br><span class="line">map2dbgcns dbg.ctg.lay.fa pb-reads.fa dbg.map &gt;dbg.map.lay</span><br><span class="line">wtdbg-cns -t 96 -i dbg.map.lay -o dbg.map.lay.fa -k 13 2&gt;&amp;1 | tee log.cns.2</span><br><span class="line"><span class="meta">#</span><span class="bash"> you need to concat all reads into one file <span class="keyword">for</span> minimap and map2dbgcns</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> dbg.map.lay.fa is the final contigs</span></span><br></pre></td></tr></table></figure>
+<h3 id="wtdbg-v128"><a class="markdownIt-Anchor" href="#wtdbg-v128"></a> wtdbg v1.2.8</h3>
+<h4 id="install-2"><a class="markdownIt-Anchor" href="#install-2"></a> Install</h4>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git https://github.com/ruanjue/wtdbg-1.2.8.git &amp;&amp; cd wtdbg-1.2.8</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
+<p><strong>For higher error rate long sequences</strong></p>
+<ul>
+<li>Decrease <code>-p</code>. Try <code>-p 19</code> or <code>-p 17</code></li>
+<li>Decrease <code>-S.</code> Try <code>-S</code> 2 or <code>-S</code> 1</li>
+</ul>
+<p>Both will increase computing time.</p>
+<p><strong>For very high coverage</strong></p>
+<ul>
+<li>Increase <code>--edge-min</code>. Try <code>--edge-min 4</code>, or higher.</li>
+</ul>
+<p><strong>For low coverage</strong></p>
+<ul>
+<li>Decrease <code>--edge-min</code>. Try <code>--edge-min 2 --rescue-low-cov-edges</code>.</li>
+</ul>
+<p><strong>Filter reads</strong></p>
+<ul>
+<li><code>--tidy-reads 5000</code>. Will filtered shorter sequences. If names in format of <code>\/\d+_\d+$</code>, will selected the longest subread.</li>
+</ul>
+<p><strong>Consensus</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wtdbg-cns -t 64 -i dbg.ctg.lay -o dbg.ctg.lay.fa</span><br></pre></td></tr></table></figure>
+<p>The output file <code>dbg.ctg.lay.fa</code> is ready for further polished by <code>PILON</code> or <code>QUIVER</code>.</p>
+<h2 id="in-practice"><a class="markdownIt-Anchor" href="#in-practice"></a> In practice</h2>
+<p>I’ve tried two versions of <code>wtdbg</code> and diferent parameter combinations in two genome assembly projects. The parameters and the logs/stats received are as follows:</p>
+<h3 id="an-insect"><a class="markdownIt-Anchor" href="#an-insect"></a> An insect</h3>
+<ul>
+<li>The species: high heterogeneity, high AT, high repetition.</li>
+<li>Genome size: male 790M, female 830M.</li>
+<li>Data used：about 70X PacBio long-reads.</li>
+<li>OS environment: CentOS6.6  86_64  glibc-2.12. QSUB grid system. 15 Fat nodes (2TB RAM, 40 CPU) and 10 Blade nodes (156G RAM, 24 CPU).</li>
+</ul>
+<h4 id="wtdbg-v11006-2"><a class="markdownIt-Anchor" href="#wtdbg-v11006-2"></a> wtdbg v1.1.006</h4>
+<h5 id="run1-with-h-k-21-s-102-e-3"><a class="markdownIt-Anchor" href="#run1-with-h-k-21-s-102-e-3"></a> run1, with <code>-H -k 21 -S 1.02 -e 3</code>:</h5>
+<p>stats：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">total base: 607971510</span><br><span class="line">%GC: 32.21</span><br><span class="line">num: 4655</span><br><span class="line">min: 2700</span><br><span class="line">max: 6594103</span><br><span class="line">avg: 130606</span><br><span class="line">N50: 573208</span><br><span class="line">N90: 46228</span><br></pre></td></tr></table></figure>
+<h4 id="wtdbg-v128-2"><a class="markdownIt-Anchor" href="#wtdbg-v128-2"></a> wtdbg v1.2.8</h4>
+<h5 id="run1-with-defalult-k-0-p-21-s-4"><a class="markdownIt-Anchor" href="#run1-with-defalult-k-0-p-21-s-4"></a> run1, with defalult <code>-k 0 -p 21 -S 4</code>:</h5>
+<p>stats:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">total base: 757804309</span><br><span class="line">%GC: 32.37</span><br><span class="line">num: 20960</span><br><span class="line">min: 2247</span><br><span class="line">max: 3846453</span><br><span class="line">avg: 36154</span><br><span class="line">N50: 103681</span><br><span class="line">N90: 12128</span><br></pre></td></tr></table></figure>
+<h5 id="run2-with-edge-min-2-rescue-low-cov-edges-tidy-reads-5000-because-median-node-depth-6-less-than-20"><a class="markdownIt-Anchor" href="#run2-with-edge-min-2-rescue-low-cov-edges-tidy-reads-5000-because-median-node-depth-6-less-than-20"></a> run2, with <code>--edge-min 2 --rescue-low-cov-edges --tidy-reads 5000</code> (Because median node depth = 6, less than 20)</h5>
+<p>stats:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">total base: 845834770</span><br><span class="line">%GC: 32.51</span><br><span class="line">num: 19555</span><br><span class="line">min: 2030</span><br><span class="line">max: 2025061</span><br><span class="line">avg: 43254</span><br><span class="line">N50: 158013</span><br><span class="line">N90: 14248</span><br></pre></td></tr></table></figure>
+<h5 id="run3-with-k-15-p-0-s-1-rescue-low-cov-edges-tidy-reads-5000"><a class="markdownIt-Anchor" href="#run3-with-k-15-p-0-s-1-rescue-low-cov-edges-tidy-reads-5000"></a> run3, with <code>-k 15 -p 0 -S 1 --rescue-low-cov-edges --tidy-reads 5000</code></h5>
+<p>stats:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Size_includeN	795503989</span><br><span class="line">Size_withoutN	795503989</span><br><span class="line">Seq_Num	12557</span><br><span class="line">Mean_Size	63351</span><br><span class="line">Median_Size	15690</span><br><span class="line">Longest_Seq	7257493</span><br><span class="line">Shortest_Seq	2277</span><br><span class="line">GC_Content	32.44</span><br><span class="line">N50	308340</span><br><span class="line">N90	21383</span><br></pre></td></tr></table></figure>
+<h5 id="run4-with-k-0-p-19-s-2-rescue-low-cov-edges-tidy-reads-5000"><a class="markdownIt-Anchor" href="#run4-with-k-0-p-19-s-2-rescue-low-cov-edges-tidy-reads-5000"></a> run4, with <code>-k 0 -p 19 -S 2 --rescue-low-cov-edges --tidy-reads 5000</code></h5>
+<p>stats:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Size_includeN	780618272</span><br><span class="line">Size_withoutN	780618272</span><br><span class="line">Seq_Num	11722</span><br><span class="line">Mean_Size	66594</span><br><span class="line">Median_Size	16335</span><br><span class="line">Longest_Seq	8184393</span><br><span class="line">Shortest_Seq	2547</span><br><span class="line">GC_Content	32.4</span><br><span class="line">N50	294217</span><br><span class="line">N90	23008</span><br></pre></td></tr></table></figure>
+<h5 id="run5-with-tidy-reads-5000-k-21-p-0-s-2-rescue-low-cov-edges"><a class="markdownIt-Anchor" href="#run5-with-tidy-reads-5000-k-21-p-0-s-2-rescue-low-cov-edges"></a> run5, with <code>--tidy-reads 5000 -k 21 -p 0 -S 2 --rescue-low-cov-edges</code></h5>
+<p>stats:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Size_includeN	843085698</span><br><span class="line">Size_withoutN	843085698</span><br><span class="line">Seq_Num	26341</span><br><span class="line">Mean_Size	32006</span><br><span class="line">Median_Size	18982</span><br><span class="line">Longest_Seq	491063</span><br><span class="line">Shortest_Seq	2992</span><br><span class="line">GC_Content	32.51</span><br><span class="line">N50	54544</span><br><span class="line">N90	13737</span><br></pre></td></tr></table></figure>
+<h5 id="run6-with-k-0-p-21-s-4-aln-noskip"><a class="markdownIt-Anchor" href="#run6-with-k-0-p-21-s-4-aln-noskip"></a> run6, with <code>-k 0 -p 21 -S 4 --aln-noskip</code></h5>
+<p>After discussion with the author, he suggested me to use <code>--aln-noskip</code>.</p>
+<p>stats:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Size_includeN	726925732</span><br><span class="line">Size_withoutN	726925732</span><br><span class="line">Seq_Num	15983</span><br><span class="line">Mean_Size	45481</span><br><span class="line">Median_Size	12714</span><br><span class="line">Longest_Seq	2523944</span><br><span class="line">Shortest_Seq	2290</span><br><span class="line">GC_Content	32.21</span><br><span class="line">N50	164635</span><br><span class="line">N90	14464</span><br></pre></td></tr></table></figure>
+<h5 id="run7-with-k-15-p-0-s-1-rescue-low-cov-edges-tidy-reads-5000-aln-noskip"><a class="markdownIt-Anchor" href="#run7-with-k-15-p-0-s-1-rescue-low-cov-edges-tidy-reads-5000-aln-noskip"></a> run7, with <code>-k 15 -p 0 -S 1 --rescue-low-cov-edges --tidy-reads 5000 --aln-noskip</code></h5>
+<p>stats:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Size_includeN	762713695</span><br><span class="line">Size_withoutN	762713695</span><br><span class="line">Seq_Num	9803</span><br><span class="line">Mean_Size	77804</span><br><span class="line">Median_Size	15366</span><br><span class="line">Longest_Seq	11163143</span><br><span class="line">Shortest_Seq	2449</span><br><span class="line">GC_Content	32.22</span><br><span class="line">N50	488952</span><br><span class="line">N90	25913</span><br></pre></td></tr></table></figure>
+<p>After all the experiments, I’m not sure what to do next (try more or move on). As suggeested by Jue Ruan, N50 contig of ~500kb is good enough for scaffolding and genomic analysis. So I should try to evaluate the assembly and improve it while trying other tools.</p>
+<h3 id="a-plant"><a class="markdownIt-Anchor" href="#a-plant"></a> A plant</h3>
+<ul>
+<li>The species: high heterogeneity, high repetition.</li>
+<li>Genome size: 2.1G.</li>
+<li>Data used：more than 100X PacBio long reads.</li>
+<li>OS environment: CentOS6.6  86_64  glibc-2.12. QSUB grid system. 15 Fat nodes (2TB RAM, 40 CPU) and 10 Blade nodes (156G RAM, 24 CPU).</li>
+</ul>
+<h4 id="wtdbg-v11006-3"><a class="markdownIt-Anchor" href="#wtdbg-v11006-3"></a> wtdbg v1.1.006</h4>
+<p>commands:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> run1, version 1.1.006</span></span><br><span class="line"><span class="meta">$</span><span class="bash">TOOLDIR/wtdbg/wtdbg -t <span class="variable">$PPN</span> -i <span class="variable">$WORKDIR</span>/data/Pacbio/all.fq.gz -o run1 -H -k 21 -S 1.02 -e 3 2&gt;&amp;1 | tee log.run1</span></span><br><span class="line"><span class="meta">$</span><span class="bash">TOOLDIR/wtdbg/wtdbg-cns -t <span class="variable">$PPN</span> -i run1.ctg.lay -o run1.ctg.lay.fa -k 15 2&gt;&amp;1 | tee log.run1.cns.1</span></span><br></pre></td></tr></table></figure>
+<p>stats:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Size_includeN	2105945650</span><br><span class="line">Size_withoutN	2105945650</span><br><span class="line">Seq_Num	21871</span><br><span class="line">Mean_Size	96289</span><br><span class="line">Median_Size	48435</span><br><span class="line">Longest_Seq	2968570</span><br><span class="line">Shortest_Seq	2531</span><br><span class="line">GC_Content	38.27</span><br><span class="line">N50	194480</span><br><span class="line">L50	2523</span><br><span class="line">N90	40454</span><br><span class="line">Gap	0.0</span><br></pre></td></tr></table></figure>
+<h4 id="wtdbg-v128-3"><a class="markdownIt-Anchor" href="#wtdbg-v128-3"></a> wtdbg  v1.2.8</h4>
+<p>commands:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> run2, version 1.2.8</span></span><br><span class="line"><span class="meta">$</span><span class="bash">TOOLDIR/wtdbg-1.2.8/wtdbg-1.2.8 -t <span class="variable">$PPN</span> -i <span class="variable">$WORKDIR</span>/data/Pacbio/all.fq.gz -o run2</span></span><br><span class="line"><span class="meta">$</span><span class="bash">TOOLDIR/wtdbg-1.2.8/wtdbg-cns -t <span class="variable">$PPN</span> -i run2.ctg.lay -o run2.ctg.lay.fa</span></span><br></pre></td></tr></table></figure>
+<p>stats:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Size_includeN	1924031835</span><br><span class="line">Size_withoutN	1924031835</span><br><span class="line">Seq_Num	37933</span><br><span class="line">Mean_Size	50721</span><br><span class="line">Median_Size	14836</span><br><span class="line">Longest_Seq	2424157</span><br><span class="line">Shortest_Seq	2006</span><br><span class="line">GC_Content	38.75</span><br><span class="line">N50	184177</span><br><span class="line">L50	2391</span><br><span class="line">N90	17404</span><br><span class="line">Gap	0.0</span><br></pre></td></tr></table></figure>
+<h3 id="where-to-go-next"><a class="markdownIt-Anchor" href="#where-to-go-next"></a> Where to go next?</h3>
+<p>I asked Jue Ruan that <a href="https://github.com/ruanjue/wtdbg-1.2.8/issues/5" target="_blank" rel="noopener">if it is necessary to run consensus tools on the results of <code>wtdbg</code> or <code>smartdenovo</code></a>, he said:</p>
+<blockquote>
+<p>The inside consensus tool <code>wtdbg-cns</code> aims to provide a quick way to reduce sequencing errors. It is suggested to use <code>Quiver</code> and/or <code>Pilon</code> to polish the consensus sequences after you feel happy with the assembly. Usually, <code>wtdbg-cns</code> can reduce error rate down to less than 1%, which can be well-aligned by short reads.</p>
+</blockquote>
+<h2 id="useful-links"><a class="markdownIt-Anchor" href="#useful-links"></a> Useful links</h2>
+<ul>
+<li><a href="https://github.com/ruanjue/wtdbg-1.2.8/issues/2" target="_blank" rel="noopener">Discussions about “Optimisation of parameters”</a></li>
+<li><a href="https://github.com/ruanjue/wtdbg-1.2.8/issues/5" target="_blank" rel="noopener">if it is necessary to run consensus tools on the results of wtdbg or smartdenovo</a></li>
+</ul>
+<h2 id="change-log"><a class="markdownIt-Anchor" href="#change-log"></a> Change log</h2>
+<ul>
+<li>20180307: create the note.</li>
+<li>20180630: add the ‘A plant’ part.</li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/bio-tools/" rel="tag"># bio-tools</a>
+          
+            <a href="/blog/tags/genome-assembly/" rel="tag"># genome assembly</a>
+          
+            <a href="/blog/tags/TGS-genome-assembly/" rel="tag"># TGS genome assembly</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/06/Find-Contamination-in-Genome-Assembly-by-Kraken/" rel="next" title="Find Contamination in Genome Assembly by Kraken">
+                <i class="fa fa-chevron-left"></i> Find Contamination in Genome Assembly by Kraken
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/07/Remove-Contamination-of-Pokaryotic-Organisms-in-Reads/" rel="prev" title="Remove Contamination of Pokaryotic Organisms in Reads">
+                Remove Contamination of Pokaryotic Organisms in Reads <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type = "text/javascript" src = "//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a7ad07b7823d03b" async = "async" ></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/blog/images/portrait.jpg"
+                alt="Yiwei Niu" />
+            
+              <p class="site-author-name" itemprop="name">Yiwei Niu</p>
+              <p class="site-description motion-element" itemprop="description">a beginner, a learner</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/blog/archives/">
+                
+                    <span class="site-state-item-count">19</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/blog/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">15</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/blog/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/blog/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:xiaohuwangwang@qq.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/YiweiNiu" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://weibo.com/u/3049858680" target="_blank" title="Weibo"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/ywniu" target="_blank" title="Twitter"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kaigedong.github.io/" title="Kaige Dong" target="_blank">Kaige Dong</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://homolog.us/blogs/" title="Homolog.us" target="_blank">Homolog.us</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://cgatoxford.wordpress.com/" title="CGAT" target="_blank">CGAT</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.gettinggeneticsdone.com/" title="Getting Genetics Done" target="_blank">Getting Genetics Done</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.acgt.me/" title="ACGT" target="_blank">ACGT</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#introduction"><span class="nav-number">1.</span> <span class="nav-text"> Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#general-usage"><span class="nav-number">2.</span> <span class="nav-text"> General usage</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#wtdbg-v11006"><span class="nav-number">2.1.</span> <span class="nav-text"> wtdbg v1.1.006</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#install"><span class="nav-number">2.1.1.</span> <span class="nav-text"> Install</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#examples-in-the-doc"><span class="nav-number">2.1.2.</span> <span class="nav-text"> Examples in the doc</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wtdbg-v128"><span class="nav-number">2.2.</span> <span class="nav-text"> wtdbg v1.2.8</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#install-2"><span class="nav-number">2.2.1.</span> <span class="nav-text"> Install</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#in-practice"><span class="nav-number">3.</span> <span class="nav-text"> In practice</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#an-insect"><span class="nav-number">3.1.</span> <span class="nav-text"> An insect</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#wtdbg-v11006-2"><span class="nav-number">3.1.1.</span> <span class="nav-text"> wtdbg v1.1.006</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#run1-with-h-k-21-s-102-e-3"><span class="nav-number">3.1.1.1.</span> <span class="nav-text"> run1, with -H -k 21 -S 1.02 -e 3:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#wtdbg-v128-2"><span class="nav-number">3.1.2.</span> <span class="nav-text"> wtdbg v1.2.8</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#run1-with-defalult-k-0-p-21-s-4"><span class="nav-number">3.1.2.1.</span> <span class="nav-text"> run1, with defalult -k 0 -p 21 -S 4:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#run2-with-edge-min-2-rescue-low-cov-edges-tidy-reads-5000-because-median-node-depth-6-less-than-20"><span class="nav-number">3.1.2.2.</span> <span class="nav-text"> run2, with --edge-min 2 --rescue-low-cov-edges --tidy-reads 5000 (Because median node depth = 6, less than 20)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#run3-with-k-15-p-0-s-1-rescue-low-cov-edges-tidy-reads-5000"><span class="nav-number">3.1.2.3.</span> <span class="nav-text"> run3, with -k 15 -p 0 -S 1 --rescue-low-cov-edges --tidy-reads 5000</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#run4-with-k-0-p-19-s-2-rescue-low-cov-edges-tidy-reads-5000"><span class="nav-number">3.1.2.4.</span> <span class="nav-text"> run4, with -k 0 -p 19 -S 2 --rescue-low-cov-edges --tidy-reads 5000</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#run5-with-tidy-reads-5000-k-21-p-0-s-2-rescue-low-cov-edges"><span class="nav-number">3.1.2.5.</span> <span class="nav-text"> run5, with --tidy-reads 5000 -k 21 -p 0 -S 2 --rescue-low-cov-edges</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#run6-with-k-0-p-21-s-4-aln-noskip"><span class="nav-number">3.1.2.6.</span> <span class="nav-text"> run6, with -k 0 -p 21 -S 4 --aln-noskip</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#run7-with-k-15-p-0-s-1-rescue-low-cov-edges-tidy-reads-5000-aln-noskip"><span class="nav-number">3.1.2.7.</span> <span class="nav-text"> run7, with -k 15 -p 0 -S 1 --rescue-low-cov-edges --tidy-reads 5000 --aln-noskip</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#a-plant"><span class="nav-number">3.2.</span> <span class="nav-text"> A plant</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#wtdbg-v11006-3"><span class="nav-number">3.2.1.</span> <span class="nav-text"> wtdbg v1.1.006</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#wtdbg-v128-3"><span class="nav-number">3.2.2.</span> <span class="nav-text"> wtdbg  v1.2.8</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#where-to-go-next"><span class="nav-number">3.3.</span> <span class="nav-text"> Where to go next?</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#useful-links"><span class="nav-number">4.</span> <span class="nav-text"> Useful links</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#change-log"><span class="nav-number">5.</span> <span class="nav-text"> Change log</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-mars"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yiwei Niu</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=6.1.0"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=6.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=6.1.0"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=6.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=6.1.0"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=6.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=6.1.0"></script>
+
+
+
+  
+
+  
+    <script id="dsq-count-scr" src="https://yiwei-nius-note.disqus.com/count.js" async></script>
+  
+
+  
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'https://yiweiniu.github.io/blog/2018/06/Genome-Assembly-Pipeline-wtdbg/';
+        this.page.identifier = '2018/06/Genome-Assembly-Pipeline-wtdbg/';
+        this.page.title = 'Genome Assembly Pipeline: wtdbg';
+      };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://yiwei-nius-note.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        loadComments();
+      
+    </script>
+  
+
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/blog/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -109,7 +109,7 @@
 <meta property="og:site_name" content="Yiwei Niu&#39;s Note">
 <meta property="og:description" content="MEGAHIT can be used to assemble contigs, and SOAPdenovo-fusion can be used for scaffolding. Since they were developed by the same team, I just put them together. This note is more about MEGAHIT and it">
 <meta property="og:locale" content="_en">
-<meta property="og:updated_time" content="2018-04-23T09:06:10.635Z">
+<meta property="og:updated_time" content="2018-07-09T02:32:52.286Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Genome Assembly Pipeline: MEGAHIT &amp; SOAPdenovo-fusion">
 <meta name="twitter:description" content="MEGAHIT can be used to assemble contigs, and SOAPdenovo-fusion can be used for scaffolding. Since they were developed by the same team, I just put them together. This note is more about MEGAHIT and it">
@@ -229,7 +229,7 @@
         
           
   
-  <li class="menu-item menu-item-categories">
+  <li class="menu-item menu-item-categories menu-item-active">
     <a href="/blog/categories/" rel="section">
       <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories</a>
 </li>
@@ -239,7 +239,7 @@
         
           
   
-  <li class="menu-item menu-item-tags menu-item-active">
+  <li class="menu-item menu-item-tags">
     <a href="/blog/tags/" rel="section">
       <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />Tags</a>
 </li>
@@ -504,32 +504,117 @@
 <li><a href="https://github.com/voutcn/megahit/wiki/An-example-of-real-assembly" target="_blank" rel="noopener">An example of real assembly</a></li>
 </ul>
 <h2 id="in-practice-megahit"><a class="markdownIt-Anchor" href="#in-practice-megahit"></a> In practice - MEGAHIT</h2>
-<p>I’ve tried <code>MEGAHIT</code> with raw/trimmed data, with/without ins_270 library, with all (PE and MPE)/PE libraries, and here are the scripts I used and stats received.</p>
-<p>Reason why I tried with all (PE and MPE)/PE libraries is because I ran <code>MEGAHIT</code> with all data I had, and then the author recommended only to use PE libraries. See the discussions with the authors.</p>
+<ul>
+<li>An insect</li>
+<li>The species: high heterogeneity, high AT, high repetition.</li>
+<li>Genome size: male 790M, female 830M.</li>
+</ul>
+<h3 id="data"><a class="markdownIt-Anchor" href="#data"></a> data</h3>
+<p>The Illumina data I used:</p>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Insert size (bp)</th>
+<th>Avg. read size (bp)</th>
+<th>Raw bases (G)</th>
+<th>Raw reads (M)</th>
+<th>Sequencing depth</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AV1, M</td>
+<td>270</td>
+<td>150</td>
+<td>44.1</td>
+<td>293.6</td>
+<td>55.5</td>
+</tr>
+<tr>
+<td>AV2, F</td>
+<td>500</td>
+<td>150</td>
+<td>24.4</td>
+<td>162.8</td>
+<td>29.4</td>
+</tr>
+<tr>
+<td>AV2, F</td>
+<td>800</td>
+<td>150</td>
+<td>15.8</td>
+<td>105.4</td>
+<td>19.0</td>
+</tr>
+<tr>
+<td>AV2, F</td>
+<td>3k</td>
+<td>114</td>
+<td>10.4</td>
+<td>91.8</td>
+<td>12.5</td>
+</tr>
+<tr>
+<td>AV2, F</td>
+<td>5k</td>
+<td>150</td>
+<td>29.8</td>
+<td>198.7</td>
+<td>35.9</td>
+</tr>
+<tr>
+<td>AV2, F</td>
+<td>5k</td>
+<td>114</td>
+<td>11.5</td>
+<td>101.2</td>
+<td>13.8</td>
+</tr>
+<tr>
+<td>AV2, F</td>
+<td>10k</td>
+<td>150</td>
+<td>17.5</td>
+<td>116.8</td>
+<td>21.1</td>
+</tr>
+<tr>
+<td>Total</td>
+<td>-</td>
+<td>-</td>
+<td>153.5</td>
+<td>1070.3</td>
+<td>187.3</td>
+</tr>
+</tbody>
+</table>
+<p>I’ve tried <code>MEGAHIT</code> with raw/trimmed data, with/without ins_270 library, with all (PE and MPE)/PE libraries, and here are the scripts I used and stats received. The reason why I tried with/without ins_270 library was because it’s from a male but other libraries were from females.</p>
+<p>The reason why I tried with all (PE and MPE)/PE libraries was because I ran <code>MEGAHIT</code> with all data I had, and then the author recommended only to use PE libraries. See the discussions with the authors.</p>
 <ul>
 <li><a href="https://github.com/aquaskyline/SOAPdenovo2/issues/27" target="_blank" rel="noopener">Segmentation fault with scaff step when use different MEGAHIT’s output</a></li>
 <li><a href="https://github.com/aquaskyline/SOAPdenovo2/issues/26" target="_blank" rel="noopener">How to use SOAPdenovo-fusion scaffold the output of MEGAHIT?</a></li>
 </ul>
 <h3 id="run1-all-raw-data"><a class="markdownIt-Anchor" href="#run1-all-raw-data"></a> run1, all raw data</h3>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/home/software/megahit_v1.1.1_LINUX_CPUONLY_x86_64-bin/megahit -t 20 --no-mercy -1 /home/haoyj/tasks/DenovoSeq/raw_data/270B_R1.fastq,/home/haoyj/tasks/DenovoSeq/raw_data/500B_R1.fastq,/home/haoyj/tasks/DenovoSeq/raw_data/800B_R1.fastq,/home/haoyj/tasks/DenovoSeq/raw_data/3k_1_R1.fastq,/home/haoyj/tasks/DenovoSeq/raw_data/5k-1_R1.fastq,/home/haoyj/tasks/DenovoSeq/raw_data/5k-2_R1.fastq,/home/haoyj/tasks/DenovoSeq/raw_data/10k_R1.fastq -2 /home/haoyj/tasks/DenovoSeq/raw_data/270B_R2.fastq,/home/haoyj/tasks/DenovoSeq/raw_data/500B_R2.fastq,/home/haoyj/tasks/DenovoSeq/raw_data/800B_R2.fastq,/home/haoyj/tasks/DenovoSeq/raw_data/3k_1_R2.fastq,/home/haoyj/tasks/DenovoSeq/raw_data/5k-1_R2.fastq,/home/haoyj/tasks/DenovoSeq/raw_data/5k-2_R2.fastq,/home/haoyj/tasks/DenovoSeq/raw_data/10k_R2.fastq -o megahit_out1</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/software/megahit_v1.1.1_LINUX_CPUONLY_x86_64-bin/megahit -t 20 --no-mercy -1 /DenovoSeq/raw_data/270B_R1.fastq,/DenovoSeq/raw_data/500B_R1.fastq,/DenovoSeq/raw_data/800B_R1.fastq,/DenovoSeq/raw_data/3k_1_R1.fastq,/DenovoSeq/raw_data/5k-1_R1.fastq,/DenovoSeq/raw_data/5k-2_R1.fastq,/DenovoSeq/raw_data/10k_R1.fastq -2 /DenovoSeq/raw_data/270B_R2.fastq,/DenovoSeq/raw_data/500B_R2.fastq,/DenovoSeq/raw_data/800B_R2.fastq,/DenovoSeq/raw_data/3k_1_R2.fastq,/DenovoSeq/raw_data/5k-1_R2.fastq,/DenovoSeq/raw_data/5k-2_R2.fastq,/DenovoSeq/raw_data/10k_R2.fastq -o megahit_out1</span><br></pre></td></tr></table></figure>
 <p>and the stats:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Size_includeN: 894816039</span><br><span class="line">Size_withoutN: 894816039</span><br><span class="line">Seq_Num: 1292253</span><br><span class="line">Mean_Size: 692</span><br><span class="line">Median_Size: 418</span><br><span class="line">Longest_Seq: 42542</span><br><span class="line">Shortest_Seq: 200</span><br><span class="line">GC_Content: 32.9</span><br><span class="line">N50: 834</span><br><span class="line">N90: 333</span><br></pre></td></tr></table></figure>
 <h3 id="run2-all-trimmed-data-by-trimmomatic"><a class="markdownIt-Anchor" href="#run2-all-trimmed-data-by-trimmomatic"></a> run2, all trimmed data (by Trimmomatic)</h3>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/home/software/megahit_v1.1.1_LINUX_CPUONLY_x86_64-bin/megahit -t 38 --no-mercy -1 /home/haoyj/tasks/DenovoSeq/trimmomatic/270B_R_1P.fastq,/home/haoyj/tasks/DenovoSeq/trimmomatic/500B_R_1P.fastq,/home/haoyj/tasks/DenovoSeq/trimmomatic/800B_R_1P.fastq,/home/haoyj/tasks/DenovoSeq/trimmomatic/3k_1_R_1P.fastq,/home/haoyj/tasks/DenovoSeq/trimmomatic/5k-1_R_1P.fastq,/home/haoyj/tasks/DenovoSeq/trimmomatic/5k-2_R_1P.fastq,/home/haoyj/tasks/DenovoSeq/trimmomatic/10k_R_1P.fastq -2 /home/haoyj/tasks/DenovoSeq/trimmomatic/270B_R_2P.fastq,/home/haoyj/tasks/DenovoSeq/trimmomatic/500B_R_2P.fastq,/home/haoyj/tasks/DenovoSeq/trimmomatic/800B_R_2P.fastq,/home/haoyj/tasks/DenovoSeq/trimmomatic/3k_1_R_2P.fastq,/home/haoyj/tasks/DenovoSeq/trimmomatic/5k-1_R_2P.fastq,/home/haoyj/tasks/DenovoSeq/trimmomatic/5k-2_R_2P.fastq,/home/haoyj/tasks/DenovoSeq/trimmomatic/10k_R_2P.fastq</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/software/megahit_v1.1.1_LINUX_CPUONLY_x86_64-bin/megahit -t 38 --no-mercy -1 /DenovoSeq/trimmomatic/270B_R_1P.fastq,/DenovoSeq/trimmomatic/500B_R_1P.fastq,/DenovoSeq/trimmomatic/800B_R_1P.fastq,/DenovoSeq/trimmomatic/3k_1_R_1P.fastq,/DenovoSeq/trimmomatic/5k-1_R_1P.fastq,/DenovoSeq/trimmomatic/5k-2_R_1P.fastq,/DenovoSeq/trimmomatic/10k_R_1P.fastq -2 /DenovoSeq/trimmomatic/270B_R_2P.fastq,/DenovoSeq/trimmomatic/500B_R_2P.fastq,/DenovoSeq/trimmomatic/800B_R_2P.fastq,/DenovoSeq/trimmomatic/3k_1_R_2P.fastq,/DenovoSeq/trimmomatic/5k-1_R_2P.fastq,/DenovoSeq/trimmomatic/5k-2_R_2P.fastq,/DenovoSeq/trimmomatic/10k_R_2P.fastq</span><br></pre></td></tr></table></figure>
 <p>and the stats:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Size_includeN: 767662393</span><br><span class="line">Size_withoutN: 767662393</span><br><span class="line">Seq_Num: 989298</span><br><span class="line">Mean_Size: 775</span><br><span class="line">Median_Size: 428</span><br><span class="line">Longest_Seq: 80889</span><br><span class="line">Shortest_Seq: 200</span><br><span class="line">GC_Content: 32.64</span><br><span class="line">N50: 1115</span><br><span class="line">N90: 340</span><br></pre></td></tr></table></figure>
 <h3 id="run3-all-raw-data-without-ins_270"><a class="markdownIt-Anchor" href="#run3-all-raw-data-without-ins_270"></a> run3, all raw data, without ins_270</h3>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/home/software/megahit_v1.1.1_LINUX_CPUONLY_x86_64-bin/megahit -t 20 --no-mercy -1 /home/haoyj/tasks/DenovoSeq/raw_data/500B_R1.fastq,/home/haoyj/tasks/DenovoSeq/raw_data/800B_R1.fastq,/home/haoyj/tasks/DenovoSeq/raw_data/3k_1_R1.fastq,/home/haoyj/tasks/DenovoSeq/raw_data/5k-1_R1.fastq,/home/haoyj/tasks/DenovoSeq/raw_data/5k-2_R1.fastq,/home/haoyj/tasks/DenovoSeq/raw_data/10k_R1.fastq -2 /home/haoyj/tasks/DenovoSeq/raw_data/500B_R2.fastq,/home/haoyj/tasks/DenovoSeq/raw_data/800B_R2.fastq,/home/haoyj/tasks/DenovoSeq/raw_data/3k_1_R2.fastq,/home/haoyj/tasks/DenovoSeq/raw_data/5k-1_R2.fastq,/home/haoyj/tasks/DenovoSeq/raw_data/5k-2_R2.fastq,/home/haoyj/tasks/DenovoSeq/raw_data/10k_R2.fastq -o megahit_out.no2701</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/software/megahit_v1.1.1_LINUX_CPUONLY_x86_64-bin/megahit -t 20 --no-mercy -1 /DenovoSeq/raw_data/500B_R1.fastq,/DenovoSeq/raw_data/800B_R1.fastq,/DenovoSeq/raw_data/3k_1_R1.fastq,/DenovoSeq/raw_data/5k-1_R1.fastq,/DenovoSeq/raw_data/5k-2_R1.fastq,/DenovoSeq/raw_data/10k_R1.fastq -2 /DenovoSeq/raw_data/500B_R2.fastq,/DenovoSeq/raw_data/800B_R2.fastq,/DenovoSeq/raw_data/3k_1_R2.fastq,/DenovoSeq/raw_data/5k-1_R2.fastq,/DenovoSeq/raw_data/5k-2_R2.fastq,/DenovoSeq/raw_data/10k_R2.fastq -o megahit_out.no2701</span><br></pre></td></tr></table></figure>
 <p>and the stats:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Size_includeN: 800012379</span><br><span class="line">Size_withoutN: 800012379</span><br><span class="line">Seq_Num: 1045419</span><br><span class="line">Mean_Size: 765</span><br><span class="line">Median_Size: 422</span><br><span class="line">Longest_Seq: 52915</span><br><span class="line">Shortest_Seq: 200</span><br><span class="line">GC_Content: 32.64</span><br><span class="line">N50: 1074</span><br><span class="line">N90: 340</span><br></pre></td></tr></table></figure>
 <h3 id="run4-all-trimmed-data-without-ins_270"><a class="markdownIt-Anchor" href="#run4-all-trimmed-data-without-ins_270"></a> run4, all trimmed data, without ins_270</h3>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Size_includeN: 679262960</span><br><span class="line">Size_withoutN: 679262960</span><br><span class="line">Seq_Num: 782765</span><br><span class="line">Mean_Size: 867</span><br><span class="line">Median_Size: 429</span><br><span class="line">Longest_Seq: 61533</span><br><span class="line">Shortest_Seq: 200</span><br><span class="line">GC_Content: 32.31</span><br><span class="line">N50: 1529</span><br><span class="line">N90: 348</span><br></pre></td></tr></table></figure>
-<h3 id="run5-generate-contigs-used-only-with-small-insert-size-library-all-pe-libraries"><a class="markdownIt-Anchor" href="#run5-generate-contigs-used-only-with-small-insert-size-library-all-pe-libraries"></a> run5, generate contigs used only with small insert size library, all PE libraries</h3>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/home/software/megahit_v1.1.1_LINUX_CPUONLY_x86_64-bin/megahit -t 40 --no-mercy -1 /home/haoyj/tasks/DenovoSeq/trimmomatic/270B_R_1P.fastq,/home/haoyj/tasks/DenovoSeq/trimmomatic/500B_R_1P.fastq,/home/haoyj/tasks/DenovoSeq/trimmomatic/800B_R_1P.fastq -2 /home/haoyj/tasks/DenovoSeq/trimmomatic/270B_R_2P.fastq,/home/haoyj/tasks/DenovoSeq/trimmomatic/500B_R_2P.fastq,/home/haoyj/tasks/DenovoSeq/trimmomatic/800B_R_2P.fastq -o small_insert</span><br></pre></td></tr></table></figure>
+<h3 id="run5-use-only-with-all-pe-libraries"><a class="markdownIt-Anchor" href="#run5-use-only-with-all-pe-libraries"></a> run5, use only with all PE libraries</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/software/megahit_v1.1.1_LINUX_CPUONLY_x86_64-bin/megahit -t 40 --no-mercy -1 /DenovoSeq/trimmomatic/270B_R_1P.fastq,/DenovoSeq/trimmomatic/500B_R_1P.fastq,/DenovoSeq/trimmomatic/800B_R_1P.fastq -2 /DenovoSeq/trimmomatic/270B_R_2P.fastq,/DenovoSeq/trimmomatic/500B_R_2P.fastq,/DenovoSeq/trimmomatic/800B_R_2P.fastq -o small_insert</span><br></pre></td></tr></table></figure>
 <p>and the stats:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Size_includeN: 672319141</span><br><span class="line">Size_withoutN: 672319141</span><br><span class="line">Seq_Num: 777747</span><br><span class="line">Mean_Size: 864</span><br><span class="line">Median_Size: 428</span><br><span class="line">Longest_Seq: 71939</span><br><span class="line">Shortest_Seq: 200</span><br><span class="line">GC_Content: 31.93</span><br><span class="line">N50: 1505</span><br><span class="line">N90: 346</span><br></pre></td></tr></table></figure>
-<h3 id="run6-generate-contigs-used-only-with-small-insert-size-library-all-pe-libraries-except-ins_270"><a class="markdownIt-Anchor" href="#run6-generate-contigs-used-only-with-small-insert-size-library-all-pe-libraries-except-ins_270"></a> run6, generate contigs used only with small insert size library, all PE libraries except ins_270</h3>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/home/software/megahit_v1.1.1_LINUX_CPUONLY_x86_64-bin/megahit -t 40 --no-mercy -1 /home/haoyj/tasks/DenovoSeq/trimmomatic/500B_R_1P.fastq,/home/haoyj/tasks/DenovoSeq/trimmomatic/800B_R_1P.fastq -2 /home/haoyj/tasks/DenovoSeq/trimmomatic/500B_R_2P.fastq,/home/haoyj/tasks/DenovoSeq/trimmomatic/800B_R_2P.fastq -o small_insert.no270</span><br></pre></td></tr></table></figure>
+<h3 id="run6-use-only-with-all-pe-libraries-but-ins_270"><a class="markdownIt-Anchor" href="#run6-use-only-with-all-pe-libraries-but-ins_270"></a> run6, use only with all PE libraries but ins_270</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/software/megahit_v1.1.1_LINUX_CPUONLY_x86_64-bin/megahit -t 40 --no-mercy -1 /DenovoSeq/trimmomatic/500B_R_1P.fastq,/DenovoSeq/trimmomatic/800B_R_1P.fastq -2 /DenovoSeq/trimmomatic/500B_R_2P.fastq,/DenovoSeq/trimmomatic/800B_R_2P.fastq -o small_insert.no270</span><br></pre></td></tr></table></figure>
 <p>and the stats:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Size_includeN: 582099585</span><br><span class="line">Size_withoutN: 582099585</span><br><span class="line">Seq_Num: 575808</span><br><span class="line">Mean_Size: 1010</span><br><span class="line">Median_Size: 433</span><br><span class="line">Longest_Seq: 55064</span><br><span class="line">Shortest_Seq: 200</span><br><span class="line">GC_Content: 31.43</span><br><span class="line">N50: 2158</span><br><span class="line">N90: 358</span><br></pre></td></tr></table></figure>
 <h3 id="conclusions"><a class="markdownIt-Anchor" href="#conclusions"></a> conclusions</h3>
@@ -539,21 +624,25 @@
 <li>using only PE libraries generates better results than using all libraries (PE, MPE)</li>
 </ul>
 <h2 id="in-practice-soapdenovo-fusion"><a class="markdownIt-Anchor" href="#in-practice-soapdenovo-fusion"></a> In practice - SOAPdenovo-fusion</h2>
-<p>I’ve asked the author <a href="https://github.com/aquaskyline/SOAPdenovo2/issues/26" target="_blank" rel="noopener">How to use SOAPdenovo-fusion scaffold the output of MEGAHIT?</a>.</p>
+<p>I’ve asked the author that <a href="https://github.com/aquaskyline/SOAPdenovo2/issues/26" target="_blank" rel="noopener">How to use SOAPdenovo-fusion scaffold the output of MEGAHIT?</a>.</p>
 <p>I first tried <code>SOAPdenovo-fusion</code> with/without ins_270 library, and found not using ins_270 library got better results (tested with <code>k-mer=63</code>). Then I tested different kmer: <code>37, 41, 43, 45, 55, 61, 63, 71, 75</code> and found that <code>kmer=41</code> got best results. I’ve also tried with/without <code>-F</code> parameter, but I didn’t understand the diference completely.</p>
 <p>I just put the config, scripts and stats here when using <code>kmer = 41</code>.</p>
 <p>config</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line">#maximal read length</span><br><span class="line">max_rd_len=151</span><br><span class="line">[LIB]</span><br><span class="line">avg_ins=500</span><br><span class="line">reverse_seq=0</span><br><span class="line">asm_flags=2</span><br><span class="line">#in which order the reads are used while scaffolding</span><br><span class="line">rank=1</span><br><span class="line"># cutoff of pair number for a reliable connection (at least 3 for short insert size)</span><br><span class="line">pair_num_cutoff=3</span><br><span class="line">#minimum aligned length to contigs for a reliable read location (at least 32 for short insert size)</span><br><span class="line">map_len=32</span><br><span class="line">#a pair of fastq file, read 1 file should always be followed by read 2 file</span><br><span class="line">q1=/home/haoyj/tasks/DenovoSeq/trimmomatic/500B_R_1P.fastq</span><br><span class="line">q2=/home/haoyj/tasks/DenovoSeq/trimmomatic/500B_R_2P.fastq</span><br><span class="line">[LIB]</span><br><span class="line">#average insert size</span><br><span class="line">avg_ins=800</span><br><span class="line">#if sequence needs to be reversed</span><br><span class="line">reverse_seq=0</span><br><span class="line">#in which part(s) the reads are used</span><br><span class="line">asm_flags=2</span><br><span class="line">#in which order the reads are used while scaffolding</span><br><span class="line">rank=3</span><br><span class="line"># cutoff of pair number for a reliable connection (at least 3 for short insert size)</span><br><span class="line">pair_num_cutoff=3</span><br><span class="line">#minimum aligned length to contigs for a reliable read location (at least 32 for short insert size)</span><br><span class="line">map_len=32</span><br><span class="line">#a pair of fastq file, read 1 file should always be followed by read 2 file</span><br><span class="line">q1=/home/haoyj/tasks/DenovoSeq/trimmomatic/800B_R_1P.fastq</span><br><span class="line">q2=/home/haoyj/tasks/DenovoSeq/trimmomatic/800B_R_2P.fastq</span><br><span class="line">[LIB]</span><br><span class="line">avg_ins=3000</span><br><span class="line">reverse_seq=1</span><br><span class="line">asm_flags=2</span><br><span class="line">rank=3</span><br><span class="line"># cutoff of pair number for a reliable connection (at least 5 for large insert size)</span><br><span class="line">pair_num_cutoff=4</span><br><span class="line">#minimum aligned length to contigs for a reliable read location (at least 35 for large insert size)</span><br><span class="line">map_len=35</span><br><span class="line">q1=/home/haoyj/tasks/DenovoSeq/trimmomatic/3k_1_R_1P.fastq</span><br><span class="line">q2=/home/haoyj/tasks/DenovoSeq/trimmomatic/3k_1_R_2P.fastq</span><br><span class="line">[LIB]</span><br><span class="line">avg_ins=5000</span><br><span class="line">reverse_seq=1</span><br><span class="line">asm_flags=2</span><br><span class="line">rank=4</span><br><span class="line"># cutoff of pair number for a reliable connection (at least 5 for large insert size)</span><br><span class="line">pair_num_cutoff=5</span><br><span class="line">#minimum aligned length to contigs for a reliable read location (at least 35 for large insert size)</span><br><span class="line">map_len=35</span><br><span class="line">q1=/home/haoyj/tasks/DenovoSeq/trimmomatic/5k-1_R_1P.fastq</span><br><span class="line">q2=/home/haoyj/tasks/DenovoSeq/trimmomatic/5k-1_R_2P.fastq</span><br><span class="line">[LIB]</span><br><span class="line">avg_ins=5000</span><br><span class="line">reverse_seq=1</span><br><span class="line">asm_flags=2</span><br><span class="line">rank=4</span><br><span class="line"># cutoff of pair number for a reliable connection (at least 5 for large insert size)</span><br><span class="line">pair_num_cutoff=5</span><br><span class="line">#minimum aligned length to contigs for a reliable read location (at least 35 for large insert size)</span><br><span class="line">map_len=35</span><br><span class="line">q1=/home/haoyj/tasks/DenovoSeq/trimmomatic/5k-2_R_1P.fastq</span><br><span class="line">q2=/home/haoyj/tasks/DenovoSeq/trimmomatic/5k-2_R_2P.fastq</span><br><span class="line">[LIB]</span><br><span class="line">avg_ins=10000</span><br><span class="line">reverse_seq=1</span><br><span class="line">asm_flags=2</span><br><span class="line">rank=5</span><br><span class="line"># cutoff of pair number for a reliable connection (at least 5 for large insert size)</span><br><span class="line">pair_num_cutoff=5</span><br><span class="line">#minimum aligned length to contigs for a reliable read location (at least 35 for large insert size)</span><br><span class="line">map_len=35</span><br><span class="line">q1=/home/haoyj/tasks/DenovoSeq/trimmomatic/10k_R_1P.fastq</span><br><span class="line">q2=/home/haoyj/tasks/DenovoSeq/trimmomatic/10k_R_2P.fastq</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line">#maximal read length</span><br><span class="line">max_rd_len=151</span><br><span class="line">[LIB]</span><br><span class="line">avg_ins=500</span><br><span class="line">reverse_seq=0</span><br><span class="line">asm_flags=2</span><br><span class="line">#in which order the reads are used while scaffolding</span><br><span class="line">rank=1</span><br><span class="line"># cutoff of pair number for a reliable connection (at least 3 for short insert size)</span><br><span class="line">pair_num_cutoff=3</span><br><span class="line">#minimum aligned length to contigs for a reliable read location (at least 32 for short insert size)</span><br><span class="line">map_len=32</span><br><span class="line">#a pair of fastq file, read 1 file should always be followed by read 2 file</span><br><span class="line">q1=/DenovoSeq/trimmomatic/500B_R_1P.fastq</span><br><span class="line">q2=/DenovoSeq/trimmomatic/500B_R_2P.fastq</span><br><span class="line">[LIB]</span><br><span class="line">#average insert size</span><br><span class="line">avg_ins=800</span><br><span class="line">#if sequence needs to be reversed</span><br><span class="line">reverse_seq=0</span><br><span class="line">#in which part(s) the reads are used</span><br><span class="line">asm_flags=2</span><br><span class="line">#in which order the reads are used while scaffolding</span><br><span class="line">rank=3</span><br><span class="line"># cutoff of pair number for a reliable connection (at least 3 for short insert size)</span><br><span class="line">pair_num_cutoff=3</span><br><span class="line">#minimum aligned length to contigs for a reliable read location (at least 32 for short insert size)</span><br><span class="line">map_len=32</span><br><span class="line">#a pair of fastq file, read 1 file should always be followed by read 2 file</span><br><span class="line">q1=/DenovoSeq/trimmomatic/800B_R_1P.fastq</span><br><span class="line">q2=/DenovoSeq/trimmomatic/800B_R_2P.fastq</span><br><span class="line">[LIB]</span><br><span class="line">avg_ins=3000</span><br><span class="line">reverse_seq=1</span><br><span class="line">asm_flags=2</span><br><span class="line">rank=3</span><br><span class="line"># cutoff of pair number for a reliable connection (at least 5 for large insert size)</span><br><span class="line">pair_num_cutoff=4</span><br><span class="line">#minimum aligned length to contigs for a reliable read location (at least 35 for large insert size)</span><br><span class="line">map_len=35</span><br><span class="line">q1=/DenovoSeq/trimmomatic/3k_1_R_1P.fastq</span><br><span class="line">q2=/DenovoSeq/trimmomatic/3k_1_R_2P.fastq</span><br><span class="line">[LIB]</span><br><span class="line">avg_ins=5000</span><br><span class="line">reverse_seq=1</span><br><span class="line">asm_flags=2</span><br><span class="line">rank=4</span><br><span class="line"># cutoff of pair number for a reliable connection (at least 5 for large insert size)</span><br><span class="line">pair_num_cutoff=5</span><br><span class="line">#minimum aligned length to contigs for a reliable read location (at least 35 for large insert size)</span><br><span class="line">map_len=35</span><br><span class="line">q1=/DenovoSeq/trimmomatic/5k-1_R_1P.fastq</span><br><span class="line">q2=/DenovoSeq/trimmomatic/5k-1_R_2P.fastq</span><br><span class="line">[LIB]</span><br><span class="line">avg_ins=5000</span><br><span class="line">reverse_seq=1</span><br><span class="line">asm_flags=2</span><br><span class="line">rank=4</span><br><span class="line"># cutoff of pair number for a reliable connection (at least 5 for large insert size)</span><br><span class="line">pair_num_cutoff=5</span><br><span class="line">#minimum aligned length to contigs for a reliable read location (at least 35 for large insert size)</span><br><span class="line">map_len=35</span><br><span class="line">q1=/DenovoSeq/trimmomatic/5k-2_R_1P.fastq</span><br><span class="line">q2=/DenovoSeq/trimmomatic/5k-2_R_2P.fastq</span><br><span class="line">[LIB]</span><br><span class="line">avg_ins=10000</span><br><span class="line">reverse_seq=1</span><br><span class="line">asm_flags=2</span><br><span class="line">rank=5</span><br><span class="line"># cutoff of pair number for a reliable connection (at least 5 for large insert size)</span><br><span class="line">pair_num_cutoff=5</span><br><span class="line">#minimum aligned length to contigs for a reliable read location (at least 35 for large insert size)</span><br><span class="line">map_len=35</span><br><span class="line">q1=/DenovoSeq/trimmomatic/10k_R_1P.fastq</span><br><span class="line">q2=/DenovoSeq/trimmomatic/10k_R_2P.fastq</span><br></pre></td></tr></table></figure>
 <h3 id="run1-without-f"><a class="markdownIt-Anchor" href="#run1-without-f"></a> run1, without <code>-F</code></h3>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/home/software/SOAPdenovo2-r241/SOAPdenovo-fusion -D -s config -p 40 -K 41 -g k41 -c ../final.contigs.fa</span><br><span class="line">/home/software/SOAPdenovo2-r241/SOAPdenovo-127mer map -s config -p 40 -g k41</span><br><span class="line">/home/software/SOAPdenovo2-r241/SOAPdenovo-127mer scaff -p 40 -g k41</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/software/SOAPdenovo2-r241/SOAPdenovo-fusion -D -s config -p 40 -K 41 -g k41 -c ../final.contigs.fa</span><br><span class="line">/software/SOAPdenovo2-r241/SOAPdenovo-127mer map -s config -p 40 -g k41</span><br><span class="line">/software/SOAPdenovo2-r241/SOAPdenovo-127mer scaff -p 40 -g k41</span><br></pre></td></tr></table></figure>
 <p>stats:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Size_includeN: 765246417</span><br><span class="line">Size_withoutN: 574675978</span><br><span class="line">Seq_Num: 377325</span><br><span class="line">Mean_Size: 2028</span><br><span class="line">Median_Size: 393</span><br><span class="line">Longest_Seq: 436254</span><br><span class="line">Shortest_Seq: 200</span><br><span class="line">GC_Content: 31.42</span><br><span class="line">N50: 33478</span><br><span class="line">N90: 439</span><br><span class="line">Gap: 24.9</span><br></pre></td></tr></table></figure>
 <h3 id="run2-with-f"><a class="markdownIt-Anchor" href="#run2-with-f"></a> run2, with <code>-F</code></h3>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/home/software/SOAPdenovo2-r241/SOAPdenovo-fusion -D -s config -p 40 -K 41 -g k41_1 -c ../final.contigs.fa</span><br><span class="line">/home/software/SOAPdenovo2-r241/SOAPdenovo-127mer map -s config -p 40 -g k41_1</span><br><span class="line">/home/software/SOAPdenovo2-r241/SOAPdenovo-127mer scaff -p 40 -g k41_1 -F</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/software/SOAPdenovo2-r241/SOAPdenovo-fusion -D -s config -p 40 -K 41 -g k41_1 -c ../final.contigs.fa</span><br><span class="line">/software/SOAPdenovo2-r241/SOAPdenovo-127mer map -s config -p 40 -g k41_1</span><br><span class="line">/software/SOAPdenovo2-r241/SOAPdenovo-127mer scaff -p 40 -g k41_1 -F</span><br></pre></td></tr></table></figure>
 <p>stats:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Size_includeN: 764869730</span><br><span class="line">Size_withoutN: 579451220</span><br><span class="line">Seq_Num: 377325</span><br><span class="line">Mean_Size: 2027</span><br><span class="line">Median_Size: 393</span><br><span class="line">Longest_Seq: 436104</span><br><span class="line">Shortest_Seq: 200</span><br><span class="line">GC_Content: 31.45</span><br><span class="line">N50: 33463</span><br><span class="line">N90: 439</span><br><span class="line">Gap: 24.24</span><br></pre></td></tr></table></figure>
 <p>It seems that <code>-F</code> parameter didn’t help much (the %gap).</p>
 <p>This note can be a reference in case I will have to use it again.</p>
+<h2 id="change-log"><a class="markdownIt-Anchor" href="#change-log"></a> Change log</h2>
+<ul>
+<li>20180308: create the note.</li>
+</ul>
 
       
     </div>
@@ -697,7 +786,7 @@
                 
                   <a href="/blog/archives/">
                 
-                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-count">19</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -736,7 +825,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">13</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">15</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -797,7 +890,17 @@
                     
                       
                     
-                    <span class="site-state-item-count">24</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">29</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -894,7 +997,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#intro"><span class="nav-number">1.</span> <span class="nav-text"> Intro</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#general-usage"><span class="nav-number">2.</span> <span class="nav-text"> General usage</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#in-practice-megahit"><span class="nav-number">3.</span> <span class="nav-text"> In practice - MEGAHIT</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#run1-all-raw-data"><span class="nav-number">3.1.</span> <span class="nav-text"> run1, all raw data</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#run2-all-trimmed-data-by-trimmomatic"><span class="nav-number">3.2.</span> <span class="nav-text"> run2, all trimmed data (by Trimmomatic)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#run3-all-raw-data-without-ins_270"><span class="nav-number">3.3.</span> <span class="nav-text"> run3, all raw data, without ins_270</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#run4-all-trimmed-data-without-ins_270"><span class="nav-number">3.4.</span> <span class="nav-text"> run4, all trimmed data, without ins_270</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#run5-generate-contigs-used-only-with-small-insert-size-library-all-pe-libraries"><span class="nav-number">3.5.</span> <span class="nav-text"> run5, generate contigs used only with small insert size library, all PE libraries</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#run6-generate-contigs-used-only-with-small-insert-size-library-all-pe-libraries-except-ins_270"><span class="nav-number">3.6.</span> <span class="nav-text"> run6, generate contigs used only with small insert size library, all PE libraries except ins_270</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#conclusions"><span class="nav-number">3.7.</span> <span class="nav-text"> conclusions</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#in-practice-soapdenovo-fusion"><span class="nav-number">4.</span> <span class="nav-text"> In practice - SOAPdenovo-fusion</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#run1-without-f"><span class="nav-number">4.1.</span> <span class="nav-text"> run1, without -F</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#run2-with-f"><span class="nav-number">4.2.</span> <span class="nav-text"> run2, with -F</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#intro"><span class="nav-number">1.</span> <span class="nav-text"> Intro</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#general-usage"><span class="nav-number">2.</span> <span class="nav-text"> General usage</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#in-practice-megahit"><span class="nav-number">3.</span> <span class="nav-text"> In practice - MEGAHIT</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#data"><span class="nav-number">3.1.</span> <span class="nav-text"> data</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#run1-all-raw-data"><span class="nav-number">3.2.</span> <span class="nav-text"> run1, all raw data</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#run2-all-trimmed-data-by-trimmomatic"><span class="nav-number">3.3.</span> <span class="nav-text"> run2, all trimmed data (by Trimmomatic)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#run3-all-raw-data-without-ins_270"><span class="nav-number">3.4.</span> <span class="nav-text"> run3, all raw data, without ins_270</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#run4-all-trimmed-data-without-ins_270"><span class="nav-number">3.5.</span> <span class="nav-text"> run4, all trimmed data, without ins_270</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#run5-use-only-with-all-pe-libraries"><span class="nav-number">3.6.</span> <span class="nav-text"> run5, use only with all PE libraries</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#run6-use-only-with-all-pe-libraries-but-ins_270"><span class="nav-number">3.7.</span> <span class="nav-text"> run6, use only with all PE libraries but ins_270</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#conclusions"><span class="nav-number">3.8.</span> <span class="nav-text"> conclusions</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#in-practice-soapdenovo-fusion"><span class="nav-number">4.</span> <span class="nav-text"> In practice - SOAPdenovo-fusion</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#run1-without-f"><span class="nav-number">4.1.</span> <span class="nav-text"> run1, without -F</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#run2-with-f"><span class="nav-number">4.2.</span> <span class="nav-text"> run2, with -F</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#change-log"><span class="nav-number">5.</span> <span class="nav-text"> Change log</span></a></li></ol></div>
             
 
           </div>

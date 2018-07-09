@@ -109,7 +109,7 @@
 <meta property="og:site_name" content="Yiwei Niu&#39;s Note">
 <meta property="og:description" content="Intro From its official site  LINKS is a scalable genomics application for scaffolding or re-scaffolding genome assembly drafts with long reads, such as those produced by Oxford Nanopore Technologies">
 <meta property="og:locale" content="_en">
-<meta property="og:updated_time" content="2018-04-23T09:06:01.228Z">
+<meta property="og:updated_time" content="2018-07-09T02:23:06.727Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Genome Assembly Pipeline: LINKS">
 <meta name="twitter:description" content="Intro From its official site  LINKS is a scalable genomics application for scaffolding or re-scaffolding genome assembly drafts with long reads, such as those produced by Oxford Nanopore Technologies">
@@ -229,7 +229,7 @@
         
           
   
-  <li class="menu-item menu-item-categories">
+  <li class="menu-item menu-item-categories menu-item-active">
     <a href="/blog/categories/" rel="section">
       <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories</a>
 </li>
@@ -239,7 +239,7 @@
         
           
   
-  <li class="menu-item menu-item-tags menu-item-active">
+  <li class="menu-item menu-item-tags">
     <a href="/blog/tags/" rel="section">
       <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />Tags</a>
 </li>
@@ -447,7 +447,7 @@
                   <i class="fa fa-file-word-o"></i>
                 </span>
                 
-                <span title="Symbols count in article">12k</span>
+                <span title="Symbols count in article">11k</span>
               
 
               
@@ -459,7 +459,7 @@
                   <i class="fa fa-clock-o"></i>
                 </span>
                 
-                <span title="Reading time">0:12</span>
+                <span title="Reading time">0:11</span>
               
             </div>
           
@@ -511,32 +511,314 @@
 <p>Simultaneous exploration of vast kmer space is expected to yield better scaffolding results.</p>
 <p>WARNING: Specifying many distances will require large amount of RAM, especially with low -t values.</p>
 <h2 id="in-practice"><a class="markdownIt-Anchor" href="#in-practice"></a> In practice</h2>
-<p>I’ve tried LINKS with differenct contigs/scaffolds, and with different parameters/different PacBio coverages.</p>
-<p>I encounter a problem and solved with the help of the author: <a href="https://github.com/bcgsc/LINKS/issues/12" target="_blank" rel="noopener">LINKS termineted with no error message when I used hybrid reads to scaffold</a>.</p>
-<p>The <code>-t</code> and <code>-d</code> are important for RAM consuming. I’ve tried <code>-t</code> with <code>5, 10, 20</code>, and <code>-t 20</code> works. <code>-d</code> doesn’t matter in my case, so I just set lots of <code>-d</code>.</p>
+<h3 id="background"><a class="markdownIt-Anchor" href="#background"></a> background</h3>
+<ul>
+<li>An insect</li>
+<li>The species: high heterogeneity, high AT, high repetition.</li>
+<li>Genome size: male 790M, female 830M.</li>
+</ul>
+<h3 id="data"><a class="markdownIt-Anchor" href="#data"></a> data</h3>
+<p>The Illumina data I used:</p>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Insert size (bp)</th>
+<th>Avg. read size (bp)</th>
+<th>Raw bases (G)</th>
+<th>Raw reads (M)</th>
+<th>Sequencing depth</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AV1, M</td>
+<td>270</td>
+<td>150</td>
+<td>44.1</td>
+<td>293.6</td>
+<td>55.5</td>
+</tr>
+<tr>
+<td>AV2, F</td>
+<td>500</td>
+<td>150</td>
+<td>24.4</td>
+<td>162.8</td>
+<td>29.4</td>
+</tr>
+<tr>
+<td>AV2, F</td>
+<td>800</td>
+<td>150</td>
+<td>15.8</td>
+<td>105.4</td>
+<td>19.0</td>
+</tr>
+<tr>
+<td>AV2, F</td>
+<td>3k</td>
+<td>114</td>
+<td>10.4</td>
+<td>91.8</td>
+<td>12.5</td>
+</tr>
+<tr>
+<td>AV2, F</td>
+<td>5k</td>
+<td>150</td>
+<td>29.8</td>
+<td>198.7</td>
+<td>35.9</td>
+</tr>
+<tr>
+<td>AV2, F</td>
+<td>5k</td>
+<td>114</td>
+<td>11.5</td>
+<td>101.2</td>
+<td>13.8</td>
+</tr>
+<tr>
+<td>AV2, F</td>
+<td>10k</td>
+<td>150</td>
+<td>17.5</td>
+<td>116.8</td>
+<td>21.1</td>
+</tr>
+<tr>
+<td>Total</td>
+<td>-</td>
+<td>-</td>
+<td>153.5</td>
+<td>1070.3</td>
+<td>187.3</td>
+</tr>
+</tbody>
+</table>
+<p>And the PacBio data:</p>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Raw bases (G)</th>
+<th>Raw reads (M)</th>
+<th>Sequencing depth</th>
+<th>Avg.read size (bp)</th>
+<th>N50 (bp)</th>
+<th>N90 (bp)</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AV3, F</td>
+<td>15.2</td>
+<td>20.1</td>
+<td>18.31</td>
+<td>7550</td>
+<td>10046</td>
+<td>4558</td>
+<td>20170111</td>
+</tr>
+<tr>
+<td>AV4, F</td>
+<td>45.2</td>
+<td>4.6</td>
+<td>54.46</td>
+<td>9798</td>
+<td>17348</td>
+<td>5702</td>
+<td>20171224</td>
+</tr>
+<tr>
+<td>Total</td>
+<td>60.4</td>
+<td>24.7</td>
+<td>72.77</td>
+<td>9115</td>
+<td>14630</td>
+<td>5310</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<p>Because we didn’t receive the data at the same time (first all Illumina data, then 20X PacBio data, finally another 50X PacBio data), we tried many different assembly strategies: Illumina-dominant, and PacBio-dominant. We found ‘PacBio-dominant pipelines’ produced significantly good results, so we gradually gave up other pipelines and focused on exploring PacBio assemblers.</p>
+<p>This note is one of the attempts of ‘Illumina-dominant pipelines’, and I ran LINKS as a scaffoling tool, after runing MEGAHIT-SOAPdenovo successfully. I’ve tried so many with MEGAHIT, and I ran LINKS after every attempt. See <a href="https://yiweiniu.github.io/blog/2018/03/Genome-assembly-pipeline-MEGAHIT-SOAPdenovo-fusion/">Genome Assembly Pipeline: MEGAHIT &amp; SOAPdenovo-fusion</a>. I put two representative results here as a memo.</p>
+<p>PS: I encountered a problem and solved with the help of the author: <a href="https://github.com/bcgsc/LINKS/issues/12" target="_blank" rel="noopener">LINKS termineted with no error message when I used hybrid reads to scaffold</a>.</p>
+<p>The <code>-t</code> and <code>-d</code> are important for RAM consumption. I’ve tried <code>-t</code> with <code>5, 10, 20</code>, and <code>-t 20</code> works. <code>-d</code> didn’t matter in my case, so I just set lots of <code>-d</code>.</p>
 <p>Scripts I used and the stats I got:</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/sh</span></span><br><span class="line"><span class="meta">#</span><span class="bash">PBS -N reLINKS5</span></span><br><span class="line"><span class="meta">#</span><span class="bash">PBS -j eo</span></span><br><span class="line"><span class="meta">#</span><span class="bash">PBS -q Fat</span></span><br><span class="line"><span class="meta">#</span><span class="bash">PBS -l nodes=1:ppn=2</span></span><br><span class="line"><span class="meta">#</span><span class="bash">PBS -d /home/haoyj/tasks/DenovoSeq/MEGAHIT/LINKS</span></span><br><span class="line"><span class="meta">#</span><span class="bash">PBS -V</span></span><br><span class="line"></span><br><span class="line">LINKS_HOME=/home/software/links_v1.8.5</span><br><span class="line">WORK_DIR=/home/haoyj/tasks/DenovoSeq</span><br><span class="line"></span><br><span class="line">echo Start time is `date +%Y/%m/%d--%H:%M`</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> scaffold the output of MEGAHIT, t tried: 5, 10, 20 works</span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="variable">$LINKS_HOME</span>/LINKS -k 21 -f <span class="variable">$WORK_DIR</span>/MEGAHIT/megahit_out1/final.contigs.fa -s Pacbio.fof -b LINKS1 -t 20 -d 4000,5000,6000,8000,10000,15000,20000</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> scaffold the output of MEGAHIT no 270, t tried: 5, 10, 20 works</span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="variable">$LINKS_HOME</span>/LINKS -k 21 -f <span class="variable">$WORK_DIR</span>/MEGAHIT/megahit_out.no270/final.contigs.fa -s Pacbio.fof -b LINKS2 -t 20 -d 4000,5000,6000,8000,10000,15000,20000</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> re-scaffold the output of SOAP with long <span class="built_in">read</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="variable">$LINKS_HOME</span>/LINKS -k 21 -f <span class="variable">$WORK_DIR</span>/MEGAHIT/SOAP_fusion_no270/k63.scafSeq -s Pacbio.fof -b reLINKS1 -t 20 -d 4000,5000,6000,8000,10000,15000,20000</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> re-scafflod the output of MEGAHIT small insert size and SOAP-fusion</span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="variable">$LINKS_HOME</span>/LINKS -k 21 -f <span class="variable">$WORK_DIR</span>/MEGAHIT/small_insert.no270/SOAP-fusion/k41.scafSeq -s Pacbio.fof -b reLINKS2 -t 20 -d 4000,5000,6000,8000,10000,15000,20000</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> re-scafflod the output of MEGAHIT small insert size and SOAP-fusion, min contig length used: 300</span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="variable">$LINKS_HOME</span>/LINKS -k 21 -f <span class="variable">$WORK_DIR</span>/MEGAHIT/small_insert.no270/SOAP-fusion/k41.scafSeq -s Pacbio.fof -b reLINKS3 -z 300 -t 20 -d 4000,5000,6000,8000,10000,15000,20000</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> re-scaffold the output of MEGAHIT small insert size and SOAP-fusion with -F, min contig length used: 300</span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="variable">$LINKS_HOME</span>/LINKS -k 21 -f <span class="variable">$WORK_DIR</span>/MEGAHIT/small_insert.no270/SOAP-fusion/k41_1.scafSeq -s Pacbio.fof -b reLINKS4 -z 300 -t 20 -d 4000,5000,6000,8000,10000,15000,20000</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> re-scaffold the output of MEGAHIT small insert size and SOAP-fusion with -F</span></span><br><span class="line"><span class="meta">$</span><span class="bash">LINKS_HOME/LINKS -k 21 -f <span class="variable">$WORK_DIR</span>/MEGAHIT/small_insert.no270/SOAP-fusion/k41_1.scafSeq -s Pacbio.fof -b reLINKS5 -t 20 -d 4000,5000,6000,8000,10000,15000,20000</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> re-scaffold the output of MEGAHIT small insert size and SOAP-fusion with -F, use all third data</span></span><br><span class="line"><span class="meta">$</span><span class="bash">LINKS_HOME/LINKS -k 21 -f <span class="variable">$WORK_DIR</span>/MEGAHIT/small_insert.no270/SOAP-fusion/k41.scafSeq -s Pacbio_171231.fof -b reLINKS_171231 -t 20 -d 4000,5000,6000,8000,10000,15000,20000</span></span><br><span class="line"></span><br><span class="line">echo Finish time is `date +%Y/%m/%d--%H:%M`</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">LINKS_HOME=/software/links_v1.8.5</span><br><span class="line">WORK_DIR=/DenovoSeq</span><br><span class="line"></span><br><span class="line">echo Start time is `date +%Y/%m/%d--%H:%M`</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> re-scafflod the output of MEGAHIT small insert size and SOAP-fusion. use about 50X data</span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="variable">$LINKS_HOME</span>/LINKS -k 21 -f <span class="variable">$WORK_DIR</span>/MEGAHIT/small_insert.no270/SOAP-fusion/k41.scafSeq -s Pacbio.fof -b reLINKS2 -t 20 -d 4000,5000,6000,8000,10000,15000,20000</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> re-scaffold the output of MEGAHIT small insert size and SOAP-fusion, use about 70X data</span></span><br><span class="line"><span class="meta">$</span><span class="bash">LINKS_HOME/LINKS -k 21 -f <span class="variable">$WORK_DIR</span>/MEGAHIT/small_insert.no270/SOAP-fusion/k41.scafSeq -s Pacbio_171231.fof -b reLINKS_171231 -t 20 -d 4000,5000,6000,8000,10000,15000,20000</span></span><br><span class="line"></span><br><span class="line">echo Finish time is `date +%Y/%m/%d--%H:%M`</span><br></pre></td></tr></table></figure>
 <p>And the input data:</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># first batch PB data, about 20X</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cat Pacbio.fof</span></span><br><span class="line">/home/haoyj/tasks/DenovoSeq/Third_rawData/av_20k.fasta</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># all PB data, about 70X</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cat Pacbio_171231.fof</span></span><br><span class="line">/home/zhangll/DenovoSeq/Third_rawData/third_all.fasta</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># first batch PB data, about 20X</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cat Pacbio.fof</span></span><br><span class="line">/DenovoSeq/Third_rawData/av_20k.fasta</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># all PB data, about 70X</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cat Pacbio_171231.fof</span></span><br><span class="line">/DenovoSeq/Third_rawData/third_all.fasta</span><br></pre></td></tr></table></figure>
 <p>The stats I got:</p>
-<p>scaffold the output of MEGAHIT:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Size_includeN: 944039311</span><br><span class="line">Size_withoutN: 894816039</span><br><span class="line">Seq_Num: 1262222</span><br><span class="line">Mean_Size: 747</span><br><span class="line">Median_Size: 413</span><br><span class="line">Longest_Seq: 153276</span><br><span class="line">Shortest_Seq: 200</span><br><span class="line">GC_Content: 32.9</span><br><span class="line">N50: 931</span><br><span class="line">N90: 335</span><br><span class="line">Gap: 5.21</span><br></pre></td></tr></table></figure>
-<p>scaffold the output of MEGAHIT no ins_270 library:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Size_includeN: 729700672</span><br><span class="line">Size_withoutN: 679262960</span><br><span class="line">Seq_Num: 746838</span><br><span class="line">Mean_Size: 977</span><br><span class="line">Median_Size: 418</span><br><span class="line">Longest_Seq: 162877</span><br><span class="line">Shortest_Seq: 200</span><br><span class="line">GC_Content: 32.31</span><br><span class="line">N50: 1919</span><br><span class="line">N90: 353</span><br><span class="line">Gap: 6.91</span><br></pre></td></tr></table></figure>
-<p>re-scaffold the output of SOAP with long read:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Size_includeN: 1089523659</span><br><span class="line">Size_withoutN: 749662666</span><br><span class="line">Seq_Num: 678859</span><br><span class="line">Mean_Size: 1604</span><br><span class="line">Median_Size: 402</span><br><span class="line">Longest_Seq: 604854</span><br><span class="line">Shortest_Seq: 200</span><br><span class="line">GC_Content: 32.64</span><br><span class="line">N50: 17115</span><br><span class="line">N90: 399</span><br><span class="line">Gap: 31.19</span><br></pre></td></tr></table></figure>
-<p>re-scafflod the output of MEGAHIT small insert size and SOAP-fusion:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Size_includeN: 776147223</span><br><span class="line">Size_withoutN: 574675978</span><br><span class="line">Seq_Num: 370033</span><br><span class="line">Mean_Size: 2097</span><br><span class="line">Median_Size: 389</span><br><span class="line">Longest_Seq: 621272</span><br><span class="line">Shortest_Seq: 200</span><br><span class="line">GC_Content: 31.42</span><br><span class="line">N50: 42519</span><br><span class="line">N90: 444</span><br><span class="line">Gap: 25.96</span><br></pre></td></tr></table></figure>
-<p>re-scafflod the output of MEGAHIT small insert size and SOAP-fusion, min contig length used: 300</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Size_includeN: 774100547</span><br><span class="line">Size_withoutN: 574675978</span><br><span class="line">Seq_Num: 371317</span><br><span class="line">Mean_Size: 2084</span><br><span class="line">Median_Size: 390</span><br><span class="line">Longest_Seq: 621233</span><br><span class="line">Shortest_Seq: 200</span><br><span class="line">GC_Content: 31.42</span><br><span class="line">N50: 40936</span><br><span class="line">N90: 443</span><br><span class="line">Gap: 25.76</span><br></pre></td></tr></table></figure>
-<p>re-scaffold the output of MEGAHIT small insert size and SOAP-fusion with -F, min contig length used: 300</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"> Size_includeN: 773726178</span><br><span class="line">Size_withoutN: 579451220</span><br><span class="line">Seq_Num: 371323</span><br><span class="line">Mean_Size: 2083</span><br><span class="line">Median_Size: 390</span><br><span class="line">Longest_Seq: 586345</span><br><span class="line">Shortest_Seq: 200</span><br><span class="line">GC_Content: 31.45</span><br><span class="line">N50: 40889</span><br><span class="line">N90: 443</span><br><span class="line">Gap: 25.11</span><br></pre></td></tr></table></figure>
-<p>re-scaffold the output of MEGAHIT small insert size and SOAP-fusion with -F</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Size_includeN: 775797415</span><br><span class="line">Size_withoutN: 579451220</span><br><span class="line">Seq_Num: 370041</span><br><span class="line">Mean_Size: 2096</span><br><span class="line">Median_Size: 389</span><br><span class="line">Longest_Seq: 586343</span><br><span class="line">Shortest_Seq: 200</span><br><span class="line">GC_Content: 31.45</span><br><span class="line">N50: 42504</span><br><span class="line">N90: 443</span><br><span class="line">Gap: 25.31</span><br></pre></td></tr></table></figure>
-<p>re-scaffold the output of MEGAHIT small insert size and SOAP-fusion with -F, use all third data</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Size_includeN: 798803587</span><br><span class="line">Size_withoutN: 574675978</span><br><span class="line">Seq_Num: 359653</span><br><span class="line">Mean_Size: 2221</span><br><span class="line">Median_Size: 384</span><br><span class="line">Longest_Seq: 732454</span><br><span class="line">Shortest_Seq: 200</span><br><span class="line">GC_Content: 31.42</span><br><span class="line">N50: 68195</span><br><span class="line">N90: 453</span><br><span class="line">Gap: 28.06</span><br></pre></td></tr></table></figure>
+<p>re-scaffloding the output of MEGAHIT small insert size and SOAP-fusion, use ~20X PB data:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>MEGAHIT</th>
+<th>SOAP-fusion</th>
+<th>LINKS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Size_includeN</td>
+<td>582099585</td>
+<td>765246417</td>
+<td>776147223</td>
+</tr>
+<tr>
+<td>Size_withoutN</td>
+<td>582099585</td>
+<td>574675978</td>
+<td>574675978</td>
+</tr>
+<tr>
+<td>Seq_Num</td>
+<td>575808</td>
+<td>377325</td>
+<td>370033</td>
+</tr>
+<tr>
+<td>Mean_Size</td>
+<td>1010</td>
+<td>2028</td>
+<td>2097</td>
+</tr>
+<tr>
+<td>Median_Size</td>
+<td>433</td>
+<td>393</td>
+<td>389</td>
+</tr>
+<tr>
+<td>Longest_Seq</td>
+<td>55064</td>
+<td>436254</td>
+<td>621272</td>
+</tr>
+<tr>
+<td>Shortest_Seq</td>
+<td>200</td>
+<td>200</td>
+<td>200</td>
+</tr>
+<tr>
+<td>GC_Content</td>
+<td>31.43</td>
+<td>31.42</td>
+<td>31.42</td>
+</tr>
+<tr>
+<td>N50</td>
+<td>2158</td>
+<td>33478</td>
+<td>42519</td>
+</tr>
+<tr>
+<td>N90</td>
+<td>358</td>
+<td>439</td>
+<td>444</td>
+</tr>
+<tr>
+<td>Gap</td>
+<td>0</td>
+<td>24.9</td>
+<td>25.96</td>
+</tr>
+</tbody>
+</table>
+<p>re-scaffolding the output of MEGAHIT small insert size and SOAP-fusion, use ~70X PB data.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>MEGAHIT</th>
+<th>SOAP-fusion</th>
+<th>LINKS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Size_includeN</td>
+<td>582099585</td>
+<td>765246417</td>
+<td>798803587</td>
+</tr>
+<tr>
+<td>Size_withoutN</td>
+<td>582099585</td>
+<td>574675978</td>
+<td>574675978</td>
+</tr>
+<tr>
+<td>Seq_Num</td>
+<td>575808</td>
+<td>377325</td>
+<td>359653</td>
+</tr>
+<tr>
+<td>Mean_Size</td>
+<td>1010</td>
+<td>2028</td>
+<td>2221</td>
+</tr>
+<tr>
+<td>Median_Size</td>
+<td>433</td>
+<td>393</td>
+<td>384</td>
+</tr>
+<tr>
+<td>Longest_Seq</td>
+<td>55064</td>
+<td>436254</td>
+<td>732454</td>
+</tr>
+<tr>
+<td>Shortest_Seq</td>
+<td>200</td>
+<td>200</td>
+<td>200</td>
+</tr>
+<tr>
+<td>GC_Content</td>
+<td>31.43</td>
+<td>31.42</td>
+<td>31.42</td>
+</tr>
+<tr>
+<td>N50</td>
+<td>2158</td>
+<td>33478</td>
+<td>68195</td>
+</tr>
+<tr>
+<td>N90</td>
+<td>358</td>
+<td>439</td>
+<td>453</td>
+</tr>
+<tr>
+<td>Gap</td>
+<td>0</td>
+<td>24.9</td>
+<td>28.06</td>
+</tr>
+</tbody>
+</table>
 <p>The last run took about <code>27 hours</code>.</p>
+<p>As can be seen, adding 50X PacBio data did not help a lot. After this, we started to use ‘PacBio-dominant pipelines’ and have tried many different assemblers. But, LINKS is a good scaffolding tool if you assemble the genome with illumina data and want to further scaffold with &lt;20X long-reads.</p>
 <p>This note can serve as a reference in case I will have to use it again.</p>
+<h2 id="change-log"><a class="markdownIt-Anchor" href="#change-log"></a> Change log</h2>
+<ul>
+<li>20180307: createt the note.</li>
+<li>20180709: update the ‘background information’.</li>
+</ul>
 
       
     </div>
@@ -682,7 +964,7 @@
                 
                   <a href="/blog/archives/">
                 
-                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-count">19</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -721,7 +1003,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">13</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">15</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -782,7 +1068,17 @@
                     
                       
                     
-                    <span class="site-state-item-count">24</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">29</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -879,7 +1175,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#intro"><span class="nav-number">1.</span> <span class="nav-text"> Intro</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#general-usage"><span class="nav-number">2.</span> <span class="nav-text"> General usage</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#running-links"><span class="nav-number">2.1.</span> <span class="nav-text"> Running LINKS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tips-to-minimize-memory-usage-and-additional-notes"><span class="nav-number">2.2.</span> <span class="nav-text"> Tips to minimize memory usage and additional notes</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#in-practice"><span class="nav-number">3.</span> <span class="nav-text"> In practice</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#intro"><span class="nav-number">1.</span> <span class="nav-text"> Intro</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#general-usage"><span class="nav-number">2.</span> <span class="nav-text"> General usage</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#running-links"><span class="nav-number">2.1.</span> <span class="nav-text"> Running LINKS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tips-to-minimize-memory-usage-and-additional-notes"><span class="nav-number">2.2.</span> <span class="nav-text"> Tips to minimize memory usage and additional notes</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#in-practice"><span class="nav-number">3.</span> <span class="nav-text"> In practice</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#background"><span class="nav-number">3.1.</span> <span class="nav-text"> background</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#data"><span class="nav-number">3.2.</span> <span class="nav-text"> data</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#change-log"><span class="nav-number">4.</span> <span class="nav-text"> Change log</span></a></li></ol></div>
             
 
           </div>

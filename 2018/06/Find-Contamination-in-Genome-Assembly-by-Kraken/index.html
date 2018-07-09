@@ -110,7 +110,7 @@
 <meta property="og:description" content="Purpose in short: I want to remove potential contaminants in the genome assembly, and Kraken is a tool designed for that.  Introduction From its webpage:  Kraken is a system for assigning taxonomic la">
 <meta property="og:locale" content="_en">
 <meta property="og:image" content="https://yiweiniu.github.io/blog/2018/06/Find-Contamination-in-Genome-Assembly-by-Kraken/contamination_ratio.png">
-<meta property="og:updated_time" content="2018-06-28T06:09:16.300Z">
+<meta property="og:updated_time" content="2018-06-30T07:11:24.726Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Find Contamination in Genome Assembly by Kraken">
 <meta name="twitter:description" content="Purpose in short: I want to remove potential contaminants in the genome assembly, and Kraken is a tool designed for that.  Introduction From its webpage:  Kraken is a system for assigning taxonomic la">
@@ -231,7 +231,7 @@
         
           
   
-  <li class="menu-item menu-item-categories">
+  <li class="menu-item menu-item-categories menu-item-active">
     <a href="/blog/categories/" rel="section">
       <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories</a>
 </li>
@@ -241,7 +241,7 @@
         
           
   
-  <li class="menu-item menu-item-tags menu-item-active">
+  <li class="menu-item menu-item-tags">
     <a href="/blog/tags/" rel="section">
       <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />Tags</a>
 </li>
@@ -493,19 +493,19 @@ Kraken is written in C++ and Perl, and is designed for use with the Linux operat
 <p>See <a href="https://github.com/DerrickWood/kraken/blob/master/docs/MANUAL.markdown" target="_blank" rel="noopener">Kraken manual</a> for full instructions.</p>
 <h3 id="install"><a class="markdownIt-Anchor" href="#install"></a> Install</h3>
 <p>Download the latest <a href="https://github.com/DerrickWood/kraken/releases" target="_blank" rel="noopener">release</a>.</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> unzip kraken-1.1.zip &amp;&amp; <span class="built_in">cd</span> kraken-1.1</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> install</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ./install_kraken.sh /home/niuyw/software/kraken.1.1</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> unzip kraken-1.1.zip &amp;&amp; <span class="built_in">cd</span> kraken-1.1</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> install</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ./install_kraken.sh /software/kraken.1.1</span></span><br></pre></td></tr></table></figure>
 <p>If you want to build your own dabase, <a href="http://www.cbcb.umd.edu/software/jellyfish/" target="_blank" rel="noopener">jellyfish</a> <strong>version 1</strong> should be in your <code>PATH</code>.</p>
 <h3 id="build-standard-kraken-database"><a class="markdownIt-Anchor" href="#build-standard-kraken-database"></a> Build standard Kraken database</h3>
 <p>The standard Kraken database includes bacterial, archeal, and viral genomes in Refseq at the time of the build.</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/sh</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> bioBrain</span></span><br><span class="line">TOOLDIR=/home/niuyw/software</span><br><span class="line">path2kraken=$TOOLDIR/kraken.1.1</span><br><span class="line"></span><br><span class="line">DBNAME=/data2/niuyw/Kraken_DB</span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash">path2kraken/kraken-build --standard --threads 16 --db <span class="variable">$DBNAME</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/sh</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> bioBrain</span></span><br><span class="line">TOOLDIR=/software</span><br><span class="line">path2kraken=$TOOLDIR/kraken.1.1</span><br><span class="line"></span><br><span class="line">DBNAME=/Kraken_DB</span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash">path2kraken/kraken-build --standard --threads 16 --db <span class="variable">$DBNAME</span></span></span><br></pre></td></tr></table></figure>
 <p>If any step (including the initial downloads) fails, the build process will abort. However, kraken-build will produce checkpoints throughout the installation process, and will restart the build at the last incomplete step if you attempt to run the same command again on a partially-built database.</p>
 <h3 id="build-custom-kraken-database"><a class="markdownIt-Anchor" href="#build-custom-kraken-database"></a> Build custom Kraken database</h3>
 <p>Because the standard Kraken database does not include fungi and protozoa, which I want to include in my analysis.</p>
 <p>I found <a href="https://github.com/sschmeier/refseq2kraken" target="_blank" rel="noopener">refseq2kraken</a>, which facilitates the downloading and preparation of Kraken database.</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">TOOLDIR=/home/niuyw/software</span><br><span class="line">path2kraken=$TOOLDIR/kraken.1.1</span><br><span class="line"></span><br><span class="line">DBNAME=Kraken_DB_201806</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> install refseq2kraken</span></span><br><span class="line">git clone https://github.com/sschmeier/refseq2kraken.git refseq2kraken</span><br><span class="line">cd refseq2kraken</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Download refseq =&gt; here only <span class="string">"Complete Genome"</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> assemblies, e.g. the default</span></span><br><span class="line">python getRefseqGenomic.py -p 8</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> convert to kraken format =&gt; again only <span class="string">"Complete Genome"</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> assemblies here, e.g. the default</span></span><br><span class="line">python getKrakenFna.py -p 8 $DBNAME</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> build a new minikraken database</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> download taxonomy</span></span><br><span class="line">kraken-build --download-taxonomy --db $DBNAME</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> <span class="keyword">for</span> each branch, add all fna <span class="keyword">in</span> the directory to the database</span></span><br><span class="line">for dir in bacteria viral archaea fungi protozoa ; do</span><br><span class="line">    find $DBNAME/$dir/ -name '*.fna' -print0 | xargs -0 -I&#123;&#125; -n1 -P8 kraken-build --add-to-library &#123;&#125; --db $DBNAME;</span><br><span class="line">done</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> build the actual database</span></span><br><span class="line">kraken-build --build --db $DBNAME</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> remove intermediate files</span></span><br><span class="line">kraken-build --clean --db $DBNAME</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">TOOLDIR=/software</span><br><span class="line">path2kraken=$TOOLDIR/kraken.1.1</span><br><span class="line"></span><br><span class="line">DBNAME=Kraken_DB_201806</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> install refseq2kraken</span></span><br><span class="line">git clone https://github.com/sschmeier/refseq2kraken.git refseq2kraken</span><br><span class="line">cd refseq2kraken</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Download refseq =&gt; here only <span class="string">"Complete Genome"</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> assemblies, e.g. the default</span></span><br><span class="line">python getRefseqGenomic.py -p 8</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> convert to kraken format =&gt; again only <span class="string">"Complete Genome"</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> assemblies here, e.g. the default</span></span><br><span class="line">python getKrakenFna.py -p 8 $DBNAME</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> build a new minikraken database</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> download taxonomy</span></span><br><span class="line">kraken-build --download-taxonomy --db $DBNAME</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> <span class="keyword">for</span> each branch, add all fna <span class="keyword">in</span> the directory to the database</span></span><br><span class="line">for dir in bacteria viral archaea fungi protozoa ; do</span><br><span class="line">    find $DBNAME/$dir/ -name '*.fna' -print0 | xargs -0 -I&#123;&#125; -n1 -P8 kraken-build --add-to-library &#123;&#125; --db $DBNAME;</span><br><span class="line">done</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> build the actual database</span></span><br><span class="line">kraken-build --build --db $DBNAME</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> remove intermediate files</span></span><br><span class="line">kraken-build --clean --db $DBNAME</span><br></pre></td></tr></table></figure>
 <p>This post <a href="http://www.opiniomics.org/building-a-kraken-database-with-new-ftp-structure-and-no-gi-numbers/" target="_blank" rel="noopener">Download refseq-genomic data and prepare it for Kraken</a> is also helpful.</p>
 <h3 id="classify-contigs"><a class="markdownIt-Anchor" href="#classify-contigs"></a> Classify contigs</h3>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> classify</span></span><br><span class="line">kraken --db $Kraken_DB --threads 24 --fasta-input /Project/beetle_genome_171231/canu/run_1/beetle.contigs.fasta --classified-out classified.fa --unclassified-out unclassified.fa &gt; bettle.kraken</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> report</span></span><br><span class="line">kraken-report --db $Kraken_DB bettle.kraken &gt; bettle_kraken.report</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> classify</span></span><br><span class="line">kraken --db $Kraken_DB --threads 24 --fasta-input /canu/run_1/beetle.contigs.fasta --classified-out classified.fa --unclassified-out unclassified.fa &gt; bettle.kraken</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> report</span></span><br><span class="line">kraken-report --db $Kraken_DB bettle.kraken &gt; bettle_kraken.report</span><br></pre></td></tr></table></figure>
 <p>The ‘classified’ sequences will be saved in ‘classified.fa’, and the ‘unclassified.fa’ will be the ‘clean’ one, which can be used for downstream analysis.</p>
 <p>But when I looked over the ‘report’, the result quite disappointed me.</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> head -5 bettle_kraken.report</span></span><br><span class="line"> 24.53	5144	5144	U	0	unclassified</span><br><span class="line"> 75.47	15830	773	-	1	root</span><br><span class="line"> 56.13	11772	336	-	131567	  cellular organisms</span><br><span class="line"> 50.36	10563	858	D	2	    Bacteria</span><br><span class="line"> 23.20	4866	51	P	1224	      Proteobacteria</span><br></pre></td></tr></table></figure>
@@ -531,7 +531,7 @@ Kraken is written in C++ and Perl, and is designed for use with the Linux operat
 <li><a href="https://www.researchgate.net/post/Filtering_for_contamination_when_assembling_a_genome_before_or_after_assemby" target="_blank" rel="noopener">Filtering for contamination when assembling a genome, before or after assemby?</a></li>
 <li><a href="https://www.biostars.org/p/165059/" target="_blank" rel="noopener">Question: How to remove contamination from the transcriptome assembly</a></li>
 </ul>
-<h2 id="change-note"><a class="markdownIt-Anchor" href="#change-note"></a> Change note</h2>
+<h2 id="change-log"><a class="markdownIt-Anchor" href="#change-log"></a> Change log</h2>
 <ul>
 <li>20180424: create the note.</li>
 <li>20180620: add the “refseq2kraken” part.</li>
@@ -582,6 +582,10 @@ Kraken is written in C++ and Perl, and is designed for use with the Linux operat
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/06/Genome-Assembly-Pipeline-wtdbg/" rel="prev" title="Genome Assembly Pipeline: wtdbg">
+                Genome Assembly Pipeline: wtdbg <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -675,7 +679,7 @@ Kraken is written in C++ and Perl, and is designed for use with the Linux operat
                 
                   <a href="/blog/archives/">
                 
-                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-count">19</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -714,7 +718,11 @@ Kraken is written in C++ and Perl, and is designed for use with the Linux operat
                     
                       
                     
-                    <span class="site-state-item-count">13</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">15</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -775,7 +783,17 @@ Kraken is written in C++ and Perl, and is designed for use with the Linux operat
                     
                       
                     
-                    <span class="site-state-item-count">24</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">29</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -872,7 +890,7 @@ Kraken is written in C++ and Perl, and is designed for use with the Linux operat
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#introduction"><span class="nav-number">1.</span> <span class="nav-text"> Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#in-practice"><span class="nav-number">2.</span> <span class="nav-text"> In practice</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#install"><span class="nav-number">2.1.</span> <span class="nav-text"> Install</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#build-standard-kraken-database"><span class="nav-number">2.2.</span> <span class="nav-text"> Build standard Kraken database</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#build-custom-kraken-database"><span class="nav-number">2.3.</span> <span class="nav-text"> Build custom Kraken database</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#classify-contigs"><span class="nav-number">2.4.</span> <span class="nav-text"> Classify contigs</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#useful-links"><span class="nav-number">3.</span> <span class="nav-text"> Useful links</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#change-note"><span class="nav-number">4.</span> <span class="nav-text"> Change note</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#introduction"><span class="nav-number">1.</span> <span class="nav-text"> Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#in-practice"><span class="nav-number">2.</span> <span class="nav-text"> In practice</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#install"><span class="nav-number">2.1.</span> <span class="nav-text"> Install</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#build-standard-kraken-database"><span class="nav-number">2.2.</span> <span class="nav-text"> Build standard Kraken database</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#build-custom-kraken-database"><span class="nav-number">2.3.</span> <span class="nav-text"> Build custom Kraken database</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#classify-contigs"><span class="nav-number">2.4.</span> <span class="nav-text"> Classify contigs</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#useful-links"><span class="nav-number">3.</span> <span class="nav-text"> Useful links</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#change-log"><span class="nav-number">4.</span> <span class="nav-text"> Change log</span></a></li></ol></div>
             
 
           </div>

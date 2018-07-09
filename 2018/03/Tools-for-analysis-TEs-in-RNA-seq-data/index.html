@@ -114,7 +114,7 @@
 <meta property="og:image" content="https://yiweiniu.github.io/blog/2018/03/Tools-for-analysis-TEs-in-RNA-seq-data/lions_work_1521546174_11152.png">
 <meta property="og:image" content="https://yiweiniu.github.io/blog/2018/03/Tools-for-analysis-TEs-in-RNA-seq-data/imfusion_o_1521548556_18711.png">
 <meta property="og:image" content="https://yiweiniu.github.io/blog/2018/03/Tools-for-analysis-TEs-in-RNA-seq-data/salmonte_p_1521548399_15951.png">
-<meta property="og:updated_time" content="2018-04-23T10:27:41.521Z">
+<meta property="og:updated_time" content="2018-06-30T07:08:15.367Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tools for Analysis TEs in RNA-seq Data">
 <meta name="twitter:description" content="I observed large fraction reads from intronic regions in my total RNA-seq data. Considering that many Alu elements are located in introns, I want to check the TEs in RNA-seq data. I will first go thro">
@@ -235,7 +235,7 @@
         
           
   
-  <li class="menu-item menu-item-categories">
+  <li class="menu-item menu-item-categories menu-item-active">
     <a href="/blog/categories/" rel="section">
       <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories</a>
 </li>
@@ -245,7 +245,7 @@
         
           
   
-  <li class="menu-item menu-item-tags menu-item-active">
+  <li class="menu-item menu-item-tags">
     <a href="/blog/tags/" rel="section">
       <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />Tags</a>
 </li>
@@ -453,7 +453,7 @@
                   <i class="fa fa-file-word-o"></i>
                 </span>
                 
-                <span title="Symbols count in article">23k</span>
+                <span title="Symbols count in article">22k</span>
               
 
               
@@ -465,7 +465,7 @@
                   <i class="fa fa-clock-o"></i>
                 </span>
                 
-                <span title="Reading time">0:23</span>
+                <span title="Reading time">0:22</span>
               
             </div>
           
@@ -639,7 +639,7 @@ CLIFinder v0.4.1 is customizable to detect transcripts initiated by different ty
 <h2 id="using-tetranscripts-for-te-quantification"><a class="markdownIt-Anchor" href="#using-tetranscripts-for-te-quantification"></a> Using <code>TEtranscripts</code> for TE quantification</h2>
 <h3 id="install"><a class="markdownIt-Anchor" href="#install"></a> Install</h3>
 <p>Download <code>zip</code> file from tetoolkit <a href="https://github.com/mhammell-laboratory/tetoolkit/releases" target="_blank" rel="noopener">release page</a></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> unzip tetoolkit-1.5.0.zip &amp;&amp; <span class="built_in">cd</span> tetoolkit-1.5.0</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> install using Python 2.7 from Anaconda, failed, don<span class="string">'t know why, maybe something related to PYTHONPATH</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> python setup.py install</span></span><br><span class="line">Installed /home/niuyw/software/anaconda2/lib/python2.7/site-packages/TEToolkit-1.5.0-py2.7.egg</span><br><span class="line">Processing dependencies for TEToolkit==1.5.0</span><br><span class="line">Searching for pysam&gt;=0.8</span><br><span class="line">Reading http://pypi.python.org/simple/pysam/</span><br><span class="line">Couldn't find index page for 'pysam' (maybe misspelled?)</span><br><span class="line">Scanning index of all packages (this may take a while)</span><br><span class="line">Reading http://pypi.python.org/simple/</span><br><span class="line">No local packages or download links found for pysam&gt;=0.8</span><br><span class="line">error: Could not find suitable distribution for Requirement.parse('pysam&gt;=0.8')</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> install using original Python 2.7, it worked</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> /home/niuyw/software/Python.2.7.13/bin/python setup.py  install</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> ~/software/Python.2.7.13/bin/TEtranscripts -h</span></span><br><span class="line">usage: TEtranscripts [-h] -t treatment sample [treatment sample ...] -c</span><br><span class="line">                     control sample [control sample ...] --GTF genic-GTF-file</span><br><span class="line">                     --TE TE-GTF-file [--format [input file format]]</span><br><span class="line">                     [--stranded [option]] [--mode [TE counting mode]]</span><br><span class="line">                     [--project [name]] [-p [pvalue]] [-f [foldchange]]</span><br><span class="line">                     [--minread [min_read]] [-n [normalization]] [--sortByPos]</span><br><span class="line">                     [-i [iteration]] [--maxL [maxL]] [--minL [minL]]</span><br><span class="line">                     [-L [fragLength]] [--verbose [verbose]] [--version]</span><br><span class="line">Required arguments:</span><br><span class="line">  -t | --treatment [treatment sample 1 treatment sample 2...]</span><br><span class="line">     Sample files in group 1 (e.g. treatment/mutant), separated by space</span><br><span class="line">  -c | --control [control sample 1 control sample 2 ...]</span><br><span class="line">     Sample files in group 2 (e.g. control/wildtype), separated by space</span><br><span class="line">  --GTF genic-GTF-file  GTF file for gene annotations</span><br><span class="line">  --TE TE-GTF-file      GTF file for transposable element annotations</span><br><span class="line"></span><br><span class="line">Identifying differential transcription of gene and transposable elements.</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> unzip tetoolkit-1.5.0.zip &amp;&amp; <span class="built_in">cd</span> tetoolkit-1.5.0</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> install using Python 2.7 from Anaconda, failed, don<span class="string">'t know why, maybe something related to PYTHONPATH</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> python setup.py install</span></span><br><span class="line">Processing dependencies for TEToolkit==1.5.0</span><br><span class="line">Searching for pysam&gt;=0.8</span><br><span class="line">Reading http://pypi.python.org/simple/pysam/</span><br><span class="line">Couldn't find index page for 'pysam' (maybe misspelled?)</span><br><span class="line">Scanning index of all packages (this may take a while)</span><br><span class="line">Reading http://pypi.python.org/simple/</span><br><span class="line">No local packages or download links found for pysam&gt;=0.8</span><br><span class="line">error: Could not find suitable distribution for Requirement.parse('pysam&gt;=0.8')</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> install using original Python 2.7, it worked</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> /software/Python.2.7.13/bin/python setup.py  install</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> ~/software/Python.2.7.13/bin/TEtranscripts -h</span></span><br><span class="line">usage: TEtranscripts [-h] -t treatment sample [treatment sample ...] -c</span><br><span class="line">                     control sample [control sample ...] --GTF genic-GTF-file</span><br><span class="line">                     --TE TE-GTF-file [--format [input file format]]</span><br><span class="line">                     [--stranded [option]] [--mode [TE counting mode]]</span><br><span class="line">                     [--project [name]] [-p [pvalue]] [-f [foldchange]]</span><br><span class="line">                     [--minread [min_read]] [-n [normalization]] [--sortByPos]</span><br><span class="line">                     [-i [iteration]] [--maxL [maxL]] [--minL [minL]]</span><br><span class="line">                     [-L [fragLength]] [--verbose [verbose]] [--version]</span><br><span class="line">Required arguments:</span><br><span class="line">  -t | --treatment [treatment sample 1 treatment sample 2...]</span><br><span class="line">     Sample files in group 1 (e.g. treatment/mutant), separated by space</span><br><span class="line">  -c | --control [control sample 1 control sample 2 ...]</span><br><span class="line">     Sample files in group 2 (e.g. control/wildtype), separated by space</span><br><span class="line">  --GTF genic-GTF-file  GTF file for gene annotations</span><br><span class="line">  --TE TE-GTF-file      GTF file for transposable element annotations</span><br><span class="line"></span><br><span class="line">Identifying differential transcription of gene and transposable elements.</span><br></pre></td></tr></table></figure>
 <p>So <code>TEtranscripts</code> is mainly for compare two conditions.</p>
 <h3 id="prepare-annotations"><a class="markdownIt-Anchor" href="#prepare-annotations"></a> Prepare annotations</h3>
 <p>Download RepeatMasker tracks from UCSC Table Browser for <a href="http://genome.ucsc.edu/cgi-bin/hgTables?hgsid=661002703_YPeG8TMraFo0XjOX8Af2dM6VOPnp&amp;clade=mammal&amp;org=Pig&amp;db=0&amp;hgta_group=varRep&amp;hgta_track=rmsk&amp;hgta_table=rmsk&amp;hgta_regionType=genome&amp;position=&amp;hgta_outputType=primaryTable&amp;hgta_outFileName=susScr11_rmsk.gz" target="_blank" rel="noopener">pig: susScr11</a> and <a href="http://genome.ucsc.edu/cgi-bin/hgTables?hgsid=661002703_YPeG8TMraFo0XjOX8Af2dM6VOPnp&amp;clade=mammal&amp;org=Rhesus&amp;db=0&amp;hgta_group=varRep&amp;hgta_track=rmsk&amp;hgta_table=rmsk&amp;hgta_regionType=genome&amp;position=&amp;hgta_outputType=primaryTable&amp;hgta_outFileName=rheMac8_rmsk.gz" target="_blank" rel="noopener">rhesus: rheMac8</a>.</p>
@@ -681,9 +681,9 @@ CLIFinder v0.4.1 is customizable to detect transcripts initiated by different ty
 <p>Well, I will just try <code>SalmonTE</code> for human.</p>
 <h3 id="quantification-2"><a class="markdownIt-Anchor" href="#quantification-2"></a> Quantification</h3>
 <p>Then, I encountered another problem: <a href="https://github.com/hyunhwaj/SalmonTE/issues/9#issuecomment-374853104" target="_blank" rel="noopener">SalmonTE only recognize .fastq and .fastq.gz extensions</a>, but all my files end with <code>.fq.gz</code>. Even by using <code>ln -s</code> to create files with <code>.fastq.gz</code> extensions, it still went wrong.</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> /home/niuyw/bin/python3 /home/niuyw/software/SalmonTE/SalmonTE.py quant --reference=hs clean_fastq/human</span></span><br><span class="line">2018-03-21 14:53:13,061 Starting quantification mode</span><br><span class="line">2018-03-21 14:53:13,061 Collecting FASTQ files...</span><br><span class="line">2018-03-21 14:53:13,062 Failed to read clean_fastq/human</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> python3 /software/SalmonTE/SalmonTE.py quant --reference=hs clean_fastq/human</span></span><br><span class="line">2018-03-21 14:53:13,061 Starting quantification mode</span><br><span class="line">2018-03-21 14:53:13,061 Collecting FASTQ files...</span><br><span class="line">2018-03-21 14:53:13,062 Failed to read clean_fastq/human</span><br></pre></td></tr></table></figure>
 <p>This problem was also reported by other users: <a href="https://github.com/hyunhwaj/SalmonTE/issues/4" target="_blank" rel="noopener">Nothing to be done</a>, and it has not been solved. So I have to change the name my files…I have lots files.</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> output count</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> /home/niuyw/bin/python3 /home/niuyw/software/SalmonTE/SalmonTE.py quant --reference=hs --outpath=SalmonTE/human/count --num_threads=16 clean_fastq/human</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> output TPM</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> /home/niuyw/bin/python3 /home/niuyw/software/SalmonTE/SalmonTE.py quant --reference=hs --outpath=SalmonTE/human/TPM --num_threads=16 --exprtype=TPM clean_fastq/human</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> output count</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> python3 /software/SalmonTE/SalmonTE.py quant --reference=hs --outpath=SalmonTE/human/count --num_threads=16 clean_fastq/human</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> output TPM</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> python3 /software/SalmonTE/SalmonTE.py quant --reference=hs --outpath=SalmonTE/human/TPM --num_threads=16 --exprtype=TPM clean_fastq/human</span></span><br></pre></td></tr></table></figure>
 <p>It was very fast. Using 16 threads, 22 samples took about 150 minutes.</p>
 <p>The output count/TPM are just like what <code>Salmon</code> does. All samples are put into one file named <code>EXPR.csv</code>. We can use this file for downstream analysis.</p>
 <p>Good.</p>
@@ -835,7 +835,7 @@ CLIFinder v0.4.1 is customizable to detect transcripts initiated by different ty
                 
                   <a href="/blog/archives/">
                 
-                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-count">19</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -874,7 +874,11 @@ CLIFinder v0.4.1 is customizable to detect transcripts initiated by different ty
                     
                       
                     
-                    <span class="site-state-item-count">13</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">15</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -935,7 +939,17 @@ CLIFinder v0.4.1 is customizable to detect transcripts initiated by different ty
                     
                       
                     
-                    <span class="site-state-item-count">24</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">29</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
