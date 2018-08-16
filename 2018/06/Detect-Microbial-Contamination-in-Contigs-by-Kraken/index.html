@@ -114,17 +114,17 @@
 <meta name="keywords" content="bio-tools,genome assembly,contamination">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Detect Microbial Contamination in Contigs by Kraken">
-<meta property="og:url" content="https://yiweiniu.github.io/blog/2018/06/Find-Contamination-in-Genome-Assembly-by-Kraken/index.html">
+<meta property="og:url" content="https://yiweiniu.github.io/blog/2018/06/Detect-Microbial-Contamination-in-Contigs-by-Kraken/index.html">
 <meta property="og:site_name" content="Yiwei Niu&#39;s Note">
 <meta property="og:description" content="Purpose in short: I want to detect (and remove) potential contaminants in the genome assembly, and Kraken is a tool designed for that.  Introduction From its webpage:  Kraken is a system for assigning">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="https://yiweiniu.github.io/blog/2018/06/Find-Contamination-in-Genome-Assembly-by-Kraken/1534323614_2536.png">
-<meta property="og:image" content="https://yiweiniu.github.io/blog/2018/06/Find-Contamination-in-Genome-Assembly-by-Kraken/1534323254_22359.png">
-<meta property="og:updated_time" content="2018-08-15T10:47:20.350Z">
+<meta property="og:image" content="https://yiweiniu.github.io/blog/2018/06/Detect-Microbial-Contamination-in-Contigs-by-Kraken/1534323614_2536.png">
+<meta property="og:image" content="https://yiweiniu.github.io/blog/2018/06/Detect-Microbial-Contamination-in-Contigs-by-Kraken/1534323254_22359.png">
+<meta property="og:updated_time" content="2018-08-16T05:24:55.259Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Detect Microbial Contamination in Contigs by Kraken">
 <meta name="twitter:description" content="Purpose in short: I want to detect (and remove) potential contaminants in the genome assembly, and Kraken is a tool designed for that.  Introduction From its webpage:  Kraken is a system for assigning">
-<meta name="twitter:image" content="https://yiweiniu.github.io/blog/2018/06/Find-Contamination-in-Genome-Assembly-by-Kraken/1534323614_2536.png">
+<meta name="twitter:image" content="https://yiweiniu.github.io/blog/2018/06/Detect-Microbial-Contamination-in-Contigs-by-Kraken/1534323614_2536.png">
 
 
 
@@ -133,7 +133,7 @@
 
 
 
-  <link rel="canonical" href="https://yiweiniu.github.io/blog/2018/06/Find-Contamination-in-Genome-Assembly-by-Kraken/"/>
+  <link rel="canonical" href="https://yiweiniu.github.io/blog/2018/06/Detect-Microbial-Contamination-in-Contigs-by-Kraken/"/>
 
 
 
@@ -325,7 +325,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://yiweiniu.github.io/blog/blog/2018/06/Find-Contamination-in-Genome-Assembly-by-Kraken/">
+    <link itemprop="mainEntityOfPage" href="https://yiweiniu.github.io/blog/blog/2018/06/Detect-Microbial-Contamination-in-Contigs-by-Kraken/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yiwei Niu">
@@ -407,10 +407,10 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/blog/2018/06/Find-Contamination-in-Genome-Assembly-by-Kraken/#comments" itemprop="discussionUrl">
+                <a href="/blog/2018/06/Detect-Microbial-Contamination-in-Contigs-by-Kraken/#comments" itemprop="discussionUrl">
                 
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/06/Find-Contamination-in-Genome-Assembly-by-Kraken/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2018/06/Detect-Microbial-Contamination-in-Contigs-by-Kraken/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -510,13 +510,13 @@ Kraken is written in C++ and Perl, and is designed for use with the Linux operat
 <p>This means about 70% contigs were contaminated!</p>
 <p>I was curious about the percentage of contaminant lengths of each read. Then I used a simple <a href="./ratio_of_contaminant_from_kraken.py">Python script</a> to count that.</p>
 <p>Then I used <code>R</code> to visualize the relationship between contig lengths and the contaminated lengths. There were 14846 contigs, among which 12004 (80.86%) contigs, 2788 (18.78%) contigs and 54 (0.36%) contigs has a contaminated rate of blow 1%, between 1% and 10%, and more than 10% respectively.</p>
-<img src="/blog/2018/06/Find-Contamination-in-Genome-Assembly-by-Kraken/1534323614_2536.png">
+<img src="/blog/2018/06/Detect-Microbial-Contamination-in-Contigs-by-Kraken/1534323614_2536.png">
 <h4 id="masked-library"><a class="markdownIt-Anchor" href="#masked-library"></a> Masked library</h4>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> classify</span></span><br><span class="line"><span class="meta">$</span><span class="bash">path2kraken/kraken --db Kraken_DB_abfpv_1806 --threads <span class="variable">$PPN</span> --fasta-input <span class="variable">$WROKDIR</span>/flye/flye/run2/contigs.fasta --classified-out <span class="variable">$WROKDIR</span>/flye/run3/flye.run2.classified --unclassified-out <span class="variable">$WROKDIR</span>/flye/run3/flye.run2.unclassified &gt; <span class="variable">$WROKDIR</span>/flye/run3/flye.run2.kraken</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> report</span></span><br><span class="line"><span class="meta">$</span><span class="bash">path2kraken/kraken-report --db Kraken_DB_abfpv_1806 <span class="variable">$WROKDIR</span>/flye/run3/flye.run2.kraken &gt; <span class="variable">$WROKDIR</span>/flye/run3/flye.run2.report</span></span><br></pre></td></tr></table></figure>
 <p>And about 17% of contigs were classified as ‘contaminant’.</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> head -5 flye.run2.report</span></span><br><span class="line"> 83.49	12395	12395	U	0	unclassified</span><br><span class="line"> 16.51	2451	15	-	1	root</span><br><span class="line"> 13.53	2009	0	D	10239	  Viruses</span><br><span class="line"> 13.46	1999	0	-	35237	    dsDNA viruses, no RNA stage</span><br><span class="line"> 13.44	1996	0	F	10482	      Polydnaviridae</span><br></pre></td></tr></table></figure>
 <p>There were 14846 contigs, among which 14766 (99.46%) contigs, 61 (0.41%) contigs and 19 (0.13%) contigs has a contaminated rate of blow 1%, between 1% and 10%, and more than 10% respectively.</p>
-<img src="/blog/2018/06/Find-Contamination-in-Genome-Assembly-by-Kraken/1534323254_22359.png">
+<img src="/blog/2018/06/Detect-Microbial-Contamination-in-Contigs-by-Kraken/1534323254_22359.png">
 <h3 id="replace-contaminant-regions-with-n"><a class="markdownIt-Anchor" href="#replace-contaminant-regions-with-n"></a> Replace contaminant regions with N</h3>
 <p>My collaborator asked me to give him an assembly draft for meta-genomic study, which a ‘clean’ one was needed. Removing all the contaminated sequences was not feasible, since there would be few contigs left.</p>
 <p>Then I checked the output of <code>Kraken</code>, which contained the detailed information of each contig:</p>
@@ -562,7 +562,7 @@ Kraken is written in C++ and Perl, and is designed for use with the Linux operat
     <strong>Post author:  </strong>Yiwei Niu</li>
   <li class="post-copyright-link">
     <strong>Post link: </strong>
-    <a href="https://yiweiniu.github.io/blog/2018/06/Find-Contamination-in-Genome-Assembly-by-Kraken/" title="Detect Microbial Contamination in Contigs by Kraken">https://yiweiniu.github.io/blog/2018/06/Find-Contamination-in-Genome-Assembly-by-Kraken/</a>
+    <a href="https://yiweiniu.github.io/blog/2018/06/Detect-Microbial-Contamination-in-Contigs-by-Kraken/" title="Detect Microbial Contamination in Contigs by Kraken">https://yiweiniu.github.io/blog/2018/06/Detect-Microbial-Contamination-in-Contigs-by-Kraken/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> unless stating additionally.</li>
@@ -1091,8 +1091,8 @@ Kraken is written in C++ and Perl, and is designed for use with the Linux operat
   
     <script type="text/javascript">
       var disqus_config = function () {
-        this.page.url = 'https://yiweiniu.github.io/blog/2018/06/Find-Contamination-in-Genome-Assembly-by-Kraken/';
-        this.page.identifier = '2018/06/Find-Contamination-in-Genome-Assembly-by-Kraken/';
+        this.page.url = 'https://yiweiniu.github.io/blog/2018/06/Detect-Microbial-Contamination-in-Contigs-by-Kraken/';
+        this.page.identifier = '2018/06/Detect-Microbial-Contamination-in-Contigs-by-Kraken/';
         this.page.title = 'Detect Microbial Contamination in Contigs by Kraken';
         };
       function loadComments () {

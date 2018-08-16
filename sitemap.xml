@@ -2,23 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://yiweiniu.github.io/blog/2018/02/Hexo-%E5%BB%BA%E7%AB%99%E8%AE%B0%E5%BD%95/</loc>
-    
-    <lastmod>2018-08-15T11:09:53.604Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yiweiniu.github.io/blog/2018/06/Find-Contamination-in-Genome-Assembly-by-Kraken/</loc>
-    
-    <lastmod>2018-08-15T10:47:20.350Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://yiweiniu.github.io/blog/2018/07/Remove-Contamination-of-Pokaryotic-Organisms-in-Reads/</loc>
     
-    <lastmod>2018-08-15T06:44:33.785Z</lastmod>
+    <lastmod>2018-08-16T05:37:35.411Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yiweiniu.github.io/blog/2018/02/Hexo-%E5%BB%BA%E7%AB%99%E8%AE%B0%E5%BD%95/</loc>
+    
+    <lastmod>2018-08-16T05:34:58.635Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yiweiniu.github.io/blog/2018/06/Detect-Microbial-Contamination-in-Contigs-by-Kraken/</loc>
+    
+    <lastmod>2018-08-16T05:24:55.259Z</lastmod>
     
   </url>
   
