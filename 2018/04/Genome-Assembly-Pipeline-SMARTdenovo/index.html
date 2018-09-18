@@ -110,18 +110,18 @@
 
 
 
-  <meta name="description" content="Introduction From its git repo:  SMARTdenovo is a de novo assembler for PacBio and Oxford Nanopore (ONT) data. It produces an assembly from all-vs-all raw read alignments without an error correction">
+  <meta name="description" content="Introduction From its Git Repo:  SMARTdenovo is a de novo assembler for PacBio and Oxford Nanopore (ONT) data. It produces an assembly from all-vs-all raw read alignments without an error correction">
 <meta name="keywords" content="bio-tools,genome assembly,long-read genome assembly">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Genome Assembly Pipeline: SMARTdenovo">
 <meta property="og:url" content="https://yiweiniu.github.io/blog/2018/04/Genome-Assembly-Pipeline-SMARTdenovo/index.html">
 <meta property="og:site_name" content="Yiwei Niu&#39;s Note">
-<meta property="og:description" content="Introduction From its git repo:  SMARTdenovo is a de novo assembler for PacBio and Oxford Nanopore (ONT) data. It produces an assembly from all-vs-all raw read alignments without an error correction">
+<meta property="og:description" content="Introduction From its Git Repo:  SMARTdenovo is a de novo assembler for PacBio and Oxford Nanopore (ONT) data. It produces an assembly from all-vs-all raw read alignments without an error correction">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-06-30T07:11:58.318Z">
+<meta property="og:updated_time" content="2018-08-18T04:39:57.297Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Genome Assembly Pipeline: SMARTdenovo">
-<meta name="twitter:description" content="Introduction From its git repo:  SMARTdenovo is a de novo assembler for PacBio and Oxford Nanopore (ONT) data. It produces an assembly from all-vs-all raw read alignments without an error correction">
+<meta name="twitter:description" content="Introduction From its Git Repo:  SMARTdenovo is a de novo assembler for PacBio and Oxford Nanopore (ONT) data. It produces an assembly from all-vs-all raw read alignments without an error correction">
 
 
 
@@ -437,7 +437,7 @@
                   <i class="fa fa-file-word-o"></i>
                 </span>
                 
-                <span title="Symbols count in article">2.3k</span>
+                <span title="Symbols count in article">3.1k</span>
               
 
               
@@ -449,7 +449,7 @@
                   <i class="fa fa-clock-o"></i>
                 </span>
                 
-                <span title="Reading time">0:02</span>
+                <span title="Reading time">0:03</span>
               
             </div>
           
@@ -470,7 +470,7 @@
 
       
         <h2 id="introduction"><a class="markdownIt-Anchor" href="#introduction"></a> Introduction</h2>
-<p>From <a href="https://github.com/ruanjue/smartdenovo" target="_blank" rel="noopener">its git repo</a>:</p>
+<p>From its <a href="https://github.com/ruanjue/smartdenovo" target="_blank" rel="noopener">Git Repo</a>:</p>
 <blockquote>
 <p>SMARTdenovo is a <em>de novo</em> assembler for PacBio and Oxford Nanopore (ONT) data. It produces an assembly from all-vs-all raw read alignments without an error correction stage. It also provides tools to generate accurate consensus sequences, though a platform dependent consensus polish tools (e.g. Quiver for PacBio or Nanopolish for ONT) are still required for higher accuracy.<br><br>
 SMARTdenovo consists of several separate command line tools: <strong>wtzmo</strong> for read overlapping, <strong>wtgbo</strong> to rescue missing overlaps, <strong>wtclp</strong> for identifying low-quality regions and chimaera, and <strong>wtcns</strong> or <strong>wtmsa</strong> to produce better unitig consensus. The <code>smartdenovo.pl</code> script provides a convenient interface to call these programs in one go.</p>
@@ -486,15 +486,32 @@ SMARTdenovo consists of several separate command line tools: <strong>wtzmo</stro
 <h2 id="general-usage"><a class="markdownIt-Anchor" href="#general-usage"></a> General usage</h2>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># Download sample PacBio from the PBcR website</span><br><span class="line">wget -O- http://www.cbcb.umd.edu/software/PBcR/data/selfSampleData.tar.gz | tar zxf -</span><br><span class="line">awk &apos;NR%4==1||NR%4==2&apos; selfSampleData/pacbio_filtered.fastq | sed &apos;s/^@/&gt;/g&apos; &gt; reads.fa</span><br><span class="line"># Install SMARTdenovo</span><br><span class="line">git clone https://github.com/ruanjue/smartdenovo.git &amp;&amp; (cd smartdenovo; make)</span><br><span class="line"># Assemble (raw unitigs in wtasm.lay.utg; consensus unitigs: wtasm.cns)</span><br><span class="line">smartdenovo/smartdenovo.pl -c 1 reads.fa &gt; wtasm.mak</span><br><span class="line">make -f wtasm.mak</span><br></pre></td></tr></table></figure>
 <h2 id="in-practice"><a class="markdownIt-Anchor" href="#in-practice"></a> In practice</h2>
+<h3 id="an-insect"><a class="markdownIt-Anchor" href="#an-insect"></a> An insect</h3>
 <ul>
-<li>Data used：the PacBio long-reads were used.</li>
-<li>OS environment: CentOS6.6  86_64  glibc-2.12. QSUB grid system. 15 Fat nodes (2TB RAM, 40 CPU) and 10 Blade nodes (156G RAM, 24 CPU).</li>
+<li>The species: high heterogeneity, high AT, high repetition.</li>
+<li>Genome size: male 790M, female 830M.</li>
 </ul>
 <p>commands:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">path2perl=$TOOLDIR/perl.5.24.0/bin/perl</span><br><span class="line"></span><br><span class="line">DATADIR=/data</span><br><span class="line"></span><br><span class="line">PPN=24</span><br><span class="line"></span><br><span class="line"># run1, default</span><br><span class="line">$path2perl $TOOLDIR/smartdenovo/smartdenovo.pl -t $PPN -c 1 -p run1 $DATADIR/third/third_all.fasta &gt; run1.mak</span><br><span class="line">make -f run1.mak</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> run1, default</span></span><br><span class="line"><span class="meta">$</span><span class="bash">path2perl <span class="variable">$TOOLDIR</span>/smartdenovo/smartdenovo.pl -t <span class="variable">$PPN</span> -c 1 -p run1 <span class="variable">$DATADIR</span>/third/third_all.fasta &gt; run1.mak</span></span><br><span class="line">make -f run1.mak</span><br></pre></td></tr></table></figure>
 <p>stats:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Size_includeN	756816708</span><br><span class="line">Size_withoutN	756816708</span><br><span class="line">Seq_Num	6135</span><br><span class="line">Mean_Size	123360</span><br><span class="line">Median_Size	55901</span><br><span class="line">Longest_Seq	5704487</span><br><span class="line">Shortest_Seq	10769</span><br><span class="line">GC_Content	31.72</span><br><span class="line">N50	240010</span><br><span class="line">N90	44546</span><br><span class="line">Gap	0.0</span><br></pre></td></tr></table></figure>
 <p><code>SMARTdenovo</code> can also use <code>zmo</code> overlapper. I also test this option, but it generated about 17G genome! (The estimated genome size is about 850M.)</p>
+<h3 id="a-plant"><a class="markdownIt-Anchor" href="#a-plant"></a> A plant</h3>
+<ul>
+<li>The species: high heterogeneity, high repetition.</li>
+<li>Genome size: 2.1G.</li>
+</ul>
+<h4 id="run1-with-about-100x-data"><a class="markdownIt-Anchor" href="#run1-with-about-100x-data"></a> run1, with about 100X data</h4>
+<p>commands:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> run1, default</span></span><br><span class="line"><span class="meta">$</span><span class="bash">path2perl <span class="variable">$TOOLDIR</span>/smartdenovo/smartdenovo.pl -t 24 -c 1 -p run1 <span class="variable">$WORKDIR</span>/data/Pacbio/all.fq.gz &gt; run1.mak</span></span><br><span class="line">make -f run1.mak</span><br></pre></td></tr></table></figure>
+<p>And the stats I got:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Size_includeN	2103140368</span><br><span class="line">Size_withoutN	2103140368</span><br><span class="line">Seq_Num	6164</span><br><span class="line">Mean_Size	341197</span><br><span class="line">Median_Size	163362</span><br><span class="line">Longest_Seq	9288681</span><br><span class="line">Shortest_Seq	12171</span><br><span class="line">GC_Content	38.16</span><br><span class="line">N50	703465</span><br><span class="line">L50	809</span><br><span class="line">N90	151138</span><br><span class="line">Gap	0.0</span><br></pre></td></tr></table></figure>
+<h4 id="run2-with-about-50x-data"><a class="markdownIt-Anchor" href="#run2-with-about-50x-data"></a> run2, with about 50X data</h4>
+<p>commands:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> run2, 50X</span></span><br><span class="line"><span class="meta">$</span><span class="bash">path2perl <span class="variable">$TOOLDIR</span>/smartdenovo/smartdenovo.pl -t <span class="variable">$PPN</span> -c 1 -p run2 <span class="variable">$WORKDIR</span>/data/Pacbio/Pacbio_50x.fasta &gt; run2.mak</span></span><br><span class="line">make -f run2.mak</span><br></pre></td></tr></table></figure>
+<p>And the stats I got:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Size_includeN	2028605527</span><br><span class="line">Size_withoutN	2028605527</span><br><span class="line">Seq_Num	5811</span><br><span class="line">Mean_Size	349097</span><br><span class="line">Median_Size	170070</span><br><span class="line">Longest_Seq	10046321</span><br><span class="line">Shortest_Seq	24367</span><br><span class="line">GC_Content	38.18</span><br><span class="line">N50	708215</span><br><span class="line">L50	758</span><br><span class="line">N90	147345</span><br><span class="line">Gap	0.0</span><br></pre></td></tr></table></figure>
+<p>This was a very good N50 size! And the assembled size was close to the expected one.</p>
 <h2 id="change-notes"><a class="markdownIt-Anchor" href="#change-notes"></a> Change notes</h2>
 <ul>
 <li>20180423: create the note.</li>
@@ -646,7 +663,7 @@ SMARTdenovo consists of several separate command line tools: <strong>wtzmo</stro
                 
                   <a href="/blog/archives">
                 
-                    <span class="site-state-item-count">19</span>
+                    <span class="site-state-item-count">20</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -689,7 +706,11 @@ SMARTdenovo consists of several separate command line tools: <strong>wtzmo</stro
                     
                       
                     
-                    <span class="site-state-item-count">15</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">17</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -760,7 +781,19 @@ SMARTdenovo consists of several separate command line tools: <strong>wtzmo</stro
                     
                       
                     
-                    <span class="site-state-item-count">29</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -857,7 +890,7 @@ SMARTdenovo consists of several separate command line tools: <strong>wtzmo</stro
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#introduction"><span class="nav-number">1.</span> <span class="nav-text"> Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#general-usage"><span class="nav-number">2.</span> <span class="nav-text"> General usage</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#in-practice"><span class="nav-number">3.</span> <span class="nav-text"> In practice</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#change-notes"><span class="nav-number">4.</span> <span class="nav-text"> Change notes</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#introduction"><span class="nav-number">1.</span> <span class="nav-text"> Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#general-usage"><span class="nav-number">2.</span> <span class="nav-text"> General usage</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#in-practice"><span class="nav-number">3.</span> <span class="nav-text"> In practice</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#an-insect"><span class="nav-number">3.1.</span> <span class="nav-text"> An insect</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#a-plant"><span class="nav-number">3.2.</span> <span class="nav-text"> A plant</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#run1-with-about-100x-data"><span class="nav-number">3.2.1.</span> <span class="nav-text"> run1, with about 100X data</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#run2-with-about-50x-data"><span class="nav-number">3.2.2.</span> <span class="nav-text"> run2, with about 50X data</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#change-notes"><span class="nav-number">4.</span> <span class="nav-text"> Change notes</span></a></li></ol></div>
             
 
           </div>
