@@ -118,7 +118,7 @@
 <meta property="og:site_name" content="Yiwei Niu&#39;s Note">
 <meta property="og:description" content="ID mapping is annoying but we have to face very often. This note is a collection of methods to deal with this trouble.  R (Bioconductor) There are lots of annotation packages in Bioconductor and they">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-09-18T08:22:22.499Z">
+<meta property="og:updated_time" content="2018-09-18T08:41:03.372Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Biological ID Conversion">
 <meta name="twitter:description" content="ID mapping is annoying but we have to face very often. This note is a collection of methods to deal with this trouble.  R (Bioconductor) There are lots of annotation packages in Bioconductor and they">
@@ -628,7 +628,7 @@
 <p><a href="https://www.kegg.jp/kegg/rest/keggapi.html" target="_blank" rel="noopener">KEGG API</a> is a REST-stype Application Programming Interface to the KEGG database resource.</p>
 <p>We can use this API by <code>bitr_kegg</code> in <code>clusterProfiler</code> package or <code>KEGGREST</code> package.</p>
 <h4 id="bitr_kegg"><a class="markdownIt-Anchor" href="#bitr_kegg"></a> bitr_kegg</h4>
-<p>Ref: <a href="https://bioconductor.org/packages/release/bioc/vignettes/clusterProfiler/inst/doc/clusterProfiler.html#bitr_kegg-converting-biological-ids-using-kegg-api" target="_blank" rel="noopener">https://bioconductor.org/packages/release/bioc/vignettes/clusterProfiler/inst/doc/clusterProfiler.html#bitr_kegg-converting-biological-ids-using-kegg-api</a></p>
+<p>Ref: <a href="https://bioconductor.org/packages/release/bioc/vignettes/clusterProfiler/inst/doc/clusterProfiler.html#bitr_kegg-converting-biological-ids-using-kegg-api" target="_blank" rel="noopener">clusterProfiler - bitr_kegg</a></p>
 <figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">library</span>(clusterProfiler)</span><br><span class="line"></span><br><span class="line">hg = c(<span class="string">"4597"</span>, <span class="string">"7111"</span>, <span class="string">"5266"</span>, <span class="string">"2175"</span>, <span class="string">"755"</span>, <span class="string">"23046"</span>)</span><br><span class="line"></span><br><span class="line">bitr_kegg(hg, fromType=<span class="string">'kegg'</span>, toType=<span class="string">'ncbi-proteinid'</span>, organism=<span class="string">'hsa'</span>)</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">   kegg ncbi-proteinid</span><br><span class="line">1  2175      NP_000126</span><br><span class="line">2 23046   NP_001239029</span><br><span class="line">3  4597      NP_002452</span><br><span class="line">4  5266      NP_002629</span><br><span class="line">5  7111   NP_001159588</span><br><span class="line">6   755      NP_004919</span><br></pre></td></tr></table></figure>
 <blockquote>
