@@ -118,7 +118,7 @@
 <meta property="og:site_name" content="Yiwei Niu&#39;s Note">
 <meta property="og:description" content="ID mapping is annoying but we have to face very often. This note is a collection of methods to deal with this trouble.  R (Bioconductor) There are lots of annotation packages in Bioconductor and they">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-09-18T08:41:03.372Z">
+<meta property="og:updated_time" content="2018-09-18T15:06:00.624Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Biological ID Conversion">
 <meta name="twitter:description" content="ID mapping is annoying but we have to face very often. This note is a collection of methods to deal with this trouble.  R (Bioconductor) There are lots of annotation packages in Bioconductor and they">
@@ -526,6 +526,8 @@
 <p>Convert Ensembl ids to entrez id and gene symbol.</p>
 <figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">library</span>(clusterProfiler)</span><br><span class="line"><span class="keyword">library</span>(org.Hs.eg.db)</span><br><span class="line"></span><br><span class="line">ensg = c(<span class="string">'ENSG00000242268.2'</span>, <span class="string">'ENSG00000158486.13'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># remove version number</span></span><br><span class="line">ensg.no_version = sapply(strsplit(as.character(ensg),<span class="string">"\\."</span>),<span class="string">"[["</span>,<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">bitr(ensg.no_version, fromType=<span class="string">"ENSEMBL"</span>, toType=c(<span class="string">"ENTREZID"</span>, <span class="string">"SYMBOL"</span>), OrgDb=<span class="string">"org.Hs.eg.db"</span>)</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&apos;select()&apos; returned 1:1 mapping between keys and columns</span><br><span class="line">          ENSEMBL  ENTREZID    SYMBOL</span><br><span class="line">1 ENSG00000242268 100507661 LINC02082</span><br><span class="line">2 ENSG00000158486     55567     DNAH3</span><br></pre></td></tr></table></figure>
+<h3 id="other-annotation-packages"><a class="markdownIt-Anchor" href="#other-annotation-packages"></a> Other Annotation Packages</h3>
+<p>Apart from the <code>OrgDb</code> packages, there are also many other annotation packages like <code>TxDb</code>packages and <code>EnsDb</code> packages, which provide various kinds of information. And most of them are based on <code>AnnotationDb</code> object, and one can use standard <code>select</code> function to retrieve information needed.</p>
 <h2 id="ncbi-gene-data"><a class="markdownIt-Anchor" href="#ncbi-gene-data"></a> NCBI gene DATA</h2>
 <p>Sometimes we want to have all information on local disks and use in-house scripts to do the conversion. <a href="ftp://ftp.ncbi.nih.gov/gene/DATA" target="_blank" rel="noopener">ftp://ftp.ncbi.nih.gov/gene/DATA</a> provide most up-to-date and comprehensive collections of gene-centric information.</p>
 <blockquote>
@@ -726,6 +728,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/blog/2018/09/Understand-Bioconductor-Annotation-Packages/" rel="prev" title="Understand Bioconductor Annotation Packages">
+                Understand Bioconductor Annotation Packages <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -808,7 +814,7 @@
                 
                   <a href="/blog/archives">
                 
-                    <span class="site-state-item-count">20</span>
+                    <span class="site-state-item-count">21</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -855,7 +861,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">17</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">19</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -938,7 +948,15 @@
                     
                       
                     
-                    <span class="site-state-item-count">35</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">39</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -1035,7 +1053,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#r-bioconductor"><span class="nav-number">1.</span> <span class="nav-text"> R (Bioconductor)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#biomart"><span class="nav-number">1.1.</span> <span class="nav-text"> biomaRt</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#orgdb-packages-bitr"><span class="nav-number">1.2.</span> <span class="nav-text"> OrgDb packages + bitr</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ncbi-gene-data"><span class="nav-number">2.</span> <span class="nav-text"> NCBI gene DATA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#api"><span class="nav-number">3.</span> <span class="nav-text"> API</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ensembl-rest-api"><span class="nav-number">3.1.</span> <span class="nav-text"> Ensembl REST API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#kegg-api"><span class="nav-number">3.2.</span> <span class="nav-text"> KEGG API</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#bitr_kegg"><span class="nav-number">3.2.1.</span> <span class="nav-text"> bitr_kegg</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#keggrest"><span class="nav-number">3.2.2.</span> <span class="nav-text"> KEGGREST</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web-server"><span class="nav-number">4.</span> <span class="nav-text"> Web Server</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#change-log"><span class="nav-number">5.</span> <span class="nav-text"> Change log</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#r-bioconductor"><span class="nav-number">1.</span> <span class="nav-text"> R (Bioconductor)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#biomart"><span class="nav-number">1.1.</span> <span class="nav-text"> biomaRt</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#orgdb-packages-bitr"><span class="nav-number">1.2.</span> <span class="nav-text"> OrgDb packages + bitr</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#other-annotation-packages"><span class="nav-number">1.3.</span> <span class="nav-text"> Other Annotation Packages</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ncbi-gene-data"><span class="nav-number">2.</span> <span class="nav-text"> NCBI gene DATA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#api"><span class="nav-number">3.</span> <span class="nav-text"> API</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ensembl-rest-api"><span class="nav-number">3.1.</span> <span class="nav-text"> Ensembl REST API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#kegg-api"><span class="nav-number">3.2.</span> <span class="nav-text"> KEGG API</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#bitr_kegg"><span class="nav-number">3.2.1.</span> <span class="nav-text"> bitr_kegg</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#keggrest"><span class="nav-number">3.2.2.</span> <span class="nav-text"> KEGGREST</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web-server"><span class="nav-number">4.</span> <span class="nav-text"> Web Server</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#change-log"><span class="nav-number">5.</span> <span class="nav-text"> Change log</span></a></li></ol></div>
             
 
           </div>

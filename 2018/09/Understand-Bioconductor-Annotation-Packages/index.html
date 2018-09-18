@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="3dnqtuxhGQK5nK7aqRtU2c3DzZlaVtBMN6M39UoGcgY" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/blog/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/blog/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="This note is to help me figure out the design schema of annotation packages in Bioconductor. And this note is mainly compiled from:  Annotation Packages: the big picture. Fantastic slide! Introduction">
+<meta name="keywords" content="R,Bioconductor,Bioconductor package,annotation package">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Understand Bioconductor Annotation Packages">
+<meta property="og:url" content="https://yiweiniu.github.io/blog/2018/09/Understand-Bioconductor-Annotation-Packages/index.html">
+<meta property="og:site_name" content="Yiwei Niu&#39;s Note">
+<meta property="og:description" content="This note is to help me figure out the design schema of annotation packages in Bioconductor. And this note is mainly compiled from:  Annotation Packages: the big picture. Fantastic slide! Introduction">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://yiweiniu.github.io/blog/2018/09/Understand-Bioconductor-Annotation-Packages/1537268974_20811.png">
+<meta property="og:image" content="https://yiweiniu.github.io/blog/2018/09/Understand-Bioconductor-Annotation-Packages/1537281088_5251.png">
+<meta property="og:updated_time" content="2018-09-18T15:51:23.522Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Understand Bioconductor Annotation Packages">
+<meta name="twitter:description" content="This note is to help me figure out the design schema of annotation packages in Bioconductor. And this note is mainly compiled from:  Annotation Packages: the big picture. Fantastic slide! Introduction">
+<meta name="twitter:image" content="https://yiweiniu.github.io/blog/2018/09/Understand-Bioconductor-Annotation-Packages/1537268974_20811.png">
+
+
+
+  <link rel="alternate" href="/blog/atom.xml" title="Yiwei Niu's Note" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="https://yiweiniu.github.io/blog/2018/09/Understand-Bioconductor-Annotation-Packages/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Understand Bioconductor Annotation Packages | Yiwei Niu's Note</title>
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-122074944-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-122074944-1');
+</script>
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Yiwei Niu's Note</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">to share, to learn</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/blog/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/blog/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/blog/tags" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />Tags</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/blog/archives" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="https:/yiweiniu.github.io/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />About</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yiweiniu.github.io/blog/blog/2018/09/Understand-Bioconductor-Annotation-Packages/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yiwei Niu">
+      <meta itemprop="description" content="a beginner, a learner">
+      <meta itemprop="image" content="/blog/images/portrait.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yiwei Niu's Note">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Understand Bioconductor Annotation Packages
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-09-18 23:04:52" itemprop="dateCreated datePublished" datetime="2018-09-18T23:04:52+08:00">2018-09-18</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/blog/categories/R/" itemprop="url" rel="index"><span itemprop="name">R</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/blog/categories/R/Bioconductor/" itemprop="url" rel="index"><span itemprop="name">Bioconductor</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2018/09/Understand-Bioconductor-Annotation-Packages/#comments" itemprop="discussionUrl">
+                
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/09/Understand-Bioconductor-Annotation-Packages/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views:  
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-symbolscount">
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                <span title="Symbols count in article">22k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                <span title="Reading time">0:20</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>This note is to help me figure out the design schema of annotation packages in Bioconductor. And this note is mainly compiled from:</p>
+<ul>
+<li><a href="https://www.bioconductor.org/help/course-materials/2011/BioC2011/LabStuff/AnnotationSlidesBioc2011.pdf" target="_blank" rel="noopener">Annotation Packages: the big picture</a>. Fantastic slide!</li>
+<li><a href="https://bioconductor.org/packages/release/bioc/vignettes/AnnotationDbi/inst/doc/IntroToAnnotationPackages.pdf" target="_blank" rel="noopener">Introduction To Bioconductor Annotation Packages</a></li>
+<li><a href="https://bioconductor.org/packages/release/bioc/manuals/AnnotationDbi/man/AnnotationDbi.pdf" target="_blank" rel="noopener">Package ‘AnnotationDbi’ Reference Manual</a></li>
+<li><a href="https://bioconductor.org/packages/release/bioc/vignettes/GenomicFeatures/inst/doc/GenomicFeatures.pdf" target="_blank" rel="noopener">Making and Utilizing TxDb Objects</a></li>
+</ul>
+<h2 id="introduction"><a class="markdownIt-Anchor" href="#introduction"></a> Introduction</h2>
+<p>Packages in <a href="https://bioconductor.org/" target="_blank" rel="noopener">Bioconductor</a> can be divided into three categories: software, annotation and experiment.</p>
+<blockquote>
+<p>All of the ‘.db’ (and most other Bioconductor annotation packages) are updated every 6 months corresponding to each release of Bioconductor. Exceptions are made for packages where the actual resources that the packages are based on have not themselves been updated.</p>
+</blockquote>
+<h2 id="schema-of-annotation-packages"><a class="markdownIt-Anchor" href="#schema-of-annotation-packages"></a> Schema of Annotation Packages</h2>
+<p>Here is a very representative graph, but not informative-enough.</p>
+<img src="/blog/2018/09/Understand-Bioconductor-Annotation-Packages/1537268974_20811.png">
+<p>There are three major types of annotation in Bioconductor:</p>
+<ul>
+<li>Gene centric <code>AnnotationDb</code> packages:
+<ul>
+<li>Organism level: e.g. <code>org.Mm.eg.db</code>.</li>
+<li>Platform level: e.g. <code>hgu133plus2.db</code>, <code>hgu133plus2.probes</code>, <code>hgu133plus2.cdf</code>.</li>
+<li>Homology level: e.g. <code>hom.Dm.inp.db</code>.</li>
+<li>System-biology level: e.g. <code>GO.db</code>.</li>
+</ul>
+</li>
+<li>Genome centric <code>GenomicFeatures</code> packages include:
+<ul>
+<li>Transcriptome level: e.g. <code>TxDb.Hsapiens.UCSC.hg19.knownGene</code>, <code>EnsDb.Hsapiens.v75</code>.</li>
+<li>Generic genome feature: can generate via <code>GenomicFeatures</code>.</li>
+</ul>
+</li>
+<li>One web-based resource accesss <code>biomart</code>, via <code>biomaRt</code> package:
+<ul>
+<li>Query web-based ‘biomart’ resource for genes, sequence, SNPs, and etc.</li>
+</ul>
+</li>
+</ul>
+<h2 id="working-with-anotationdb-objects"><a class="markdownIt-Anchor" href="#working-with-anotationdb-objects"></a> Working with AnotationDb objects</h2>
+<p><code>AnnotationDb</code> is the virtual base class for all annotation packages. It contain a database connection and is meant to be the parent for a set of classes in the Bioconductor annotation packages. These classes will provide a means of dispatch for a widely available set of select methods and thus allow the easy extraction of data from the annotation packages.</p>
+<p>All the annotation packages that base on <code>AnnotationDb</code> object expose an object named exactly the same as the package itself.</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">library</span>(org.Hs.eg.db)</span><br><span class="line">class(org.Hs.eg.db)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[1] &quot;OrgDb&quot;</span><br><span class="line">attr(,&quot;package&quot;)</span><br><span class="line">[1] &quot;AnnotationDbi&quot;</span><br></pre></td></tr></table></figure>
+<p>The more specific classes (the ones that you will actually see in the wild) have names like <code>OrgDb</code>, <code>ChipDb</code> or <code>TxDb</code> objects. These names correspond to the kind of package (and underlying schema) being represented.</p>
+<p>Like:</p>
+<ul>
+<li><code>org.Hs.eg.db</code> - Genome wide annotation for Human.</li>
+<li><code>TxDb.Hsapiens.UCSC.hg19.knownGene</code> - Annotation package for TxDb object(s).</li>
+<li><code>hgu95av2.db</code> - annotations for the hgu95av2 Affymetrix platform.</li>
+</ul>
+<p><strong>Methods</strong></p>
+<p><code>select</code>, <code>columns</code> and <code>keys</code> are used together to extract data from an <code>AnnotationDb</code> object (or any object derived from the parent class). Examples of classes derived from the <code>AnnotationDb</code> object include (but are not limited to): <code>ChipDb</code>, <code>OrgDb</code>, <code>GODb</code>, <code>InparanoidDb</code> and <code>ReactomeDb</code>.</p>
+<ul>
+<li><code>columns</code> shows which kinds of data can be returned for the AnnotationDb object.</li>
+<li><code>keytypes</code> allows the user to discover which keytypes can be passed in to select or keys and the keytype argument.</li>
+<li><code>keys</code> returns keys for the database contained in the <code>AnnotationDb</code> object . This method is already documented in the keys manual page but is mentioned again here because it’s usage with select is so intimate. By default it will return the primary keys for the database, but if used with the <code>keytype</code> argument, it will return the keys from that <code>keytype</code>.</li>
+<li><code>select</code> will retrieve the data as a <code>data.frame</code> based on parameters for selected keys <code>columns</code> and <code>keytype</code> arguments. <mark>Users should be warned that if you call <code>select</code> and request columns that have multiple matches for your keys, select will return a <code>data.frame</code> with one row for each possible match. This has the effect that if you request multiple columns and some of them have a many to one relationship to the keys, things will continue to multiply accordingly.</mark> So it’s not a good idea to request a large number of columns unless you know that what you are asking for should have a one to one relationship with the initial set of keys. In general, if you need to retrieve a column (like GO) that has a many to one relationship to the original keys, it is most useful to extract that separately.</li>
+<li><code>mapIds</code> gets the mapped ids (column) for a set of keys that are of a particular keytype. Usually returned as a named character vector, a list or even a SimpleCharacterList.</li>
+<li><code>saveDb</code> will take an <code>AnnotationDb</code> object and save the database to the file specified by the path passed in to the file argument.</li>
+<li><code>loadDb</code> takes a .sqlite database file as an argument and uses data in the metadata table of that file to return an AnnotationDb style object of the appropriate type.</li>
+<li><code>species</code> shows the genus and species label currently attached to the AnnotationDb objects database.</li>
+<li><code>dbfile</code> gets the database file associated with an object.</li>
+<li><code>dbconn</code> gets the datebase connection associated with an object.</li>
+<li><code>taxonomyId</code> gets the taxonomy ID associated with an object (if available).</li>
+</ul>
+<h3 id="chipdb"><a class="markdownIt-Anchor" href="#chipdb"></a> ChipDb</h3>
+<p>Platfom-based or chip-based annotation package are an extremely common kind of Annotation package. The following examples show how to use standard methods to interact with an object of this type.</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">library</span>(<span class="string">"hgu95av2.db"</span>)</span><br></pre></td></tr></table></figure>
+<p>Things loaded along with this package</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls(<span class="string">"package:hgu95av2.db"</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> [1] &quot;hgu95av2&quot;              &quot;hgu95av2.db&quot;           &quot;hgu95av2_dbconn&quot;       &quot;hgu95av2_dbfile&quot;       &quot;hgu95av2_dbInfo&quot;      </span><br><span class="line"> [6] &quot;hgu95av2_dbschema&quot;     &quot;hgu95av2ACCNUM&quot;        &quot;hgu95av2ALIAS2PROBE&quot;   &quot;hgu95av2CHR&quot;           &quot;hgu95av2CHRLENGTHS&quot;   </span><br><span class="line">[11] &quot;hgu95av2CHRLOC&quot;        &quot;hgu95av2CHRLOCEND&quot;     &quot;hgu95av2ENSEMBL&quot;       &quot;hgu95av2ENSEMBL2PROBE&quot; &quot;hgu95av2ENTREZID&quot;     </span><br><span class="line">[16] &quot;hgu95av2ENZYME&quot;        &quot;hgu95av2ENZYME2PROBE&quot;  &quot;hgu95av2GENENAME&quot;      &quot;hgu95av2GO&quot;            &quot;hgu95av2GO2ALLPROBES&quot; </span><br><span class="line">[21] &quot;hgu95av2GO2PROBE&quot;      &quot;hgu95av2MAP&quot;           &quot;hgu95av2MAPCOUNTS&quot;     &quot;hgu95av2OMIM&quot;          &quot;hgu95av2ORGANISM&quot;     </span><br><span class="line">[26] &quot;hgu95av2ORGPKG&quot;        &quot;hgu95av2PATH&quot;          &quot;hgu95av2PATH2PROBE&quot;    &quot;hgu95av2PFAM&quot;          &quot;hgu95av2PMID&quot;         </span><br><span class="line">[31] &quot;hgu95av2PMID2PROBE&quot;    &quot;hgu95av2PROSITE&quot;       &quot;hgu95av2REFSEQ&quot;        &quot;hgu95av2SYMBOL&quot;        &quot;hgu95av2UNIGENE&quot;      </span><br><span class="line">[36] &quot;hgu95av2UNIPROT&quot;</span><br></pre></td></tr></table></figure>
+<p>These packages appear to contain a lot of data but it is an illusion.</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="keyword">library</span>(hgu95av2.db)</span><br><span class="line">&gt; hgu95av2()</span><br><span class="line">&gt; hgu95av2_dbInfo()</span><br><span class="line">&gt; hgu95av2GENENAME</span><br><span class="line">&gt; hgu95av2_dbschema()</span><br></pre></td></tr></table></figure>
+<p>Use <code>columns()</code> to see possible values for columns.</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">columns(hgu95av2.db)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> [1] &quot;ACCNUM&quot;       &quot;ALIAS&quot;        &quot;ENSEMBL&quot;      &quot;ENSEMBLPROT&quot;  &quot;ENSEMBLTRANS&quot; &quot;ENTREZID&quot;     &quot;ENZYME&quot;       &quot;EVIDENCE&quot;    </span><br><span class="line"> [9] &quot;EVIDENCEALL&quot;  &quot;GENENAME&quot;     &quot;GO&quot;           &quot;GOALL&quot;        &quot;IPI&quot;          &quot;MAP&quot;          &quot;OMIM&quot;         &quot;ONTOLOGY&quot;    </span><br><span class="line">[17] &quot;ONTOLOGYALL&quot;  &quot;PATH&quot;         &quot;PFAM&quot;         &quot;PMID&quot;         &quot;PROBEID&quot;      &quot;PROSITE&quot;      &quot;REFSEQ&quot;       &quot;SYMBOL&quot;      </span><br><span class="line">[25] &quot;UCSCKG&quot;       &quot;UNIGENE&quot;      &quot;UNIPROT&quot;</span><br></pre></td></tr></table></figure>
+<p>Use <code>help(&quot;xxx&quot;)</code>to see the description of columns.</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">help(<span class="string">'SYMBOL'</span>)</span><br></pre></td></tr></table></figure>
+<p>Use <code>keytypes()</code> to see possible values for keytypes. In reality, some kinds of values make poor keys and so this list is shorter than that of above.</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keytypes(hgu95a.db)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> [1] &quot;ACCNUM&quot;       &quot;ALIAS&quot;        &quot;ENSEMBL&quot;      &quot;ENSEMBLPROT&quot;  &quot;ENSEMBLTRANS&quot; &quot;ENTREZID&quot;     &quot;ENZYME&quot;       &quot;EVIDENCE&quot;    </span><br><span class="line"> [9] &quot;EVIDENCEALL&quot;  &quot;GENENAME&quot;     &quot;GO&quot;           &quot;GOALL&quot;        &quot;IPI&quot;          &quot;MAP&quot;          &quot;OMIM&quot;         &quot;ONTOLOGY&quot;    </span><br><span class="line">[17] &quot;ONTOLOGYALL&quot;  &quot;PATH&quot;         &quot;PFAM&quot;         &quot;PMID&quot;         &quot;PROBEID&quot;      &quot;PROSITE&quot;      &quot;REFSEQ&quot;       &quot;SYMBOL&quot;      </span><br><span class="line">[25] &quot;UCSCKG&quot;       &quot;UNIGENE&quot;      &quot;UNIPROT&quot;</span><br></pre></td></tr></table></figure>
+<p>Use <code>keys()</code> to extract some sample keys back. (default if the primary key.)</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">head(keys(hgu95av2.db))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[1] &quot;1000_at&quot;   &quot;1001_at&quot;   &quot;1002_f_at&quot; &quot;1003_s_at&quot; &quot;1004_at&quot;   &quot;1005_at&quot;</span><br></pre></td></tr></table></figure>
+<p>Or for a particular keytype.</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">head(keys(hgu95av2.db, keytype=<span class="string">'SYMBOL'</span>))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[1] &quot;A1BG&quot;  &quot;A2M&quot;   &quot;A2MP1&quot; &quot;NAT1&quot;  &quot;NAT2&quot;  &quot;NATP&quot;</span><br></pre></td></tr></table></figure>
+<p>Use <code>select()</code> to retrieve data.</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#1st get some example keys</span></span><br><span class="line">k &lt;- head(keys(hgu95av2.db, keytype=<span class="string">"PROBEID"</span>))</span><br><span class="line"><span class="comment"># then call select</span></span><br><span class="line">select(hgu95av2.db, keys=k, columns=c(<span class="string">"SYMBOL"</span>,<span class="string">"GENENAME"</span>), keytype=<span class="string">"PROBEID"</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&apos;select()&apos; returned 1:1 mapping between keys and columns</span><br><span class="line">    PROBEID  SYMBOL                                                        GENENAME</span><br><span class="line">1   1000_at   MAPK3                              mitogen-activated protein kinase 3</span><br><span class="line">2   1001_at    TIE1 tyrosine kinase with immunoglobulin like and EGF like domains 1</span><br><span class="line">3 1002_f_at CYP2C19                  cytochrome P450 family 2 subfamily C member 19</span><br><span class="line">4 1003_s_at   CXCR5                                C-X-C motif chemokine receptor 5</span><br><span class="line">5   1004_at   CXCR5                                C-X-C motif chemokine receptor 5</span><br><span class="line">6   1005_at   DUSP1                                  dual specificity phosphatase 1</span><br></pre></td></tr></table></figure>
+<p>If one wants to get only one column of data, <code>mapIds</code> can be used.</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mapIds(hgu95av2.db, keys=k, column=c(<span class="string">"GENENAME"</span>), keytype=<span class="string">"PROBEID"</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&apos;select()&apos; returned 1:1 mapping between keys and columns</span><br><span class="line">                                                          1000_at                                                           1001_at </span><br><span class="line">                             &quot;mitogen-activated protein kinase 3&quot; &quot;tyrosine kinase with immunoglobulin like and EGF like domains 1&quot; </span><br><span class="line">                                                        1002_f_at                                                         1003_s_at </span><br><span class="line">                 &quot;cytochrome P450 family 2 subfamily C member 19&quot;                                &quot;C-X-C motif chemokine receptor 5&quot; </span><br><span class="line">                                                          1004_at                                                           1005_at </span><br><span class="line">                               &quot;C-X-C motif chemokine receptor 5&quot;                                  &quot;dual specificity phosphatase 1&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="orgdb"><a class="markdownIt-Anchor" href="#orgdb"></a> OrgDb</h3>
+<p>An organism level package (an ‘org’ package) uses a central gene identifier (e.g. Entrez Gene id) and contains mappings between this identifier and other kinds of identifiers (e.g. GenBank or Uniprot accession number, RefSeq id, etc.).</p>
+<p>The name of an org package is always of the form <code>org.&lt;Ab&gt;.&lt;id&gt;.db</code> (e.g. <code>org.Sc.sgd.db</code>) where <code>&lt;Ab&gt;</code> is a 2-letter abbreviation of the organism (e.g. <code>Sc</code> for <em>Saccharomyces cerevisiae</em>) and <code>&lt;id&gt;</code> is an abbreviation (in lower-case) describing the type of cen- tral identifier (e.g. <code>sgd</code> for gene identifiers assigned by the Saccharomyces Genome Database, or <code>eg</code> for Entrez Gene ids).</p>
+<p>Using <code>OrgDb</code> packages is just like using <code>ChipDb</code> packages.</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">library</span>(org.Hs.eg.db)</span><br><span class="line"></span><br><span class="line">&gt; columns(org.Hs.eg.db)</span><br><span class="line"> [<span class="number">1</span>] <span class="string">"ACCNUM"</span>       <span class="string">"ALIAS"</span>        <span class="string">"ENSEMBL"</span>      <span class="string">"ENSEMBLPROT"</span>  <span class="string">"ENSEMBLTRANS"</span> <span class="string">"ENTREZID"</span>     <span class="string">"ENZYME"</span>       <span class="string">"EVIDENCE"</span>    </span><br><span class="line"> [<span class="number">9</span>] <span class="string">"EVIDENCEALL"</span>  <span class="string">"GENENAME"</span>     <span class="string">"GO"</span>           <span class="string">"GOALL"</span>        <span class="string">"IPI"</span>          <span class="string">"MAP"</span>          <span class="string">"OMIM"</span>         <span class="string">"ONTOLOGY"</span>    </span><br><span class="line">[<span class="number">17</span>] <span class="string">"ONTOLOGYALL"</span>  <span class="string">"PATH"</span>         <span class="string">"PFAM"</span>         <span class="string">"PMID"</span>         <span class="string">"PROSITE"</span>      <span class="string">"REFSEQ"</span>       <span class="string">"SYMBOL"</span>       <span class="string">"UCSCKG"</span>      </span><br><span class="line">[<span class="number">25</span>] <span class="string">"UNIGENE"</span>      <span class="string">"UNIPROT"</span></span><br><span class="line"></span><br><span class="line">&gt; keytypes(org.Hs.eg.db)</span><br><span class="line"> [<span class="number">1</span>] <span class="string">"ACCNUM"</span>       <span class="string">"ALIAS"</span>        <span class="string">"ENSEMBL"</span>      <span class="string">"ENSEMBLPROT"</span>  <span class="string">"ENSEMBLTRANS"</span> <span class="string">"ENTREZID"</span>     <span class="string">"ENZYME"</span>       <span class="string">"EVIDENCE"</span>    </span><br><span class="line"> [<span class="number">9</span>] <span class="string">"EVIDENCEALL"</span>  <span class="string">"GENENAME"</span>     <span class="string">"GO"</span>           <span class="string">"GOALL"</span>        <span class="string">"IPI"</span>          <span class="string">"MAP"</span>          <span class="string">"OMIM"</span>         <span class="string">"ONTOLOGY"</span>    </span><br><span class="line">[<span class="number">17</span>] <span class="string">"ONTOLOGYALL"</span>  <span class="string">"PATH"</span>         <span class="string">"PFAM"</span>         <span class="string">"PMID"</span>         <span class="string">"PROSITE"</span>      <span class="string">"REFSEQ"</span>       <span class="string">"SYMBOL"</span>       <span class="string">"UCSCKG"</span>      </span><br><span class="line">[<span class="number">25</span>] <span class="string">"UNIGENE"</span>      <span class="string">"UNIPROT"</span></span><br><span class="line"></span><br><span class="line">&gt; head(keys(org.Hs.eg.db))</span><br><span class="line">[<span class="number">1</span>] <span class="string">"1"</span>  <span class="string">"2"</span>  <span class="string">"3"</span>  <span class="string">"9"</span>  <span class="string">"10"</span> <span class="string">"11"</span></span><br></pre></td></tr></table></figure>
+<h3 id="godb"><a class="markdownIt-Anchor" href="#godb"></a> GO.db</h3>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">library</span>(GO.db)</span><br><span class="line"></span><br><span class="line">&gt; GO.db</span><br><span class="line">GODb object:</span><br><span class="line">| GOSOURCENAME: Gene Ontology</span><br><span class="line">| GOSOURCEURL: ftp://ftp.geneontology.org/pub/go/godatabase/archive/latest-lite/</span><br><span class="line">| GOSOURCEDATE: <span class="number">2018</span>-Mar28</span><br><span class="line">| Db type: GODb</span><br><span class="line">| package: AnnotationDbi</span><br><span class="line">| DBSCHEMA: GO_DB</span><br><span class="line">| GOEGSOURCEDATE: <span class="number">2018</span>-Apr4</span><br><span class="line">| GOEGSOURCENAME: Entrez Gene</span><br><span class="line">| GOEGSOURCEURL: ftp://ftp.ncbi.nlm.nih.gov/gene/DATA</span><br><span class="line">| DBSCHEMAVERSION: <span class="number">2.1</span></span><br><span class="line"></span><br><span class="line">Please see: help(<span class="string">'select'</span>) <span class="keyword">for</span> usage information</span><br><span class="line"></span><br><span class="line">&gt; columns(GO.db)</span><br><span class="line">[<span class="number">1</span>] <span class="string">"DEFINITION"</span> <span class="string">"GOID"</span>       <span class="string">"ONTOLOGY"</span>   <span class="string">"TERM"</span>      </span><br><span class="line"></span><br><span class="line">&gt; keytypes(GO.db)</span><br><span class="line">[<span class="number">1</span>] <span class="string">"DEFINITION"</span> <span class="string">"GOID"</span>       <span class="string">"ONTOLOGY"</span>   <span class="string">"TERM"</span></span><br><span class="line"></span><br><span class="line">&gt; head(keys(GO.db))</span><br><span class="line">[<span class="number">1</span>] <span class="string">"GO:0000001"</span> <span class="string">"GO:0000002"</span> <span class="string">"GO:0000003"</span> <span class="string">"GO:0000006"</span> <span class="string">"GO:0000007"</span> <span class="string">"GO:0000009"</span></span><br><span class="line"></span><br><span class="line">&gt; head(keys(GO.db, keytype=<span class="string">'ONTOLOGY'</span>))</span><br><span class="line">[<span class="number">1</span>] <span class="string">"BP"</span>        <span class="string">"CC"</span>        <span class="string">"MF"</span>        <span class="string">"universal"</span></span><br><span class="line"></span><br><span class="line">&gt; head(keys(GO.db, keytype=<span class="string">'TERM'</span>))</span><br><span class="line">[<span class="number">1</span>] <span class="string">"mitochondrion inheritance"</span>                   <span class="string">"mitochondrial genome maintenance"</span>           </span><br><span class="line">[<span class="number">3</span>] <span class="string">"reproduction"</span>                                <span class="string">"ribosome biogenesis"</span>                        </span><br><span class="line">[<span class="number">5</span>] <span class="string">"protein binding involved in protein folding"</span> <span class="string">"unfolded protein binding"</span></span><br><span class="line"></span><br><span class="line">&gt; keys &lt;- head(keys(GO.db))</span><br><span class="line">&gt; select(GO.db, keys=keys, columns=c(<span class="string">"TERM"</span>,<span class="string">"ONTOLOGY"</span>), keytype=<span class="string">"GOID"</span>)</span><br><span class="line"><span class="string">'select()'</span> returned <span class="number">1</span>:<span class="number">1</span> mapping between keys and columns</span><br><span class="line">        GOID                                                     TERM ONTOLOGY</span><br><span class="line"><span class="number">1</span> GO:<span class="number">0000001</span>                                mitochondrion inheritance       BP</span><br><span class="line"><span class="number">2</span> GO:<span class="number">0000002</span>                         mitochondrial genome maintenance       BP</span><br><span class="line"><span class="number">3</span> GO:<span class="number">0000003</span>                                             reproduction       BP</span><br><span class="line"><span class="number">4</span> GO:<span class="number">0000006</span>    high-affinity zinc transmembrane transporter activity       MF</span><br><span class="line"><span class="number">5</span> GO:<span class="number">0000007</span> low-affinity zinc ion transmembrane transporter activity       MF</span><br><span class="line"><span class="number">6</span> GO:<span class="number">0000009</span>                   alpha-<span class="number">1</span>,<span class="number">6</span>-mannosyltransferase activity       MF</span><br></pre></td></tr></table></figure>
+<h3 id="txdb"><a class="markdownIt-Anchor" href="#txdb"></a> TxDb</h3>
+<p>A <code>TxDb</code> package connects a set of genomic coordinates to various transcript oriented features. The package can also contain identifiers to features such as genes and transcripts, and the internal schema describes the relationships between these different elements.</p>
+<img src="/blog/2018/09/Understand-Bioconductor-Annotation-Packages/1537281088_5251.png">
+<p>This class maps the 5’ and 3’ untranslated regions (UTRs), protein coding sequences (CDSs) and exons for a set of mRNA transcripts to their associated genome. <code>TxDb</code> objects have numerous accessors functions to allow such features to be retrieved individually or grouped together in a way that reflects the underlying biology.</p>
+<p>All <code>TxDb</code> containing packages follow a specific naming scheme that tells where the data came from as well as which build of the genome it comes from.</p>
+<p>Package <code>GenomicFeatures</code> contain a set of tools and methods to make and manipulate transcript centric annotation.</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">library</span>(TxDb.Hsapiens.UCSC.hg19.knownGene)</span><br><span class="line">txdb &lt;- TxDb.Hsapiens.UCSC.hg19.knownGene  <span class="comment">#shorthand (for convenience</span></span><br><span class="line">txdb</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">TxDb object:</span><br><span class="line"># Db type: TxDb</span><br><span class="line"># Supporting package: GenomicFeatures</span><br><span class="line"># Data source: UCSC</span><br><span class="line"># Genome: hg19</span><br><span class="line"># Organism: Homo sapiens</span><br><span class="line"># Taxonomy ID: 9606</span><br><span class="line"># UCSC Table: knownGene</span><br><span class="line"># Resource URL: http://genome.ucsc.edu/</span><br><span class="line"># Type of Gene ID: Entrez Gene ID</span><br><span class="line"># Full dataset: yes</span><br><span class="line"># miRBase build ID: GRCh37</span><br><span class="line"># transcript_nrow: 82960</span><br><span class="line"># exon_nrow: 289969</span><br><span class="line"># cds_nrow: 237533</span><br><span class="line"># Db created by: GenomicFeatures package from Bioconductor</span><br><span class="line"># Creation time: 2015-10-07 18:11:28 +0000 (Wed, 07 Oct 2015)</span><br><span class="line"># GenomicFeatures version at creation time: 1.21.30</span><br><span class="line"># RSQLite version at creation time: 1.0.0</span><br><span class="line"># DBSCHEMAVERSION: 1.1</span><br><span class="line"></span><br><span class="line">&gt; class(txdb)</span><br><span class="line">[1] &quot;TxDb&quot;</span><br><span class="line">attr(,&quot;package&quot;)</span><br><span class="line">[1] &quot;GenomicFeatures&quot;</span><br></pre></td></tr></table></figure>
+<p>In addition to accessors via <code>select</code>, <code>TxDb</code> objects also provide access via the more familiar <code>transcripts</code>, <code>exons</code>, <code>cds</code>, <code>transcriptsBy</code>, <code>exonsBy</code> and <code>cdsBy</code> methods, and they will return <code>GRanges</code> objects.</p>
+<p>The ‘ungrouped’ functions <code>transcripts</code>, <code>exons</code>, <code>cds</code>, <code>genes</code> and <code>promoters</code> return the coordinate information as a <code>GRanges</code> object.</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">GR = transcripts(txdb)</span><br><span class="line">&gt; GR[<span class="number">1</span>:<span class="number">3</span>]</span><br><span class="line">GRanges object with <span class="number">3</span> ranges and <span class="number">2</span> metadata columns:</span><br><span class="line">      seqnames      ranges strand |     tx_id     tx_name</span><br><span class="line">         &lt;Rle&gt;   &lt;IRanges&gt;  &lt;Rle&gt; | &lt;integer&gt; &lt;character&gt;</span><br><span class="line">  [<span class="number">1</span>]     chr1 <span class="number">11874</span>-<span class="number">14409</span>      + |         <span class="number">1</span>  uc001aaa.3</span><br><span class="line">  [<span class="number">2</span>]     chr1 <span class="number">11874</span>-<span class="number">14409</span>      + |         <span class="number">2</span>  uc010nxq.1</span><br><span class="line">  [<span class="number">3</span>]     chr1 <span class="number">11874</span>-<span class="number">14409</span>      + |         <span class="number">3</span>  uc010nxr.1</span><br><span class="line">  -------</span><br><span class="line">  seqinfo: <span class="number">93</span> sequences (<span class="number">1</span> circular) from hg19 genome</span><br><span class="line"></span><br><span class="line">&gt; length(GR)</span><br><span class="line">[<span class="number">1</span>] <span class="number">82960</span></span><br></pre></td></tr></table></figure>
+<p>The ‘grouped’ function <code>transcriptsBy</code>, <code>exonsBy</code>, <code>cdsBy</code>, <code>intronsByTranscript</code>, <code>fiveUTRsByTranscript</code> and <code>threeUTRsByTranscript</code> extract genomic features of a given type grouped based on another type of genomic feature.</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&gt; GRList &lt;- transcriptsBy(txdb, by = <span class="string">"gene"</span>)</span><br><span class="line">&gt; GRList</span><br><span class="line">GRangesList object of length <span class="number">23459</span>:</span><br><span class="line">$<span class="number">1</span> </span><br><span class="line">GRanges object with <span class="number">2</span> ranges and <span class="number">2</span> metadata columns:</span><br><span class="line">      seqnames            ranges strand |     tx_id     tx_name</span><br><span class="line">         &lt;Rle&gt;         &lt;IRanges&gt;  &lt;Rle&gt; | &lt;integer&gt; &lt;character&gt;</span><br><span class="line">  [<span class="number">1</span>]    chr19 <span class="number">58858172</span>-<span class="number">58864865</span>      - |     <span class="number">70455</span>  uc002qsd.4</span><br><span class="line">  [<span class="number">2</span>]    chr19 <span class="number">58859832</span>-<span class="number">58874214</span>      - |     <span class="number">70456</span>  uc002qsf.2</span><br><span class="line"></span><br><span class="line">$<span class="number">10</span> </span><br><span class="line">GRanges object with <span class="number">1</span> range and <span class="number">2</span> metadata columns:</span><br><span class="line">      seqnames            ranges strand | tx_id    tx_name</span><br><span class="line">  [<span class="number">1</span>]     chr8 <span class="number">18248755</span>-<span class="number">18258723</span>      + | <span class="number">31944</span> uc003wyw.1</span><br><span class="line"></span><br><span class="line">$<span class="number">100</span> </span><br><span class="line">GRanges object with <span class="number">1</span> range and <span class="number">2</span> metadata columns:</span><br><span class="line">      seqnames            ranges strand | tx_id    tx_name</span><br><span class="line">  [<span class="number">1</span>]    chr20 <span class="number">43248163</span>-<span class="number">43280376</span>      - | <span class="number">72132</span> uc002xmj.3</span><br><span class="line"></span><br><span class="line"><span class="keyword">...</span></span><br><span class="line">&lt;<span class="number">23456</span> more elements&gt;</span><br><span class="line">-------</span><br><span class="line">seqinfo: <span class="number">93</span> sequences (<span class="number">1</span> circular) from hg19 genome</span><br></pre></td></tr></table></figure>
+<p>The <code>transcriptsBy</code> function returns a <code>GRangesList</code> class object. The <code>show</code> method for a <code>GRangesList</code> object will display as a list of <code>GRanges</code> objects. And, at the bottom the seqinfo will be displayed once for the entire list.</p>
+<p>Then standard <code>GRanges</code> and <code>GRangesList</code> accessors can be used to deal with the returnings. And one can also leverage many nice <code>IRanges</code> methods.</p>
+<h3 id="ensdb"><a class="markdownIt-Anchor" href="#ensdb"></a> EnsDb</h3>
+<p>Similar to the <code>TxDb</code> objects/packages, <code>EnsDb</code> objects/packages provide genomic coordinates of gene models along with additional annotations (e.g. gene names, biotypes etc) but are tailored to annotations provided by Ensembl.</p>
+<p>The central methods implemented for <code>EnsDb</code> objects allow also the use of the <code>EnsDb</code> specific filtering framework to retrieve only selected information from the database.</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">library</span>(EnsDb.Hsapiens.v86)</span><br><span class="line">edb = EnsDb.Hsapiens.v86</span><br><span class="line"></span><br><span class="line">&gt; class(edb)</span><br><span class="line">[<span class="number">1</span>] <span class="string">"EnsDb"</span></span><br><span class="line">attr(,<span class="string">"package"</span>)</span><br><span class="line">[<span class="number">1</span>] <span class="string">"ensembldb"</span></span><br></pre></td></tr></table></figure>
+<p><code>key()</code> function has an additional <code>filter</code> parameter, which accepts <code>AnnotationFilter</code> object.</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">keys &lt;- head(keys(edb, keytype=<span class="string">"GENEID"</span>))</span><br><span class="line"></span><br><span class="line">keys(edb, filter=list(GeneBiotypeFilter(<span class="string">"lincRNA"</span>), SeqNameFilter(<span class="string">"Y"</span>)))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> [1] &quot;ENSG00000129816&quot; &quot;ENSG00000129845&quot; &quot;ENSG00000131538&quot; &quot;ENSG00000147753&quot; &quot;ENSG00000147761&quot; &quot;ENSG00000176728&quot; &quot;ENSG00000180910&quot;</span><br><span class="line"> [8] &quot;ENSG00000183385&quot; &quot;ENSG00000184991&quot; &quot;ENSG00000185700&quot; &quot;ENSG00000212855&quot; &quot;ENSG00000212856&quot; &quot;ENSG00000215560&quot; &quot;ENSG00000223517&quot;</span><br><span class="line">[15] &quot;ENSG00000223641&quot; &quot;ENSG00000224075&quot; &quot;ENSG00000224989&quot; &quot;ENSG00000225516&quot; &quot;ENSG00000225520&quot; &quot;ENSG00000226362&quot; &quot;ENSG00000226906&quot;</span><br><span class="line">[22] &quot;ENSG00000227439&quot; &quot;ENSG00000228240&quot; &quot;ENSG00000228296&quot; &quot;ENSG00000228379&quot; &quot;ENSG00000228786&quot; &quot;ENSG00000228890&quot; &quot;ENSG00000229236&quot;</span><br><span class="line">[29] &quot;ENSG00000229308&quot; &quot;ENSG00000229643&quot; &quot;ENSG00000230663&quot; &quot;ENSG00000231141&quot; &quot;ENSG00000231535&quot; &quot;ENSG00000232348&quot; &quot;ENSG00000232419&quot;</span><br><span class="line">[36] &quot;ENSG00000233522&quot; &quot;ENSG00000233699&quot; &quot;ENSG00000233864&quot; &quot;ENSG00000235059&quot; &quot;ENSG00000235412&quot; &quot;ENSG00000236951&quot; &quot;ENSG00000237048&quot;</span><br><span class="line">[43] &quot;ENSG00000237069&quot; &quot;ENSG00000237563&quot; &quot;ENSG00000239225&quot; &quot;ENSG00000240450&quot; &quot;ENSG00000251510&quot; &quot;ENSG00000254488&quot; &quot;ENSG00000260197&quot;</span><br><span class="line">[50] &quot;ENSG00000277930&quot; &quot;ENSG00000278847&quot; &quot;ENSG00000280961&quot;</span><br></pre></td></tr></table></figure>
+<p><code>keys</code> in <code>mapIds</code> and <code>select</code> also accepts <code>AnnotationFilter</code> object.</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">txs &lt;- select(edb, keys=list(GeneBiotypeFilter(<span class="string">"lincRNA"</span>), SeqNameFilter(<span class="string">"Y"</span>)), columns=c(<span class="string">"TXID"</span>, <span class="string">"TXSEQSTART"</span>, <span class="string">"TXBIOTYPE"</span>))</span><br><span class="line"></span><br><span class="line">&gt; head(txs, n=<span class="number">3</span>)</span><br><span class="line">             TXID TXSEQSTART TXBIOTYPE GENEBIOTYPE SEQNAME</span><br><span class="line"><span class="number">1</span> ENST00000250776    <span class="number">6390431</span>   lincRNA     lincRNA       Y</span><br><span class="line"><span class="number">2</span> ENST00000250805    <span class="number">9753156</span>   lincRNA     lincRNA       Y</span><br><span class="line"><span class="number">3</span> ENST00000253838   <span class="number">22439593</span>   lincRNA     lincRNA       Y</span><br></pre></td></tr></table></figure>
+<h2 id="other-questions"><a class="markdownIt-Anchor" href="#other-questions"></a> Other Questions</h2>
+<p><a href="https://www.biostars.org/p/287871/" target="_blank" rel="noopener">Question: Difference between GO.db, biomaRt, and org.Hs.eg.db in GO annotations</a></p>
+<blockquote>
+<p><code>GO.db</code> and <code>org.Hs.eg.db</code> are copies of the GO annotations. <code>GO.db</code> is updated every 6 months with each release of Bioconductor. <code>org.Hs.eg.db</code> is also updated at the same time and using <code>GO.db</code>. <code>biomaRt</code> connects to the server where the informations is stored, so it will be the most up to date. If you want a stable release you can use either <code>GO.db</code> or <code>org.Hs.eg.db</code>, if you want the most up to date (from yesterday) data every time you do an analysis you can use <code>biomaRt</code>.</p>
+</blockquote>
+<p><a href="https://support.bioconductor.org/p/84593/#84594" target="_blank" rel="noopener">Question: org.Hs.eg.db - hg38 build?</a></p>
+<blockquote>
+<p>The orgDb packages don’t really contain any positional annotation. They used to, but these days you will be directed to a TxDb package if you try to get positional info. And the TxDb have the build in the package name. The orgDb packages mostly contain mappings between various databases and some functional annotation, none of which is based on any build. In fact, most of that stuff is updated weekly or monthly, so the orgDb packages get outdated to a certain extent rather quickly.</p>
+</blockquote>
+<h2 id="change-log"><a class="markdownIt-Anchor" href="#change-log"></a> Change log</h2>
+<ul>
+<li>20180918: create the note.</li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:  </strong>Yiwei Niu</li>
+  <li class="post-copyright-link">
+    <strong>Post link: </strong>
+    <a href="https://yiweiniu.github.io/blog/2018/09/Understand-Bioconductor-Annotation-Packages/" title="Understand Bioconductor Annotation Packages">https://yiweiniu.github.io/blog/2018/09/Understand-Bioconductor-Annotation-Packages/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/R/" rel="tag"># R</a>
+          
+            <a href="/blog/tags/Bioconductor/" rel="tag"># Bioconductor</a>
+          
+            <a href="/blog/tags/Bioconductor-package/" rel="tag"># Bioconductor package</a>
+          
+            <a href="/blog/tags/annotation-package/" rel="tag"># annotation package</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/09/Biological-ID-Conversion/" rel="next" title="Biological ID Conversion">
+                <i class="fa fa-chevron-left"></i> Biological ID Conversion
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/blog/images/portrait.jpg"
+                alt="Yiwei Niu" />
+            
+              <p class="site-author-name" itemprop="name">Yiwei Niu</p>
+              <p class="site-description motion-element" itemprop="description">a beginner, a learner</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/blog/archives">
+                
+                    <span class="site-state-item-count">21</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/blog/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">19</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/blog/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">39</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/blog/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:xiaohuwangwang@qq.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/YiweiNiu" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://weibo.com/u/3049858680" target="_blank" title="Weibo"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/ywniu" target="_blank" title="Twitter"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://kaigedong.github.io/" title="Kaige Dong" target="_blank">Kaige Dong</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://homolog.us/blogs/" title="Homolog.us" target="_blank">Homolog.us</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://cgatoxford.wordpress.com/" title="CGAT" target="_blank">CGAT</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.gettinggeneticsdone.com/" title="Getting Genetics Done" target="_blank">Getting Genetics Done</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.acgt.me/" title="ACGT" target="_blank">ACGT</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#introduction"><span class="nav-number">1.</span> <span class="nav-text"> Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#schema-of-annotation-packages"><span class="nav-number">2.</span> <span class="nav-text"> Schema of Annotation Packages</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#working-with-anotationdb-objects"><span class="nav-number">3.</span> <span class="nav-text"> Working with AnotationDb objects</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#chipdb"><span class="nav-number">3.1.</span> <span class="nav-text"> ChipDb</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#orgdb"><span class="nav-number">3.2.</span> <span class="nav-text"> OrgDb</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#godb"><span class="nav-number">3.3.</span> <span class="nav-text"> GO.db</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#txdb"><span class="nav-number">3.4.</span> <span class="nav-text"> TxDb</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ensdb"><span class="nav-number">3.5.</span> <span class="nav-text"> EnsDb</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#other-questions"><span class="nav-number">4.</span> <span class="nav-text"> Other Questions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#change-log"><span class="nav-number">5.</span> <span class="nav-text"> Change log</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-mars"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yiwei Niu</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Gemini</a></div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+      <div>
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type = "text/javascript" src = "//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a7ad07b7823d03b" async = "async" ></script>
+</div>
+
+      </div>
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+  
+    <script id="dsq-count-scr" src="https://yiwei-nius-note.disqus.com/count.js" async></script>
+  
+
+  
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'https://yiweiniu.github.io/blog/2018/09/Understand-Bioconductor-Annotation-Packages/';
+        this.page.identifier = '2018/09/Understand-Bioconductor-Annotation-Packages/';
+        this.page.title = 'Understand Bioconductor Annotation Packages';
+        };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://yiwei-nius-note.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        loadComments();
+      
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #eee;
+      background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      right: 4px;
+      top: 8px;
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function (i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap')
+      $(e).after($wrap)
+      $wrap.append($('<button>').addClass('copy-btn').append('Copy').on('click', function (e) {
+        var code = $(this).parent().find('.code').find('.line').map(function (i, e) {
+          return $(e).text()
+        }).toArray().join('\n')
+        var ta = document.createElement('textarea')
+        document.body.appendChild(ta)
+        ta.style.position = 'absolute'
+        ta.style.top = '0px'
+        ta.style.left = '0px'
+        ta.value = code
+        ta.select()
+        ta.focus()
+        var result = document.execCommand('copy')
+        document.body.removeChild(ta)
+        
+          if(result)$(this).text('Copied')
+          else $(this).text('Copy failed')
+        
+        $(this).blur()
+      })).on('mouseleave', function (e) {
+        var $b = $(this).find('.copy-btn')
+        setTimeout(function () {
+          $b.text('Copy')
+        }, 300)
+      }).append(e)
+    })
+  </script>
+
+
+</body>
+</html>

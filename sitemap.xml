@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://yiweiniu.github.io/blog/2018/09/Understand-Bioconductor-Annotation-Packages/</loc>
+    
+    <lastmod>2018-09-18T15:51:23.522Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://yiweiniu.github.io/blog/2018/09/Biological-ID-Conversion/</loc>
     
-    <lastmod>2018-09-18T08:41:03.372Z</lastmod>
+    <lastmod>2018-09-18T15:06:00.624Z</lastmod>
     
   </url>
   
