@@ -110,21 +110,21 @@
 
 
 
-  <meta name="description" content="Purpose in short: I’ve got both illumina (PE and MPE) and PacBio reads of an insect for de novo geome assembly. Since whole bodies were used for extracted DNA, I thought there was some contamination i">
+  <meta name="description" content="Purpose in short: I’ve got both illumina (PE and MPE) and PacBio reads of an insect for de novo geome assembly. Since whole bodies were used for DNA extraction, I thought there was some contamination">
 <meta name="keywords" content="bio-tools,contamination,reads,BBDuk,MashMap,long-reads,long-reads alignment">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Remove Microbial Contamination in Reads">
 <meta property="og:url" content="https://yiweiniu.github.io/blog/2018/07/Remove-Contamination-of-Pokaryotic-Organisms-in-Reads/index.html">
 <meta property="og:site_name" content="Yiwei Niu&#39;s Note">
-<meta property="og:description" content="Purpose in short: I’ve got both illumina (PE and MPE) and PacBio reads of an insect for de novo geome assembly. Since whole bodies were used for extracted DNA, I thought there was some contamination i">
+<meta property="og:description" content="Purpose in short: I’ve got both illumina (PE and MPE) and PacBio reads of an insect for de novo geome assembly. Since whole bodies were used for DNA extraction, I thought there was some contamination">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://yiweiniu.github.io/blog/2018/07/Remove-Contamination-of-Pokaryotic-Organisms-in-Reads/blast_1532401032_2561.png">
 <meta property="og:image" content="https://yiweiniu.github.io/blog/2018/07/Remove-Contamination-of-Pokaryotic-Organisms-in-Reads/1532401743_26861.png">
 <meta property="og:image" content="https://yiweiniu.github.io/blog/2018/07/Remove-Contamination-of-Pokaryotic-Organisms-in-Reads/1532401866_17878.png">
-<meta property="og:updated_time" content="2018-08-16T05:37:35.411Z">
+<meta property="og:updated_time" content="2019-01-15T03:02:27.433Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Remove Microbial Contamination in Reads">
-<meta name="twitter:description" content="Purpose in short: I’ve got both illumina (PE and MPE) and PacBio reads of an insect for de novo geome assembly. Since whole bodies were used for extracted DNA, I thought there was some contamination i">
+<meta name="twitter:description" content="Purpose in short: I’ve got both illumina (PE and MPE) and PacBio reads of an insect for de novo geome assembly. Since whole bodies were used for DNA extraction, I thought there was some contamination">
 <meta name="twitter:image" content="https://yiweiniu.github.io/blog/2018/07/Remove-Contamination-of-Pokaryotic-Organisms-in-Reads/blast_1532401032_2561.png">
 
 
@@ -475,7 +475,7 @@
       
 
       
-        <p>Purpose in short: I’ve got both illumina (PE and MPE) and PacBio reads of an insect for <em>de novo</em> geome assembly. Since whole bodies were used for extracted DNA, I thought there was some contamination in the raw sequencing reads, so I want to remove them before assembling.</p>
+        <p>Purpose in short: I’ve got both illumina (PE and MPE) and PacBio reads of an insect for <em>de novo</em> geome assembly. Since whole bodies were used for DNA extraction, I thought there was some contamination in the raw sequencing reads, so I want to remove them before assembling.</p>
 <p>The main tool for illumina reads I used was <code>BBDuk</code>, which belongs to the <a href="https://sourceforge.net/projects/bbmap/" target="_blank" rel="noopener">BBTools suite</a>. <code>Seal</code> and <code>BBSplit</code> can also do this, but <code>BBDuk</code> is the most suitable for my purpose. See discussions here: <a href="https://www.biostars.org/p/165059/" target="_blank" rel="noopener">Question: How to remove contamination from the transcriptome assembly</a>. <code>BBTools</code> is quite versatile, fast, and convenient! Though now I don’t fully understand every kit in it, the experience was very good from the tools I’ve tried. The author Brian Bushnell is very active and responsive. Here is a handy summary of <code>BBMap</code>: <a href="http://seqanswers.com/forums/showthread.php?t=58221" target="_blank" rel="noopener">Yes … BBMap can do that!</a>.</p>
 <p>But for PacBio long reads, I didn’t find any tools specialized for that. I tried several tools including <code>mapPacBio.sh</code> (based on <code>bbmap</code>, and is tuned for the error profile of long reads.), <code>blasr</code>, <code>MashMap</code>, and <code>minimap2</code>. At last, I found <code>minimap2</code> best met my needs.</p>
 <h2 id="prepare-the-contamination-library"><a class="markdownIt-Anchor" href="#prepare-the-contamination-library"></a> Prepare the contamination library</h2>
@@ -1024,7 +1024,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2019</span>
   <span class="with-love" id="animate">
     <i class="fa fa-mars"></i>
   </span>
