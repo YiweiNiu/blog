@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://yiweiniu.github.io/blog/2019/03/ATAC-seq-data-analysis-from-FASTQ-to-peaks/</loc>
+    
+    <lastmod>2019-03-20T12:52:14.313Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://yiweiniu.github.io/blog/2019/03/Calculate-FRiP-score/</loc>
     
     <lastmod>2019-03-20T05:48:34.344Z</lastmod>
