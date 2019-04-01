@@ -125,7 +125,7 @@
 <meta property="og:image" content="https://yiweiniu.github.io/blog/2019/03/ATAC-seq-data-analysis-from-FASTQ-to-peaks/20190103170441947_28541.png">
 <meta property="og:image" content="https://yiweiniu.github.io/blog/2019/03/ATAC-seq-data-analysis-from-FASTQ-to-peaks/20190103170526610_9297.png">
 <meta property="og:image" content="https://yiweiniu.github.io/blog/2019/03/ATAC-seq-data-analysis-from-FASTQ-to-peaks/20190318163604339_31625.png">
-<meta property="og:updated_time" content="2019-03-20T12:52:14.313Z">
+<meta property="og:updated_time" content="2019-04-01T08:06:36.315Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ATAC-seq data analysis: from FASTQ to peaks">
 <meta name="twitter:description" content="The content were compiled from multiple resources on the internet (forum, papers, workshop etc.). I could not indicate all the sources, but I want to thank them for sharing experiences/knowledge/code.">
@@ -447,7 +447,7 @@
                   <i class="fa fa-file-word-o"></i>
                 </span>
                 
-                <span title="Symbols count in article">26k</span>
+                <span title="Symbols count in article">29k</span>
               
 
               
@@ -459,7 +459,7 @@
                   <i class="fa fa-clock-o"></i>
                 </span>
                 
-                <span title="Reading time">0:24</span>
+                <span title="Reading time">0:26</span>
               
             </div>
           
@@ -561,7 +561,32 @@
 <p>The remaining reads are so-called “properly mapped reads”.</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> Remove reads unmapped, mate unmapped, not primary alignment, reads failing platform, duplicates (-F 1804)</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Retain properly paired reads -f 2</span></span><br><span class="line">samtools view -h -b -F 1804 -f 2 $&#123;sample&#125;.bam &gt; $&#123;sample&#125;.filtered.bam</span><br></pre></td></tr></table></figure>
 <h4 id="merging-bams-optional"><a class="markdownIt-Anchor" href="#merging-bams-optional"></a> Merging BAMs (optional)</h4>
-<p>If several libraries were constucted for one condition, one may want to merge different <code>BAM</code> files before calling peaks. And this can be done using <code>samtools</code>.</p>
+<p>When several libraries were constructed for one experimental condition (aka. one experimental condition inlcuded several biological and/or technical replicates), one may want to merge different <code>BAM</code> files before calling peaks (e.g. merge BAM files from technical replicates, merge BAM files to get bigger read depth).</p>
+<p>Considerations about “merge BAMs” or “merge peaks” have been discussed:</p>
+<ul>
+<li>
+<p><a href="https://www.biostars.org/p/112778/" target="_blank" rel="noopener">ChIP-Seq: Calling peaks with replicates</a></p>
+<blockquote>
+<p>First, are these A) technical or B) biological replicates? That is, the same biological sample run several times with the same antibody (same lot also if polyclonal) protocol, or different biological samples run the same way with the same protocol?</p>
+<p>If it is A it may be reasonable to merge them for some analyses, such as just annotating peaks. I would merge the bam alignment files and then do the calls versus merging the calls.</p>
+<p>However, first you have analyze your replicates to check they they all perform the same. We did a lot of performance comparisons here: <a href="https://epigeneticsandchromatin.biomedcentral.com/articles/10.1186/s13072-016-0100-6" target="_blank" rel="noopener">https://epigeneticsandchromatin.biomedcentral.com/articles/10.1186/s13072-016-0100-6</a></p>
+<p>You can steal those ideas, especially using the ENCODE segmentation tracks if it’s human and they have tracks for something like your cell type. But just counting the reads in bins and then doing a correlation is pretty informative.</p>
+<p>But even in our data, and we used a robot and do it a lot, one of our technical replicates behaved strangely. See supplemental figure S6.</p>
+<p>If it is B, biological replicates, you almost certainly don’t want to merge them. You will lose your information about biological variance is present. If you are looking at something like differential peaks between conditions DESeq and really all reputable programs will want some sort of replicates, almost always biological. In general, if you want to compute a p value on anything you need separate replicates (not merged).</p>
+<p>If you are just annotating peaks you don’t need a p value.</p>
+</blockquote>
+</li>
+<li>
+<p><a href="https://www.biostars.org/p/191474/" target="_blank" rel="noopener">how to pool together biological replicates?</a></p>
+</li>
+<li>
+<p><a href="https://www.biostars.org/p/210564/" target="_blank" rel="noopener">ChipSeq: merge bam file before peak calling</a></p>
+</li>
+<li>
+<p><a href="https://www.biostars.org/p/230055/" target="_blank" rel="noopener">Chip-Seq merging peak files</a></p>
+</li>
+</ul>
+<p>And merging BAM can be done using <code>samtools</code>.</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">samtools merge -@ $PPN condition1.merged.bam sample1.bam sample2.bam sample3.bam</span><br><span class="line">samtools index -@ $PPN condition1.merged.bam</span><br></pre></td></tr></table></figure>
 <p>Also, <code>multiBamSummary</code> in <code>deepTools</code> can be used to check the correlations between <code>BAM</code> files before merging.</p>
 <h3 id="shifting-reads"><a class="markdownIt-Anchor" href="#shifting-reads"></a> Shifting reads</h3>
@@ -670,7 +695,7 @@
 <p>The 5th column of narroPeak file is integer score for display calculated as int(-10*log10qvalue). Since currently this value might be out of the [0-1000] range defined in <a href="https://genome.ucsc.edu/FAQ/FAQformat.html#format12" target="_blank" rel="noopener">UCSC Encode narrowPeak format</a>, the <code>awk</code> code is to assign values greater than 1000 to 1000.</p>
 <h3 id="merging-peaks-optional"><a class="markdownIt-Anchor" href="#merging-peaks-optional"></a> Merging peaks (optional)</h3>
 <p>One may want to merge peaks from different libraries or different samples.</p>
-<p><a href="https://www.nature.com/articles/ng.3646" target="_blank" rel="noopener">Corces et al., 2016</a> used the following method to merge peaks:</p>
+<p><a href="https://www.nature.com/articles/ng.3646" target="_blank" rel="noopener">Corces et al., 2016</a> used the following method to merge peaks, and I like their way:</p>
 <blockquote>
 <p>To generate a non-redundant list of hematopoiesis- and cancer-related peaks, we first extended summits to 500-bp windows (±250 bp). We then ranked the 500-bp peaks by summit significance value (defined by MACS2) and chose a list of non-overlapping, maximally significant peaks.</p>
 </blockquote>
@@ -681,6 +706,8 @@
 <h2 id="change-log"><a class="markdownIt-Anchor" href="#change-log"></a> Change log</h2>
 <ul>
 <li>20190103: create the note.</li>
+<li>20190320: complete the note.</li>
+<li>20190401: update the section of “Merging BAMs”. Add some discussions about “pooling replicates”</li>
 </ul>
 
       
