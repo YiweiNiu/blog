@@ -125,12 +125,14 @@
 <meta property="og:image" content="https://yiweiniu.github.io/blog/2019/03/ATAC-seq-data-analysis-from-FASTQ-to-peaks/20190103170441947_28541.png">
 <meta property="og:image" content="https://yiweiniu.github.io/blog/2019/03/ATAC-seq-data-analysis-from-FASTQ-to-peaks/20190103170526610_9297.png">
 <meta property="og:image" content="https://yiweiniu.github.io/blog/2019/03/ATAC-seq-data-analysis-from-FASTQ-to-peaks/20190318163604339_31625.png">
-<meta property="og:updated_time" content="2019-04-01T08:06:36.315Z">
+<meta property="og:updated_time" content="2019-04-17T05:56:50.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ATAC-seq data analysis: from FASTQ to peaks">
 <meta name="twitter:description" content="The content were compiled from multiple resources on the internet (forum, papers, workshop etc.). I could not indicate all the sources, but I want to thank them for sharing experiences/knowledge/code.">
 <meta name="twitter:image" content="https://yiweiniu.github.io/blog/2019/03/ATAC-seq-data-analysis-from-FASTQ-to-peaks/20190320181006767_5393.png">
 
+
+  
 
 
   <link rel="alternate" href="/blog/atom.xml" title="Yiwei Niu's Note" type="application/atom+xml">
@@ -513,6 +515,7 @@
 <li><a href="https://github.com/ENCODE-DCC/atac-seq-pipeline" target="_blank" rel="noopener">ENCODE ATAC-seq pipeline</a></li>
 <li><a href="https://github.com/ParkerLab/bioinf525" target="_blank" rel="noopener">Parker Lab - ATAC-seq lab for BIOINF525</a></li>
 <li><a href="https://github.com/ay-lab/ATACProc" target="_blank" rel="noopener">Ferhat Ay Lab - ATAC-seq processing pipeline</a></li>
+<li><a href="https://rockefelleruniversity.github.io/RU_ATACseq/" target="_blank" rel="noopener">Rockefeller University, ATACseq in R</a></li>
 <li><a href="http://qiubio.com/new/book/chapter-06/#%E7%AC%AC%E4%BA%94%E7%AB%A0-atac-seq%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90chapter-5-atac-seq-data-analysis" target="_blank" rel="noopener">生物信息学生 R 入门教程 - 第五章 ATAC-seq数据分析</a> – in R.</li>
 </ul>
 <p>The following pipeline includes several common analysis in ATAC-seq setting, from data trimming to peak calling. Some steps are optional, like merging BAMs.</p>
@@ -614,7 +617,8 @@
 <blockquote>
 <p>Liu Tao: If you followed original protocol for ATAC-Seq, you should get Paired-End reads. If so, I would suggest you just use <code>--format BAMPE</code> to let MACS2 pileup the whole fragments in general. But if you want to focus on looking for where the ‘cutting sites’ are, then <code>--nomodel --shift -100 --extsize 200</code> should work.</p>
 </blockquote>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> -f BAMPE</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> --keep-dup all, keep all duplicate reads.</span></span><br><span class="line">macs2 callpeak -f BAMPE -g hs --keep-dup all --cutoff-analysis -n sample1 \</span><br><span class="line">  -t sample1.shifted.bam --outdir macs2/sample1 2&gt; macs2.log</span><br></pre></td></tr></table></figure>
+<p>Since paired-end sequencing is commonly used in ATAC-seq, so, we will tell <code>MACS2</code> that the data is paired using the <code>-f</code> argument. By this way, <code>MACS2</code> would only analyze properly mapped reads (as we get the bam after filtering above). The fragments are defined by the paired alignment, and there is no modeling or artificial extension.</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> -f BAMPE, use paired-end information</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> --keep-dup all, keep all duplicate reads.</span></span><br><span class="line">macs2 callpeak -f BAMPE -g hs --keep-dup all --cutoff-analysis -n sample1 \</span><br><span class="line">  -t sample1.shifted.bam --outdir macs2/sample1 2&gt; macs2.log</span><br></pre></td></tr></table></figure>
 <h3 id="creating-browser-tracks"><a class="markdownIt-Anchor" href="#creating-browser-tracks"></a> Creating browser tracks</h3>
 <p>If <code>-B</code> parameter was used when running <code>macs2 callpeak</code>, you would get bedGraph files together with narrowPeak files. Someone would use these bedGraph files to create browser tracks (e.g. <a href="https://github.com/ParkerLab/bioinf545" target="_blank" rel="noopener">ParkerLab - ATAC-seq lab for BIOINF545</a>), while others say they look kind of weird (<a href="https://www.biostars.org/p/325946/#325951" target="_blank" rel="noopener">Biostars - How to compare bigwig tracks of two ATAC libraries</a>). I do not know yet.</p>
 <p>I would like to create bigWig files for visualizing using <code>bamCoverage</code> in <code>deepTools</code>. It provides several different ways to normalize the signal.</p>
@@ -758,6 +762,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/blog/2019/06/Cancer-gene-collections/" rel="prev" title="Cancer gene collections">
+                Cancer gene collections <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -838,7 +846,7 @@
                 
                   <a href="/blog/archives">
                 
-                    <span class="site-state-item-count">23</span>
+                    <span class="site-state-item-count">24</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -895,7 +903,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">22</span>
+                      
+                    
+                    <span class="site-state-item-count">23</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -996,7 +1006,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">44</span>
+                      
+                    
+                    <span class="site-state-item-count">45</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
