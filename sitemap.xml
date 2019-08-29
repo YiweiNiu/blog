@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://yiweiniu.github.io/blog/2019/03/ATAC-seq-data-analysis-from-FASTQ-to-peaks/</loc>
+    
+    <lastmod>2019-08-29T01:36:31.417Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://yiweiniu.github.io/blog/2019/07/Install-Update-R-and-R-packages/</loc>
     
     <lastmod>2019-07-17T08:42:48.542Z</lastmod>
@@ -26,13 +33,6 @@
     <loc>https://yiweiniu.github.io/blog/2019/06/Cancer-gene-collections/</loc>
     
     <lastmod>2019-06-03T11:20:01.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yiweiniu.github.io/blog/2019/03/ATAC-seq-data-analysis-from-FASTQ-to-peaks/</loc>
-    
-    <lastmod>2019-04-17T05:56:50.000Z</lastmod>
     
   </url>
   
